@@ -10,5 +10,5 @@ export default function RecordListTitle({ title }) {
 }
 
 RecordListTitle.propTypes = {
-  title: PropTypes.string
+  title: PropTypes.string.isRequired
 }

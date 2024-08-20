@@ -9,5 +9,5 @@ export default function Record({ name }) {
 }
 
 Record.propTypes = {
-  name: PropTypes.string
+  name: PropTypes.string.isRequired
 }

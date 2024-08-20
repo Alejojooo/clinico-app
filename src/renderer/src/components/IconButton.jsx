@@ -5,5 +5,5 @@ export default function IconButton({ icon }) {
 }
 
 IconButton.propTypes = {
-  icon: PropTypes.element
+  icon: PropTypes.element.isRequired
 }
