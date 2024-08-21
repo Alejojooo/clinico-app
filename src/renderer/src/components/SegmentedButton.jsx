@@ -2,7 +2,7 @@ import PropTypes from 'prop-types'
 
 export default function SegmentedButton({ label, icon, rounded }) {
   let buttonClassName =
-    'border-y border-accent h-10 w-40 flex flex-row justify-center items-center gap-2 px-3 py-2.5'
+    'hover:bg-secondary-light transition-colors border-y border-accent h-10 w-40 flex flex-row justify-center items-center gap-2 px-3 py-2.5'
   if (rounded && rounded.search(/left/)) buttonClassName += ' border-r rounded-r-full'
   if (rounded && rounded.search(/right/)) buttonClassName += ' border-l rounded-l-full'
 

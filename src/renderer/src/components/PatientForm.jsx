@@ -1,5 +1,6 @@
 import ActionButton from './ActionButton'
 import FormField from './FormField'
+import FormMultilineField from './FormMultilineField'
 import { PlusIcon, CheckIcon, XMarkIcon, UserIcon } from '@heroicons/react/24/outline'
 
 export default function PatientForm() {
@@ -32,23 +33,27 @@ export default function PatientForm() {
         <div className="flex flex-col flex-grow gap-5">
           <FormField label="Aseguradora" name="patient-insurance" cssWidth="w-full"></FormField>
           <FormField label="Email" name="patient-email" cssWidth="w-full"></FormField>
-          <FormField
+          <FormMultilineField
             label="Domicilio"
             name="patient-home"
             cssWidth="w-full"
             cssHeight="h-28"
-          ></FormField>
+          ></FormMultilineField>
         </div>
         <UserIcon className="size-60"></UserIcon>
       </div>
       <div className="w-full flex flex-row gap-5 pt-2.5">
-        <FormField
+        <FormMultilineField
           label="Teléfonos"
           name="patient-phone"
           cssWidth="w-60"
           cssHeight="h-28"
-        ></FormField>
-        <FormField label="Otros datos" name="patient-other-data" cssHeight="h-28"></FormField>
+        ></FormMultilineField>
+        <FormMultilineField
+          label="Otros datos"
+          name="patient-other-data"
+          cssHeight="h-28"
+        ></FormMultilineField>
       </div>
     </div>
   )

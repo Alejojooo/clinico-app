@@ -1,6 +1,11 @@
 import PropTypes from 'prop-types'
 
-export default function FormField({ label, name, cssWidth = 'flex-grow', cssHeight = 'h-14' }) {
+export default function FormMultilineField({
+  label,
+  name,
+  cssWidth = 'flex-grow',
+  cssHeight = 'h-14'
+}) {
   const divClassName = `relative border border-neutral rounded-md pl-4 py-2 ${cssWidth} ${cssHeight}`
 
   return (
@@ -11,17 +16,17 @@ export default function FormField({ label, name, cssWidth = 'flex-grow', cssHeig
       >
         {label}
       </label>
-      <input
+      <textarea
         id={name}
-        className="bg-transparent size-full py-1 text-accent outline-none"
+        className="bg-transparent size-full py-1 text-accent resize-none outline-none"
         name={name}
-        type="text"
-      />
+        rows="10"
+      ></textarea>
     </div>
   )
 }
 
-FormField.propTypes = {
+FormMultilineField.propTypes = {
   label: PropTypes.string.isRequired,
   name: PropTypes.string.isRequired,
   cssWidth: PropTypes.string,
