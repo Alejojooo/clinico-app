@@ -8,7 +8,7 @@ import {
 
 export default function NavigationSection() {
   return (
-    <div className="w-full h-fit flex flex-col">
+    <nav className="w-full h-fit flex flex-col">
       <NavigationButton
         name="Pacientes"
         icon={<UserGroupIcon className="size-6" />}
@@ -22,6 +22,6 @@ export default function NavigationSection() {
         name="Herramientas"
         icon={<Cog6ToothIcon className="size-6" />}
       ></NavigationButton>
-    </div>
+    </nav>
   )
 }

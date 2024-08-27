@@ -1,8 +1,8 @@
 import PropTypes from 'prop-types'
 
-export default function ActionButton({ label, icon }) {
+export default function ActionButton({ label, icon, onClick }) {
   let buttonClassName =
-    'bg-primary hover:bg-secondary-light transition-colors drop-shadow-md h-10 rounded-full flex flex-row justify-center items-center gap-2 py-2.5 '
+    'flex flex-row justify-center items-center gap-2 py-2.5 h-10 bg-primary hover:bg-secondary-light focus:bg-tertiary rounded-full drop-shadow-md transition-colors pointer-events-auto '
   if (icon) {
     buttonClassName += 'pl-4 pr-6'
   } else {
@@ -10,7 +10,7 @@ export default function ActionButton({ label, icon }) {
   }
 
   return (
-    <button className={buttonClassName}>
+    <button className={buttonClassName} type="button" onClick={onClick}>
       {icon}
       <span className="text-sm font-semibold text-accent">{label}</span>
     </button>
@@ -19,5 +19,6 @@ export default function ActionButton({ label, icon }) {
 
 ActionButton.propTypes = {
   label: PropTypes.string.isRequired,
-  icon: PropTypes.element
+  icon: PropTypes.element,
+  onClick: PropTypes.func
 }
