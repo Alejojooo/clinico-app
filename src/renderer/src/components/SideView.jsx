@@ -5,7 +5,7 @@ import SearchBar from './SearchBar'
 
 export default function SideView() {
   return (
-    <aside className="w-[30%] flex flex-col mt-2.5 justify-start items-center gap-3.5">
+    <aside className="mt-2.5 flex w-[30%] flex-col items-center justify-start gap-3.5">
       <NavigationSection></NavigationSection>
       <RecordListTitle title="Listado de pacientes"></RecordListTitle>
       <SearchBar></SearchBar>

@@ -34,7 +34,7 @@ export default function PatientForm() {
 
   const validate = (formData) => {
     const newFormData = copyObject(formData)
-    const newErrors = copyObject(errors)
+    const newErrors = {}
     Object.keys(formData).forEach((field) => {
       let value, error
       // Validaciones
@@ -67,19 +67,19 @@ export default function PatientForm() {
   }
 
   const validateGender = (value) => {
-    if (!['M', 'F'].includes(value.toUpperCase())) return ['', 'El valor debe ser M o F']
+    if (value && !['M', 'F'].includes(value.toUpperCase())) return ['', 'M/F']
     return [value.toUpperCase(), undefined]
   }
 
   const validateMaritalStatus = (value) => {
-    if (!['S', 'C', 'D', 'V', 'U'].includes(value.toUpperCase()))
-      return ['', 'El valor debe ser S, C, D, V o U']
+    if (value && !['S', 'C', 'D', 'V', 'U'].includes(value.toUpperCase())) return ['', 'S/C/D/V/U']
     return [value.toUpperCase(), undefined]
   }
 
   const validateBirthdate = (value) => {
+    if (!value) return [value, undefined]
     const date = DateTime.fromFormat(value, 'D', { locale: 'es-GT' })
-    if (!date) return [value, 'La fecha no es válida']
+    if (!date.isValid) return [value, 'La fecha no es válida']
     return [value, undefined]
   }
 
@@ -98,17 +98,15 @@ export default function PatientForm() {
   }
 
   const validateId = (value) => {
+    if (!value) return [value, undefined]
     const found = value.match(/[A-Za-z0-9]+/)
-    if (!found)
-      return [found ? found[0].toUpperCase() : value, 'El valor debe contener letras o números']
+    if (!found) return [value.toUpperCase(), 'El valor debe contener letras o números']
     return [found[0].toUpperCase(), undefined]
   }
 
   const handleNewPatient = () => {
-    const formErrors = validate()
-    if (Object.keys(formErrors).length > 0) {
-      console.log('Form with errors:', formErrors)
-      setErrors(formErrors)
+    if (Object.keys(errors).length > 0) {
+      console.log('Form with errors:', errors)
     } else {
       // Procesar los datos del formulario
       console.log('Form submitted:', formData)
@@ -119,11 +117,11 @@ export default function PatientForm() {
   }
 
   return (
-    <form className="flex flex-col p-5 gap-5 size-full">
-      <div className="flex flex-col justify-start items-center gap-3.5 w-full">
-        <div className="w-full flex flex-row justify-between items-end">
+    <form className="flex size-full flex-col gap-3 p-5">
+      <div className="flex w-full flex-col items-center justify-start gap-3.5">
+        <div className="flex w-full flex-row items-end justify-between">
           <h2 className="text-2xl">Identificación del paciente</h2>
-          <div className="w-fit flex flex-row gap-2.5">
+          <div className="flex w-fit flex-row gap-2.5">
             <ActionButton
               label="Nuevo"
               icon={<PlusIcon className="size-4" />}
@@ -133,13 +131,14 @@ export default function PatientForm() {
             <ActionButton label="Eliminar" icon={<XMarkIcon className="size-4" />}></ActionButton>
           </div>
         </div>
-        <div className="border-secondary border-t w-full"></div>
+        <div className="w-full border-t border-secondary"></div>
       </div>
-      <div className="flex flex-row gap-5 pt-2.5 w-full">
+      <div className="flex w-full flex-row gap-5">
         <FormField
           label="Nombre"
           name="name"
           value={formData.name}
+          error={errors.name}
           onChange={handleChange}
         ></FormField>
         <FormField
@@ -147,6 +146,7 @@ export default function PatientForm() {
           name="gender"
           cssWidth="w-24"
           value={formData.gender}
+          error={errors.gender}
           onChange={handleChange}
         ></FormField>
         <FormField
@@ -154,15 +154,17 @@ export default function PatientForm() {
           name="maritalStatus"
           cssWidth="w-24"
           value={formData.maritalStatus}
+          error={errors.maritalStatus}
           onChange={handleChange}
         ></FormField>
       </div>
-      <div className="flex flex-row gap-5 pt-2.5 w-full">
+      <div className="flex w-full flex-row gap-5">
         <FormField
           label="Fecha de nacimiento"
           name="birthdate"
           cssWidth="w-80"
           value={formData.birthdate}
+          error={errors.birthdate}
           onChange={handleChange}
         ></FormField>
         <FormField
@@ -173,10 +175,16 @@ export default function PatientForm() {
           onChange={handleChange}
           nonEditable
         ></FormField>
-        <FormField label="ID" name="id" value={formData.id} onChange={handleChange}></FormField>
+        <FormField
+          label="ID"
+          name="id"
+          value={formData.id}
+          error={errors.id}
+          onChange={handleChange}
+        ></FormField>
       </div>
-      <div className="flex flex-row justify-start items-center gap-5 w-full ">
-        <div className="flex flex-col flex-grow gap-5">
+      <div className="flex w-full flex-row items-center justify-between gap-5">
+        <div className="flex flex-grow flex-col gap-3">
           <FormField
             label="Aseguradora"
             name="insurance"
@@ -203,7 +211,7 @@ export default function PatientForm() {
         </div>
         <UserIcon className="size-60"></UserIcon>
       </div>
-      <div className="flex flex-row gap-5 pt-2.5 w-full ">
+      <div className="flex w-full flex-row gap-5">
         <FormField
           label="Teléfonos"
           name="phone"

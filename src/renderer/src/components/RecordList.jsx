@@ -2,7 +2,7 @@ import Record from './Record'
 
 export default function RecordList() {
   return (
-    <div className="bg-secondary-light w-full rounded-2xl flex flex-col flex-grow">
+    <div className="flex w-full flex-grow flex-col rounded-2xl bg-secondary-light">
       <Record name="Alejojooo"></Record>
     </div>
   )

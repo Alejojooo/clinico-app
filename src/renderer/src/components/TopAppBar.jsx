@@ -12,13 +12,13 @@ import {
 
 export default function TopAppBar() {
   return (
-    <header className="h-16 w-screen px-5 flex flex-row justify-start items-center gap-5">
-      <div className="w-[30%] flex flex-row justify-start items-center gap-2.5">
+    <header className="flex h-16 w-screen flex-row items-center justify-start gap-5 px-5">
+      <div className="flex w-[30%] flex-row items-center justify-start gap-2.5">
         <IconButton icon={<Bars3Icon className="size-6" />}></IconButton>
         <h1 className="text-lg font-semibold">Clinico</h1>
       </div>
-      <div className="flex flex-row flex-grow justify-between items-center">
-        <div className="flex flex-row py-1 divide-x">
+      <div className="flex flex-grow flex-row items-center justify-between">
+        <div className="flex flex-row divide-x py-1">
           <SegmentedButton
             label="Identificación"
             icon={<UserCircleIcon className="size-4" />}
