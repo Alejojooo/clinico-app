@@ -24,65 +24,43 @@ export default function PatientForm() {
 
   const handleChange = (e) => {
     const { name, value } = e.target
-    const [newFormData, newErrors] = validate({
+    setFormData({
       ...formData,
       [name]: value
     })
-    setFormData(newFormData)
-    setErrors(newErrors)
   }
 
-  const validate = (formData) => {
-    const newFormData = copyObject(formData)
-    const newErrors = {}
-    Object.keys(formData).forEach((field) => {
-      let value, error
-      // Validaciones
-      if (field === 'name') [value, error] = validateName(formData[field])
-      else if (field === 'gender') [value, error] = validateGender(formData[field])
-      else if (field === 'maritalStatus') [value, error] = validateMaritalStatus(formData[field])
-      else if (field === 'birthdate') {
-        ;[value, error] = validateBirthdate(formData[field])
-        newFormData.age = calculateAge(value)
-      } else if (field === 'id') [value, error] = validateId(formData[field])
-      else value = newFormData[field]
-      // Después de validar los datos, hay que devolverlos al form
-      newFormData[field] = value
-      if (error) newErrors[field] = error
+  const handleGender = (e) => {
+    let value = e.target.value.toUpperCase()
+    if (!['M', 'F'].includes(value)) value = ''
+    setFormData({
+      ...formData,
+      gender: value
     })
-    return [newFormData, newErrors]
   }
 
-  const copyObject = (obj) => {
-    return Object.fromEntries(
-      Object.entries(obj).map(([name, value]) => [name, value === undefined ? '' : value])
-    )
+  const handleMaritalStatus = (e) => {
+    let value = e.target.value.toUpperCase()
+    if (!['S', 'C', 'D', 'V', 'U'].includes(value)) value = ''
+    setFormData({
+      ...formData,
+      maritalStatus: value
+    })
   }
 
-  const validateName = (value) => {
-    if (!value) return [value, 'El nombre es requerido']
-    return [value, undefined]
-  }
-
-  const validateGender = (value) => {
-    if (value && !['M', 'F'].includes(value.toUpperCase())) return ['', 'M/F']
-    return [value.toUpperCase(), undefined]
-  }
-
-  const validateMaritalStatus = (value) => {
-    if (value && !['S', 'C', 'D', 'V', 'U'].includes(value.toUpperCase())) return ['', 'S/C/D/V/U']
-    return [value.toUpperCase(), undefined]
-  }
-
-  const validateBirthdate = (value) => {
-    if (!value) return [value, undefined]
+  const handleBirthdate = (e) => {
+    const value = e.target.value
     const date = DateTime.fromFormat(value, 'D', { locale: 'es-GT' })
-    if (!date.isValid) return [value, 'La fecha no es válida']
-    return [value, undefined]
+    let age = ''
+    if (date.isValid) age = calculateAge(date)
+    setFormData({
+      ...formData,
+      birthdate: value,
+      age: age
+    })
   }
 
-  const calculateAge = (date) => {
-    const birthdate = DateTime.fromFormat(date, 'D', { locale: 'es-GT' })
+  const calculateAge = (birthdate) => {
     const duration = Interval.fromDateTimes(birthdate, DateTime.now())
       .toDuration(['years', 'months', 'days'])
       .toObject()
@@ -95,20 +73,66 @@ export default function PatientForm() {
     else return `${duration.months}m ${Math.floor(duration.days)}d`
   }
 
+  const handleId = (e) => {
+    const value = e.target.value.toUpperCase().replace(/\W+/, '')
+    setFormData({
+      ...formData,
+      id: value
+    })
+  }
+
+  const validate = () => {
+    const formErrors = {}
+    Object.keys(formData).forEach((field) => {
+      let error
+      // Validaciones
+      if (field === 'name') error = validateName(formData[field])
+      else if (field === 'gender') error = validateGender(formData[field])
+      else if (field === 'maritalStatus') error = validateMaritalStatus(formData[field])
+      else if (field === 'birthdate') error = validateBirthdate(formData[field])
+      else if (field === 'id') error = validateId(formData[field])
+
+      if (error) formErrors[field] = error
+    })
+    return formErrors
+  }
+
+  const validateName = (value) => {
+    if (!value) return 'El nombre es requerido'
+    return undefined
+  }
+
+  const validateGender = (value) => {
+    if (!['M', 'F'].includes(value.toUpperCase())) return 'M/F'
+    return undefined
+  }
+
+  const validateMaritalStatus = (value) => {
+    if (!['S', 'C', 'D', 'V', 'U'].includes(value.toUpperCase())) return 'S/C/D/V/U'
+    return undefined
+  }
+
+  const validateBirthdate = (value) => {
+    if (value === '') return undefined
+    const date = DateTime.fromFormat(value, 'D', { locale: 'es-GT' })
+    if (!date.isValid) return 'La fecha no es válida'
+    return undefined
+  }
+
   const validateId = (value) => {
-    if (!value) return [value, undefined]
-    const found = value.match(/[A-Za-z0-9]+/)
-    if (!found) return [value.toUpperCase(), 'El valor debe contener letras o números']
-    return [found[0].toUpperCase(), undefined]
+    if (value === '') return undefined
+    const found = value.match(/[A-Z0-9]+/)
+    if (!found) return 'El valor debe contener letras o números'
+    return undefined
   }
 
   const handleNewPatient = () => {
-    if (Object.keys(errors).length > 0) {
+    const formErrors = validate()
+    if (Object.keys(formErrors).length > 0) {
       console.log('Form with errors:', errors)
+      setErrors(formErrors)
     } else {
-      // Procesar los datos del formulario
       console.log('Form submitted:', formData)
-      // Limpiar el formulario si es necesario
       setFormData(EMPTY_FORM_DATA)
       setErrors({})
     }
@@ -145,7 +169,7 @@ export default function PatientForm() {
           cssWidth="w-24"
           value={formData.gender}
           error={errors.gender}
-          onChange={handleChange}
+          onChange={handleGender}
         ></FormField>
         <FormField
           label="Estado civil"
@@ -153,7 +177,7 @@ export default function PatientForm() {
           cssWidth="w-24"
           value={formData.maritalStatus}
           error={errors.maritalStatus}
-          onChange={handleChange}
+          onChange={handleMaritalStatus}
         ></FormField>
       </div>
       <div className="flex w-full flex-row gap-5">
@@ -163,14 +187,13 @@ export default function PatientForm() {
           cssWidth="w-80"
           value={formData.birthdate}
           error={errors.birthdate}
-          onChange={handleChange}
+          onChange={handleBirthdate}
         ></FormField>
         <FormField
           label="Edad"
           name="age"
           cssWidth="w-40"
           value={formData.age}
-          onChange={handleChange}
           nonEditable
         ></FormField>
         <FormField
@@ -178,7 +201,7 @@ export default function PatientForm() {
           name="id"
           value={formData.id}
           error={errors.id}
-          onChange={handleChange}
+          onChange={handleId}
         ></FormField>
       </div>
       <div className="flex w-full flex-row items-center justify-between gap-5">
