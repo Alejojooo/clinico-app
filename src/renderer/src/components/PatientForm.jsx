@@ -50,8 +50,6 @@ export default function PatientForm() {
       newFormData[field] = value
       if (error) newErrors[field] = error
     })
-    console.log('newFormData:', newFormData)
-    console.log('errors:', newErrors)
     return [newFormData, newErrors]
   }
 
