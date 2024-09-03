@@ -133,6 +133,7 @@ export default function PatientForm() {
       setErrors(formErrors)
     } else {
       console.log('Form submitted:', formData)
+      window.database.newPatient(formData)
       setFormData(EMPTY_FORM_DATA)
       setErrors({})
     }
