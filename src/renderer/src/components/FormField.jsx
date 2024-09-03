@@ -11,10 +11,10 @@ export default function FormField({
   nonEditable = false,
   multiline = false
 }) {
-  const divClassName = `relative pl-4 py-2 mt-2 ${error ? 'mb-3' : ''} ${cssWidth} ${cssHeight} border border-neutral rounded-md`
+  const className = `relative pl-4 py-2 mt-2 ${error ? 'mb-3' : ''} ${cssWidth} ${cssHeight} border border-neutral rounded-md`
 
   return (
-    <div className={divClassName}>
+    <div className={className}>
       <label
         className="absolute -top-2.5 left-3 h-fit w-fit bg-primary px-1 text-xs text-accent"
         htmlFor={name}
