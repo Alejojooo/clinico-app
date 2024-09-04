@@ -1,4 +1,4 @@
-const { model, Schema } = require('mongoose')
+import { model, Schema } from 'mongoose'
 
 const patientSchema = new Schema({
   name: {
@@ -24,4 +24,4 @@ const patientSchema = new Schema({
   otherData: String
 })
 
-module.exports = model('Patient', patientSchema)
+export default model('Patient', patientSchema)
