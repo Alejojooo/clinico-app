@@ -81,61 +81,15 @@ export default function PatientForm() {
     })
   }
 
-  const validate = () => {
-    const formErrors = {}
-    Object.keys(formData).forEach((field) => {
-      let error
-      // Validaciones
-      if (field === 'name') error = validateName(formData[field])
-      else if (field === 'gender') error = validateGender(formData[field])
-      else if (field === 'maritalStatus') error = validateMaritalStatus(formData[field])
-      else if (field === 'birthdate') error = validateBirthdate(formData[field])
-      else if (field === 'id') error = validateId(formData[field])
-
-      if (error) formErrors[field] = error
-    })
-    return formErrors
-  }
-
-  const validateName = (value) => {
-    if (!value) return 'El nombre es requerido'
-    return undefined
-  }
-
-  const validateGender = (value) => {
-    if (!['M', 'F'].includes(value.toUpperCase())) return 'M/F'
-    return undefined
-  }
-
-  const validateMaritalStatus = (value) => {
-    if (!['S', 'C', 'D', 'V', 'U'].includes(value.toUpperCase())) return 'S/C/D/V/U'
-    return undefined
-  }
-
-  const validateBirthdate = (value) => {
-    if (value === '') return undefined
-    const date = DateTime.fromFormat(value, 'D', { locale: 'es-GT' })
-    if (!date.isValid) return 'La fecha no es válida'
-    return undefined
-  }
-
-  const validateId = (value) => {
-    if (value === '') return undefined
-    const found = value.match(/[A-Z0-9]+/)
-    if (!found) return 'El valor debe contener letras o números'
-    return undefined
-  }
-
-  const handleNewPatient = () => {
-    const formErrors = validate()
+  const handleNewPatient = async () => {
+    const formErrors = await window.database.newPatient(formData)
     if (Object.keys(formErrors).length > 0) {
       console.log('Form with errors:', errors)
-      setErrors(formErrors)
     } else {
       console.log('Form submitted:', formData)
       setFormData(EMPTY_FORM_DATA)
-      setErrors({})
     }
+    setErrors(formErrors)
   }
 
   return (
