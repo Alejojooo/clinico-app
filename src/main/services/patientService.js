@@ -37,18 +37,18 @@ export async function getPatients() {
 export async function updatePatient(event, formData) {
   const formErrors = validate(formData)
   if (Object.keys(formErrors).length === 0) {
-    const _formData = curateFormData(formData)
-    await Patient.findByIdAndUpdate(_formData._id, {
-      name: _formData.name,
-      gender: _formData.gender,
-      maritalStatus: _formData.maritalStatus,
-      birthdate: _formData.birthdate,
-      id: _formData.id,
-      insurance: _formData.insurance,
-      email: _formData.email,
-      home: _formData.home,
-      phone: _formData.phone,
-      otherData: _formData.otherData
+    const curatedFormData = curateFormData(formData)
+    await Patient.findByIdAndUpdate(formData._id, {
+      name: curatedFormData.name,
+      gender: curatedFormData.gender,
+      maritalStatus: curatedFormData.maritalStatus,
+      birthdate: curatedFormData.birthdate,
+      id: curatedFormData.id,
+      insurance: curatedFormData.insurance,
+      email: curatedFormData.email,
+      home: curatedFormData.home,
+      phone: curatedFormData.phone,
+      otherData: curatedFormData.otherData
     })
   }
   return formErrors
@@ -111,6 +111,7 @@ function validateId(value) {
 
 function curateFormData(formData) {
   const newFormData = { ...formData }
+  delete newFormData._id
   delete newFormData.age
   const birthdate = DateTime.fromFormat(newFormData.birthdate, 'D', { locale: 'es-GT' }).toJSDate()
   newFormData.birthdate = birthdate
