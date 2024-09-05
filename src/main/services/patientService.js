@@ -4,11 +4,20 @@ import Patient from '../models/Patient'
 export async function newPatient(event, formData) {
   const formErrors = validate(formData)
   if (Object.keys(formErrors).length === 0) {
-    const patient = new Patient(curateFormData(formData))
-    const patientSaved = await patient.save()
-    console.log(patientSaved)
+    // La última validación es con la DB (el nombre es único?)
+    const uniqueNameError = await createPatient(formData)
+    if (uniqueNameError) formErrors.name = uniqueNameError
   }
   return formErrors
+}
+
+async function createPatient(formData) {
+  try {
+    await Patient.create(curateFormData(formData))
+  } catch (error) {
+    if (error.code === 11000) return 'El nombre del paciente ya existe'
+    return undefined
+  }
 }
 
 export async function getPatientById(event, id) {
@@ -25,26 +34,37 @@ export async function getPatients() {
   return JSON.parse(JSON.stringify(patients))
 }
 
+export async function updatePatient(event, formData) {
+  const formErrors = validate(formData)
+  if (Object.keys(formErrors).length === 0) {
+    const updatedPatient = new Patient(curateFormData(formData))
+    await updatedPatient.save()
+  }
+  return formErrors
+}
+
 function validate(formData) {
   const formErrors = {}
   Object.keys(formData).forEach((field) => {
+    let error
     switch (field) {
       case 'name':
-        formErrors[field] = validateName(formData[field])
+        error = validateName(formData[field])
         break
       case 'gender':
-        formErrors[field] = validateGender(formData[field])
+        error = validateGender(formData[field])
         break
       case 'maritalStatus':
-        formErrors[field] = validateMaritalStatus(formData[field])
+        error = validateMaritalStatus(formData[field])
         break
       case 'birthdate':
-        formErrors[field] = validateBirthdate(formData[field])
+        error = validateBirthdate(formData[field])
         break
       case 'id':
-        formErrors[field] = validateId(formData[field])
+        error = validateId(formData[field])
         break
     }
+    if (error) formErrors[field] = error
   })
   return formErrors
 }
