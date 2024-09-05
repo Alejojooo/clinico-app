@@ -6,7 +6,8 @@ import {
   newPatient,
   getPatients,
   getPatientById,
-  updatePatient
+  updatePatient,
+  deletePatient
 } from './services/patientService.js'
 
 function createWindow() {
@@ -83,3 +84,4 @@ ipcMain.handle('patient:new', newPatient)
 ipcMain.handle('patient:getAll', getPatients)
 ipcMain.handle('patient:getOne', getPatientById)
 ipcMain.handle('patient:update', updatePatient)
+ipcMain.handle('patient:delete', deletePatient)

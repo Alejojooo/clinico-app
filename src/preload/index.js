@@ -6,7 +6,8 @@ const database = {
   newPatient: (patient) => ipcRenderer.invoke('patient:new', patient),
   getPatients: () => ipcRenderer.invoke('patient:getAll'),
   getPatientById: (id) => ipcRenderer.invoke('patient:getOne', id),
-  updatePatient: (patient) => ipcRenderer.invoke('patient:update', patient)
+  updatePatient: (patient) => ipcRenderer.invoke('patient:update', patient),
+  deletePatient: (id) => ipcRenderer.invoke('patient:delete', id)
 }
 
 // Use `contextBridge` APIs to expose Electron APIs to

@@ -54,6 +54,10 @@ export async function updatePatient(event, formData) {
   return formErrors
 }
 
+export async function deletePatient(event, id) {
+  await Patient.findByIdAndDelete(id)
+}
+
 function validate(formData) {
   const formErrors = {}
   Object.keys(formData).forEach((field) => {

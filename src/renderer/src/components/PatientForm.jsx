@@ -5,7 +5,13 @@ import { PlusIcon, CheckIcon, XMarkIcon, UserIcon } from '@heroicons/react/24/ou
 import { useState, useEffect } from 'react'
 import { DateTime, Interval } from 'luxon'
 
-export default function PatientForm({ patient, onDatabaseChange }) {
+export default function PatientForm({
+  patient,
+  creatingPatient,
+  handleChangeOnPatient,
+  handleChangeOnDatabase,
+  handleDeletePatient
+}) {
   const EMPTY_FORM_DATA = {
     name: '',
     gender: '',
@@ -111,18 +117,23 @@ export default function PatientForm({ patient, onDatabaseChange }) {
   }
 
   const handleNewPatient = async () => {
-    const formErrors = await window.database.newPatient(formData)
-    if (Object.keys(formErrors).length === 0) {
+    if (creatingPatient) {
+      const formErrors = await window.database.newPatient(formData)
+      if (Object.keys(formErrors).length === 0) {
+        setFormData(EMPTY_FORM_DATA)
+      }
+      setErrors(formErrors)
+      handleChangeOnDatabase()
+    } else {
       setFormData(EMPTY_FORM_DATA)
     }
-    setErrors(formErrors)
-    onDatabaseChange()
+    creatingPatient.current = !creatingPatient.current
   }
 
   const handleUpdatePatient = async () => {
     const formErrors = await window.database.updatePatient(formData)
     setErrors(formErrors)
-    onDatabaseChange()
+    handleChangeOnDatabase()
   }
 
   return (
@@ -141,7 +152,11 @@ export default function PatientForm({ patient, onDatabaseChange }) {
               icon={<CheckIcon className="size-4" />}
               onClick={handleUpdatePatient}
             ></ActionButton>
-            <ActionButton label="Eliminar" icon={<XMarkIcon className="size-4" />}></ActionButton>
+            <ActionButton
+              label="Eliminar"
+              icon={<XMarkIcon className="size-4" />}
+              onClick={handleDeletePatient}
+            ></ActionButton>
           </div>
         </div>
         <div className="w-full border-t border-secondary"></div>
@@ -248,5 +263,8 @@ export default function PatientForm({ patient, onDatabaseChange }) {
 
 PatientForm.propTypes = {
   patient: PropTypes.object,
-  onDatabaseChange: PropTypes.func
+  creatingPatient: PropTypes.object,
+  handleChangeOnPatient: PropTypes.func,
+  handleChangeOnDatabase: PropTypes.func,
+  handleDeletePatient: PropTypes.func
 }

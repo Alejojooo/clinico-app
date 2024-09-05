@@ -10,11 +10,13 @@ import Record from './components/Record'
 import ModulesLayout from './components/ModulesLayout'
 import SectionsLayout from './components/SectionsLayout'
 import { useState, useEffect } from 'react'
+import ConfirmationDialog from './components/ConfirmationDialog'
 
 function App() {
   const [patients, setPatients] = useState([])
   const [activeId, setActiveId] = useState('')
   const [activePatient, setActivePatient] = useState(null)
+  const [renderConfirmationScreen, setRenderConfirmationScreen] = useState(false)
 
   const getPatients = async () => {
     const newPatients = await window.database.getPatients()
@@ -35,8 +37,28 @@ function App() {
     getPatientById(id)
   }
 
+  const handleDeletePatient = async (confirm) => {
+    if (confirm) {
+      console.log('Eliminar paciente:', activeId)
+      await window.database.deletePatient(activeId)
+      setActiveId('')
+      setActivePatient(null)
+      getPatients()
+    }
+    setRenderConfirmationScreen(false)
+  }
+
   return (
-    <div className="flex h-screen w-screen flex-col bg-primary text-accent">
+    <div className="relative flex h-screen w-screen flex-col bg-primary text-accent">
+      {renderConfirmationScreen && (
+        <ConfirmationDialog
+          title="Eliminar paciente"
+          message="¿Está seguro de eliminar este paciente?"
+          onSelection={(selection) => {
+            handleDeletePatient(selection)
+          }}
+        ></ConfirmationDialog>
+      )}
       <TopAppBar>
         <SectionsLayout></SectionsLayout>
       </TopAppBar>
@@ -60,8 +82,11 @@ function App() {
         <MainView>
           <PatientForm
             patient={activePatient}
-            onDatabaseChange={() => {
+            handleChangeOnDatabase={() => {
               getPatients()
+            }}
+            handleDeletePatient={() => {
+              setRenderConfirmationScreen(true)
             }}
           ></PatientForm>
         </MainView>
