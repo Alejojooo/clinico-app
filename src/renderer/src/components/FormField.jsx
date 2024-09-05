@@ -13,7 +13,7 @@ export default function FormField({
 }) {
   return (
     <div
-      className={`relative mt-2 py-2 pl-4 ${error ? 'border-error text-error mb-3' : 'border-neutral text-accent'} ${cssWidth} ${cssHeight} rounded-md border`}
+      className={`relative mt-2 py-2 pl-4 ${error ? 'mb-3 border-error text-error' : 'border-neutral text-accent'} ${cssWidth} ${cssHeight} rounded-md border`}
     >
       <label
         className="absolute -top-2.5 left-3 h-fit w-fit bg-primary px-1 text-xs"
