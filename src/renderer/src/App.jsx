@@ -1,11 +1,19 @@
 import TopAppBar from './components/TopAppBar'
 import Content from './components/Content'
+import SideView from './components/SideView'
+import MainView from './components/MainView'
+import PatientForm from './components/PatientForm'
 
 function App() {
   return (
-    <div className="bg-primary text-accent w-screen h-screen flex flex-col">
+    <div className="flex h-screen w-screen flex-col bg-primary text-accent">
       <TopAppBar></TopAppBar>
-      <Content></Content>
+      <Content>
+        <SideView></SideView>
+        <MainView>
+          <PatientForm></PatientForm>
+        </MainView>
+      </Content>
     </div>
   )
 }

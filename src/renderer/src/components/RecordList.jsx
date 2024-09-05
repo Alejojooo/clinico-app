@@ -1,9 +1,11 @@
-import Record from './Record'
+import PropTypes from 'prop-types'
 
-export default function RecordList() {
+export default function RecordList({ children }) {
   return (
-    <div className="flex w-full flex-grow flex-col rounded-2xl bg-secondary-light">
-      <Record name="Alejojooo"></Record>
-    </div>
+    <div className="flex w-full flex-grow flex-col rounded-2xl bg-secondary-light">{children}</div>
   )
+}
+
+RecordList.propTypes = {
+  children: PropTypes.node
 }
