@@ -11,6 +11,16 @@ export async function newPatient(event, args) {
   return formErrors
 }
 
+export async function getPatientById(event, args) {
+  const patient = await Patient.findById(args)
+  return patient
+}
+
+export async function getPatients() {
+  const patients = await Patient.find({}, { _id: 1, name: 1 })
+  return patients
+}
+
 function validate(formData) {
   const formErrors = {}
   Object.keys(formData).forEach((field) => {
