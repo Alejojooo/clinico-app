@@ -14,15 +14,23 @@ export async function newPatient(event, args) {
 function validate(formData) {
   const formErrors = {}
   Object.keys(formData).forEach((field) => {
-    let error
-    // Validaciones
-    if (field === 'name') error = validateName(formData[field])
-    else if (field === 'gender') error = validateGender(formData[field])
-    else if (field === 'maritalStatus') error = validateMaritalStatus(formData[field])
-    else if (field === 'birthdate') error = validateBirthdate(formData[field])
-    else if (field === 'id') error = validateId(formData[field])
-
-    if (error) formErrors[field] = error
+    switch (field) {
+      case 'name':
+        formErrors[field] = validateName(formData[field])
+        break
+      case 'gender':
+        formErrors[field] = validateGender(formData[field])
+        break
+      case 'maritalStatus':
+        formErrors[field] = validateMaritalStatus(formData[field])
+        break
+      case 'birthdate':
+        formErrors[field] = validateBirthdate(formData[field])
+        break
+      case 'id':
+        formErrors[field] = validateId(formData[field])
+        break
+    }
   })
   return formErrors
 }
