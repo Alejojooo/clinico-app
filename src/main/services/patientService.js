@@ -13,7 +13,11 @@ export async function newPatient(event, formData) {
 
 export async function getPatientById(event, id) {
   const patient = await Patient.findById(id)
-  return JSON.parse(JSON.stringify(patient))
+  const patientParsed = JSON.parse(JSON.stringify(patient))
+  patientParsed.birthdate = DateTime.fromJSDate(patient.birthdate).toFormat('D', {
+    locale: 'es-GT'
+  })
+  return patientParsed
 }
 
 export async function getPatients() {

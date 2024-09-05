@@ -1,10 +1,11 @@
+import PropTypes from 'prop-types'
 import ActionButton from './ActionButton'
 import FormField from './FormField'
 import { PlusIcon, CheckIcon, XMarkIcon, UserIcon } from '@heroicons/react/24/outline'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { DateTime, Interval } from 'luxon'
 
-export default function PatientForm() {
+export default function PatientForm({ patient }) {
   const EMPTY_FORM_DATA = {
     name: '',
     gender: '',
@@ -21,6 +22,13 @@ export default function PatientForm() {
 
   const [formData, setFormData] = useState(EMPTY_FORM_DATA)
   const [errors, setErrors] = useState({})
+
+  useEffect(() => {
+    if (patient) {
+      patient.age = calculateAge(patient.birthdate)
+      setFormData(patient)
+    }
+  }, [patient])
 
   const handleChange = (e) => {
     const { name, value } = e.target
@@ -64,7 +72,7 @@ export default function PatientForm() {
     const value = e.target.value
     const date = DateTime.fromFormat(value, 'D', { locale: 'es-GT' })
     let age = ''
-    if (date.isValid) age = calculateAge(date)
+    if (date.isValid) age = calculateAge(value)
     setFormData({
       ...formData,
       birthdate: value,
@@ -76,7 +84,8 @@ export default function PatientForm() {
     })
   }
 
-  const calculateAge = (birthdate) => {
+  const calculateAge = (value) => {
+    const birthdate = DateTime.fromFormat(value, 'D', { locale: 'es-GT' })
     const duration = Interval.fromDateTimes(birthdate, DateTime.now())
       .toDuration(['years', 'months', 'days'])
       .toObject()
@@ -224,4 +233,8 @@ export default function PatientForm() {
       </div>
     </form>
   )
+}
+
+PatientForm.propTypes = {
+  patient: PropTypes.object
 }

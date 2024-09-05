@@ -12,17 +12,28 @@ import SectionsLayout from './components/SectionsLayout'
 import { useState, useEffect } from 'react'
 
 function App() {
-  const [patients, setPatients] = useState([{}])
+  const [patients, setPatients] = useState([])
+  const [activeId, setActiveId] = useState('')
+  const [activePatient, setActivePatient] = useState(null)
 
   const getPatients = async () => {
     const newPatients = await window.database.getPatients()
     setPatients(newPatients)
-    console.log(newPatients)
+  }
+
+  const getPatientById = async (id) => {
+    const patient = await window.database.getPatientById(id)
+    setActivePatient(patient)
   }
 
   useEffect(() => {
     getPatients()
   }, [])
+
+  const handlePatientSelection = (id) => {
+    setActiveId(id)
+    getPatientById(id)
+  }
 
   return (
     <div className="flex h-screen w-screen flex-col bg-primary text-accent">
@@ -35,13 +46,19 @@ function App() {
           <RecordListTitle title="Listado de pacientes" length={patients.length}></RecordListTitle>
           <SearchBar></SearchBar>
           <RecordList>
-            {patients.map((patient) => (
-              <Record key={patient._id} name={patient.name}></Record>
-            ))}
+            {patients?.length > 0 &&
+              patients.map((patient) => (
+                <Record
+                  key={patient._id}
+                  name={patient.name}
+                  isActive={activeId === patient._id}
+                  onClick={() => handlePatientSelection(patient._id)}
+                ></Record>
+              ))}
           </RecordList>
         </SideView>
         <MainView>
-          <PatientForm></PatientForm>
+          <PatientForm patient={activePatient}></PatientForm>
         </MainView>
       </Content>
     </div>
