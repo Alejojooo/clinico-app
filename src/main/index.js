@@ -2,7 +2,12 @@ import { app, shell, BrowserWindow, ipcMain } from 'electron'
 import { join } from 'path'
 import { electronApp, optimizer, is } from '@electron-toolkit/utils'
 import icon from '../../resources/icon.png?asset'
-import { newPatient, getPatients, getPatientById } from './services/patientService.js'
+import {
+  newPatient,
+  getPatients,
+  getPatientById,
+  updatePatient
+} from './services/patientService.js'
 
 function createWindow() {
   // Create the browser window.
@@ -77,3 +82,4 @@ import('./database.js')
 ipcMain.handle('patient:new', newPatient)
 ipcMain.handle('patient:getAll', getPatients)
 ipcMain.handle('patient:getOne', getPatientById)
+ipcMain.handle('patient:update', updatePatient)

@@ -5,7 +5,8 @@ import { electronAPI } from '@electron-toolkit/preload'
 const database = {
   newPatient: (patient) => ipcRenderer.invoke('patient:new', patient),
   getPatients: () => ipcRenderer.invoke('patient:getAll'),
-  getPatientById: (id) => ipcRenderer.invoke('patient:getOne', id)
+  getPatientById: (id) => ipcRenderer.invoke('patient:getOne', id),
+  updatePatient: (patient) => ipcRenderer.invoke('patient:update', patient)
 }
 
 // Use `contextBridge` APIs to expose Electron APIs to

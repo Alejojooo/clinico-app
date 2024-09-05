@@ -5,7 +5,7 @@ import { PlusIcon, CheckIcon, XMarkIcon, UserIcon } from '@heroicons/react/24/ou
 import { useState, useEffect } from 'react'
 import { DateTime, Interval } from 'luxon'
 
-export default function PatientForm({ patient }) {
+export default function PatientForm({ patient, onDatabaseChange }) {
   const EMPTY_FORM_DATA = {
     name: '',
     gender: '',
@@ -116,6 +116,13 @@ export default function PatientForm({ patient }) {
       setFormData(EMPTY_FORM_DATA)
     }
     setErrors(formErrors)
+    onDatabaseChange()
+  }
+
+  const handleUpdatePatient = async () => {
+    const formErrors = await window.database.updatePatient(formData)
+    setErrors(formErrors)
+    onDatabaseChange()
   }
 
   return (
@@ -129,7 +136,11 @@ export default function PatientForm({ patient }) {
               icon={<PlusIcon className="size-4" />}
               onClick={handleNewPatient}
             ></ActionButton>
-            <ActionButton label="Actualizar" icon={<CheckIcon className="size-4" />}></ActionButton>
+            <ActionButton
+              label="Actualizar"
+              icon={<CheckIcon className="size-4" />}
+              onClick={handleUpdatePatient}
+            ></ActionButton>
             <ActionButton label="Eliminar" icon={<XMarkIcon className="size-4" />}></ActionButton>
           </div>
         </div>
@@ -236,5 +247,6 @@ export default function PatientForm({ patient }) {
 }
 
 PatientForm.propTypes = {
-  patient: PropTypes.object
+  patient: PropTypes.object,
+  onDatabaseChange: PropTypes.func
 }

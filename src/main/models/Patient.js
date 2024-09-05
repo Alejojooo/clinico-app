@@ -15,7 +15,6 @@ const patientSchema = new Schema({
     required: true
   },
   birthdate: Date,
-  age: Number,
   id: String,
   insurance: String,
   email: String,

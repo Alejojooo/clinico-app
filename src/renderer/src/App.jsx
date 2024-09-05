@@ -15,6 +15,7 @@ function App() {
   const [patients, setPatients] = useState([])
   const [activeId, setActiveId] = useState('')
   const [activePatient, setActivePatient] = useState(null)
+  const [isDatabaseModified, setIsDatabaseModified] = useState(false)
 
   const getPatients = async () => {
     const newPatients = await window.database.getPatients()
@@ -58,7 +59,12 @@ function App() {
           </RecordList>
         </SideView>
         <MainView>
-          <PatientForm patient={activePatient}></PatientForm>
+          <PatientForm
+            patient={activePatient}
+            onDatabaseChange={() => {
+              setIsDatabaseModified(true)
+            }}
+          ></PatientForm>
         </MainView>
       </Content>
     </div>

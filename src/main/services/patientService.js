@@ -37,8 +37,19 @@ export async function getPatients() {
 export async function updatePatient(event, formData) {
   const formErrors = validate(formData)
   if (Object.keys(formErrors).length === 0) {
-    const updatedPatient = new Patient(curateFormData(formData))
-    await updatedPatient.save()
+    const _formData = curateFormData(formData)
+    await Patient.findByIdAndUpdate(_formData._id, {
+      name: _formData.name,
+      gender: _formData.gender,
+      maritalStatus: _formData.maritalStatus,
+      birthdate: _formData.birthdate,
+      id: _formData.id,
+      insurance: _formData.insurance,
+      email: _formData.email,
+      home: _formData.home,
+      phone: _formData.phone,
+      otherData: _formData.otherData
+    })
   }
   return formErrors
 }
