@@ -1,24 +1,24 @@
 import { DateTime } from 'luxon'
 import Patient from '../models/Patient'
 
-export async function newPatient(event, args) {
-  const formErrors = validate(args)
+export async function newPatient(event, formData) {
+  const formErrors = validate(formData)
   if (Object.keys(formErrors).length === 0) {
-    const patient = new Patient(curateFormData(args))
+    const patient = new Patient(curateFormData(formData))
     const patientSaved = await patient.save()
     console.log(patientSaved)
   }
   return formErrors
 }
 
-export async function getPatientById(event, args) {
-  const patient = await Patient.findById(args)
-  return patient
+export async function getPatientById(event, id) {
+  const patient = await Patient.findById(id)
+  return JSON.parse(JSON.stringify(patient))
 }
 
 export async function getPatients() {
   const patients = await Patient.find({}, { _id: 1, name: 1 })
-  return patients
+  return JSON.parse(JSON.stringify(patients))
 }
 
 function validate(formData) {

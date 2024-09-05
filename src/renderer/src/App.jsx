@@ -9,7 +9,7 @@ import SearchBar from './components/SearchBar'
 import Record from './components/Record'
 import ModulesLayout from './components/ModulesLayout'
 import SectionsLayout from './components/SectionsLayout'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 
 function App() {
   const [patients, setPatients] = useState([{}])
@@ -19,6 +19,10 @@ function App() {
     setPatients(newPatients)
     console.log(newPatients)
   }
+
+  useEffect(() => {
+    getPatients()
+  }, [])
 
   return (
     <div className="flex h-screen w-screen flex-col bg-primary text-accent">
