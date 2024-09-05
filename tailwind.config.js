@@ -14,7 +14,8 @@ module.exports = {
       'secondary-light': '#EAEEF3',
       tertiary: '#BECEDD',
       neutral: '#647994',
-      accent: '#193152'
+      accent: '#193152',
+      error: '#941b1b'
     },
     extend: {
       fontFamily: {

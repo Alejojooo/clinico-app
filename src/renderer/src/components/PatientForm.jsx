@@ -28,6 +28,10 @@ export default function PatientForm() {
       ...formData,
       [name]: value
     })
+    setErrors({
+      ...errors,
+      [name]: undefined
+    })
   }
 
   const handleGender = (e) => {
@@ -37,6 +41,10 @@ export default function PatientForm() {
       ...formData,
       gender: value
     })
+    setErrors({
+      ...errors,
+      gender: undefined
+    })
   }
 
   const handleMaritalStatus = (e) => {
@@ -45,6 +53,10 @@ export default function PatientForm() {
     setFormData({
       ...formData,
       maritalStatus: value
+    })
+    setErrors({
+      ...errors,
+      maritalStatus: undefined
     })
   }
 
@@ -57,6 +69,10 @@ export default function PatientForm() {
       ...formData,
       birthdate: value,
       age: age
+    })
+    setErrors({
+      ...errors,
+      birthdate: undefined
     })
   }
 
@@ -79,14 +95,15 @@ export default function PatientForm() {
       ...formData,
       id: value
     })
+    setErrors({
+      ...errors,
+      id: undefined
+    })
   }
 
   const handleNewPatient = async () => {
     const formErrors = await window.database.newPatient(formData)
-    if (Object.keys(formErrors).length > 0) {
-      console.log('Form with errors:', errors)
-    } else {
-      console.log('Form submitted:', formData)
+    if (Object.keys(formErrors).length === 0) {
       setFormData(EMPTY_FORM_DATA)
     }
     setErrors(formErrors)

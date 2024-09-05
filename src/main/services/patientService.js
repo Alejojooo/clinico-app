@@ -4,7 +4,7 @@ import Patient from '../models/Patient'
 export async function newPatient(event, args) {
   const formErrors = validate(args)
   if (Object.keys(formErrors).length === 0) {
-    const patient = new Patient(args)
+    const patient = new Patient(curateFormData(args))
     const patientSaved = await patient.save()
     console.log(patientSaved)
   }
@@ -54,4 +54,12 @@ function validateId(value) {
   const found = value.match(/[A-Z0-9]+/)
   if (!found) return 'El valor debe contener letras o números'
   return undefined
+}
+
+function curateFormData(formData) {
+  const newFormData = { ...formData }
+  delete newFormData.age
+  const birthdate = DateTime.fromFormat(newFormData.birthdate, 'D', { locale: 'es-GT' }).toJSDate()
+  newFormData.birthdate = birthdate
+  return newFormData
 }
