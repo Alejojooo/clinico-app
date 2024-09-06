@@ -5,13 +5,14 @@ import { PlusIcon, CheckIcon, XMarkIcon, UserIcon } from '@heroicons/react/24/ou
 import { useState, useEffect } from 'react'
 import { DateTime, Interval } from 'luxon'
 
-export default function PatientForm({
-  patient,
-  creatingPatient,
-  handleChangeOnPatient,
-  handleChangeOnDatabase,
-  handleDeletePatient
-}) {
+PatientForm.propTypes = {
+  patient: PropTypes.object,
+  onNewPatient: PropTypes.func,
+  onUpdatePatient: PropTypes.func,
+  onDeletePatient: PropTypes.func
+}
+
+export default function PatientForm({ patient, onNewPatient, onUpdatePatient, onDeletePatient }) {
   const EMPTY_FORM_DATA = {
     name: '',
     gender: '',
@@ -31,8 +32,11 @@ export default function PatientForm({
 
   useEffect(() => {
     if (patient) {
-      patient.age = calculateAge(patient.birthdate)
+      patient.age = calculateAge(patient.birthdate ? patient.birthdate : '')
       setFormData(patient)
+      setErrors({})
+    } else {
+      setFormData(EMPTY_FORM_DATA)
     }
   }, [patient])
 
@@ -117,23 +121,26 @@ export default function PatientForm({
   }
 
   const handleNewPatient = async () => {
-    if (creatingPatient) {
-      const formErrors = await window.database.newPatient(formData)
-      if (Object.keys(formErrors).length === 0) {
-        setFormData(EMPTY_FORM_DATA)
-      }
-      setErrors(formErrors)
-      handleChangeOnDatabase()
-    } else {
+    if (patient) {
       setFormData(EMPTY_FORM_DATA)
+      setErrors({})
+      onNewPatient(null)
+    } else {
+      const [patient, formErrors] = await window.database.newPatient(formData)
+      setErrors(formErrors)
+      console.log(patient)
+      if (patient) onNewPatient(patient)
     }
-    creatingPatient.current = !creatingPatient.current
   }
 
   const handleUpdatePatient = async () => {
-    const formErrors = await window.database.updatePatient(formData)
+    const formErrors = await window.database.updatePatient(patient._id, formData)
     setErrors(formErrors)
-    handleChangeOnDatabase()
+    onUpdatePatient()
+  }
+
+  const handleDeletePatient = () => {
+    onDeletePatient()
   }
 
   return (
@@ -259,12 +266,4 @@ export default function PatientForm({
       </div>
     </form>
   )
-}
-
-PatientForm.propTypes = {
-  patient: PropTypes.object,
-  creatingPatient: PropTypes.object,
-  handleChangeOnPatient: PropTypes.func,
-  handleChangeOnDatabase: PropTypes.func,
-  handleDeletePatient: PropTypes.func
 }

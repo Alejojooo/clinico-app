@@ -14,7 +14,6 @@ import ConfirmationDialog from './components/ConfirmationDialog'
 
 function App() {
   const [patients, setPatients] = useState([])
-  const [activeId, setActiveId] = useState('')
   const [activePatient, setActivePatient] = useState(null)
   const [renderConfirmationScreen, setRenderConfirmationScreen] = useState(false)
 
@@ -33,19 +32,33 @@ function App() {
   }, [])
 
   const handlePatientSelection = (id) => {
-    setActiveId(id)
     getPatientById(id)
   }
 
-  const handleDeletePatient = async (confirm) => {
-    if (confirm) {
-      console.log('Eliminar paciente:', activeId)
-      await window.database.deletePatient(activeId)
-      setActiveId('')
-      setActivePatient(null)
-      getPatients()
+  const handleNewPatient = (patient) => {
+    setActivePatient(patient)
+    getPatients()
+  }
+
+  const handleUpdatePatient = () => {
+    getPatients()
+  }
+
+  const handleDeletePatient = async (option) => {
+    switch (option) {
+      case 'ok':
+        await window.database.deletePatient(activePatient._id)
+        setActivePatient(null)
+        setRenderConfirmationScreen(false)
+        getPatients()
+        break
+      case 'cancel':
+        setRenderConfirmationScreen(false)
+        break
+      default:
+        setRenderConfirmationScreen(true)
+        break
     }
-    setRenderConfirmationScreen(false)
   }
 
   return (
@@ -73,7 +86,7 @@ function App() {
                 <Record
                   key={patient._id}
                   name={patient.name}
-                  isActive={activeId === patient._id}
+                  isActive={activePatient?._id === patient._id}
                   onClick={() => handlePatientSelection(patient._id)}
                 ></Record>
               ))}
@@ -82,12 +95,9 @@ function App() {
         <MainView>
           <PatientForm
             patient={activePatient}
-            handleChangeOnDatabase={() => {
-              getPatients()
-            }}
-            handleDeletePatient={() => {
-              setRenderConfirmationScreen(true)
-            }}
+            onNewPatient={(patient) => handleNewPatient(patient)}
+            onUpdatePatient={handleUpdatePatient}
+            onDeletePatient={handleDeletePatient}
           ></PatientForm>
         </MainView>
       </Content>

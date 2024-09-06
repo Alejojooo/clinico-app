@@ -2,31 +2,13 @@ import { DateTime } from 'luxon'
 import Patient from '../models/Patient'
 
 export async function newPatient(event, formData) {
-  const formErrors = validate(formData)
+  const newFormData = trimFormData(formData)
+  const formErrors = await validate(newFormData)
   if (Object.keys(formErrors).length === 0) {
-    // La última validación es con la DB (el nombre es único?)
-    const uniqueNameError = await createPatient(formData)
-    if (uniqueNameError) formErrors.name = uniqueNameError
+    const patient = await Patient.create(patientFormToEntity(newFormData))
+    return [patientEntityToForm(patient), formErrors]
   }
-  return formErrors
-}
-
-async function createPatient(formData) {
-  try {
-    await Patient.create(curateFormData(formData))
-  } catch (error) {
-    if (error.code === 11000) return 'El nombre del paciente ya existe'
-    return undefined
-  }
-}
-
-export async function getPatientById(event, id) {
-  const patient = await Patient.findById(id)
-  const patientParsed = JSON.parse(JSON.stringify(patient))
-  patientParsed.birthdate = DateTime.fromJSDate(patient.birthdate).toFormat('D', {
-    locale: 'es-GT'
-  })
-  return patientParsed
+  return [undefined, formErrors]
 }
 
 export async function getPatients() {
@@ -34,21 +16,27 @@ export async function getPatients() {
   return JSON.parse(JSON.stringify(patients))
 }
 
-export async function updatePatient(event, formData) {
-  const formErrors = validate(formData)
+export async function getPatientById(event, id) {
+  const patient = await Patient.findById(id)
+  return patientEntityToForm(patient)
+}
+
+export async function updatePatient(event, id, formData) {
+  const newFormData = trimFormData(formData)
+  const formErrors = validate(newFormData)
   if (Object.keys(formErrors).length === 0) {
-    const curatedFormData = curateFormData(formData)
-    await Patient.findByIdAndUpdate(formData._id, {
-      name: curatedFormData.name,
-      gender: curatedFormData.gender,
-      maritalStatus: curatedFormData.maritalStatus,
-      birthdate: curatedFormData.birthdate,
-      id: curatedFormData.id,
-      insurance: curatedFormData.insurance,
-      email: curatedFormData.email,
-      home: curatedFormData.home,
-      phone: curatedFormData.phone,
-      otherData: curatedFormData.otherData
+    const patient = patientFormToEntity(newFormData)
+    await Patient.findByIdAndUpdate(id, {
+      name: patient.name,
+      gender: patient.gender,
+      maritalStatus: patient.maritalStatus,
+      birthdate: patient.birthdate,
+      id: patient.id,
+      insurance: patient.insurance,
+      email: patient.email,
+      home: patient.home,
+      phone: patient.phone,
+      otherData: patient.otherData
     })
   }
   return formErrors
@@ -58,13 +46,36 @@ export async function deletePatient(event, id) {
   await Patient.findByIdAndDelete(id)
 }
 
-function validate(formData) {
+function patientFormToEntity(formData) {
+  const trimmed = trimFormData(formData)
+  delete trimmed.age
+  const birthdate = DateTime.fromFormat(trimmed.birthdate, 'D', { locale: 'es-GT' })
+  trimmed.birthdate = birthdate.isValid ? birthdate.toJSDate() : null
+  return trimmed
+}
+
+function trimFormData(formData) {
+  const newFormData = { ...formData }
+  for (const field in formData) {
+    newFormData[field] = newFormData[field].trim()
+  }
+  return newFormData
+}
+
+function patientEntityToForm(patient) {
+  const newPatient = JSON.parse(JSON.stringify(patient))
+  const birthdate = DateTime.fromISO(newPatient.birthdate)
+  newPatient.birthdate = birthdate.isValid ? birthdate.toFormat('D', { locale: 'es-GT' }) : ''
+  return newPatient
+}
+
+async function validate(formData) {
   const formErrors = {}
-  Object.keys(formData).forEach((field) => {
+  for (const field in formData) {
     let error
     switch (field) {
       case 'name':
-        error = validateName(formData[field])
+        error = await validateName(formData[field])
         break
       case 'gender':
         error = validateGender(formData[field])
@@ -80,12 +91,13 @@ function validate(formData) {
         break
     }
     if (error) formErrors[field] = error
-  })
+  }
   return formErrors
 }
 
-function validateName(value) {
+async function validateName(value) {
   if (!value) return 'El nombre es requerido'
+  if (await Patient.findOne({ name: value }).lean()) return 'El nombre del paciente ya existe'
   return undefined
 }
 
@@ -111,13 +123,4 @@ function validateId(value) {
   const found = value.match(/[A-Z0-9]+/)
   if (!found) return 'El valor debe contener letras o números'
   return undefined
-}
-
-function curateFormData(formData) {
-  const newFormData = { ...formData }
-  delete newFormData._id
-  delete newFormData.age
-  const birthdate = DateTime.fromFormat(newFormData.birthdate, 'D', { locale: 'es-GT' }).toJSDate()
-  newFormData.birthdate = birthdate
-  return newFormData
 }

@@ -6,7 +6,7 @@ const database = {
   newPatient: (patient) => ipcRenderer.invoke('patient:new', patient),
   getPatients: () => ipcRenderer.invoke('patient:getAll'),
   getPatientById: (id) => ipcRenderer.invoke('patient:getOne', id),
-  updatePatient: (patient) => ipcRenderer.invoke('patient:update', patient),
+  updatePatient: (id, patient) => ipcRenderer.invoke('patient:update', id, patient),
   deletePatient: (id) => ipcRenderer.invoke('patient:delete', id)
 }
 

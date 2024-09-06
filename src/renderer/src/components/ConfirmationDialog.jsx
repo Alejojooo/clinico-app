@@ -12,7 +12,7 @@ export default function ConfirmationDialog({ title, message, onSelection }) {
           <button
             className="h-10 w-20 font-semibold"
             onClick={() => {
-              onSelection(false)
+              onSelection('cancel')
             }}
           >
             Cancelar
@@ -20,7 +20,7 @@ export default function ConfirmationDialog({ title, message, onSelection }) {
           <button
             className="h-10 w-20 font-semibold"
             onClick={() => {
-              onSelection(true)
+              onSelection('ok')
             }}
           >
             Aceptar
