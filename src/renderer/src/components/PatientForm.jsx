@@ -133,6 +133,7 @@ export default function PatientForm({ patient, onNewPatient, onUpdatePatient, on
   }
 
   const handleUpdatePatient = async () => {
+    if (!patient) return
     const formErrors = await window.database.updatePatient(patient._id, formData)
     setErrors(formErrors)
     onUpdatePatient()

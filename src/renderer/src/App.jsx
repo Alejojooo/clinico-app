@@ -45,6 +45,7 @@ function App() {
   }
 
   const handleDeletePatient = async (option) => {
+    if (!activePatient) return
     switch (option) {
       case 'ok':
         await window.database.deletePatient(activePatient._id)

@@ -10,7 +10,7 @@ export default function ConfirmationDialog({ title, message, onSelection }) {
         </div>
         <div className="flex h-16 flex-row items-end justify-center gap-5">
           <button
-            className="h-10 w-20 font-semibold"
+            className="h-10 w-20 font-semibold transition hover:text-tertiary"
             onClick={() => {
               onSelection('cancel')
             }}
@@ -18,7 +18,7 @@ export default function ConfirmationDialog({ title, message, onSelection }) {
             Cancelar
           </button>
           <button
-            className="h-10 w-20 font-semibold"
+            className="h-10 w-20 font-semibold transition hover:text-tertiary"
             onClick={() => {
               onSelection('ok')
             }}
