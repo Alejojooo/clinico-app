@@ -1,7 +1,8 @@
 import PropTypes from 'prop-types'
 import ActionButton from './ActionButton'
 import FormField from './FormField'
-import { PlusIcon, CheckIcon, XMarkIcon, UserIcon } from '@heroicons/react/24/outline'
+import FormImageField from './FormImageField'
+import { PlusIcon, CheckIcon, XMarkIcon } from '@heroicons/react/24/outline'
 import { useState, useEffect } from 'react'
 import { DateTime, Interval } from 'luxon'
 
@@ -243,7 +244,7 @@ export default function PatientForm({ patient, onNewPatient, onUpdatePatient, on
             multiline
           ></FormField>
         </div>
-        <UserIcon className="size-60"></UserIcon>
+        <FormImageField></FormImageField>
       </div>
       <div className="flex w-full flex-row gap-5">
         <FormField
