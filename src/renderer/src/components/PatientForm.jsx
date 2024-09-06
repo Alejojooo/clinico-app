@@ -128,7 +128,6 @@ export default function PatientForm({ patient, onNewPatient, onUpdatePatient, on
     } else {
       const [patient, formErrors] = await window.database.newPatient(formData)
       setErrors(formErrors)
-      console.log(patient)
       if (patient) onNewPatient(patient)
     }
   }
