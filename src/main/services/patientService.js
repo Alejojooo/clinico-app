@@ -12,7 +12,7 @@ export async function newPatient(event, formData) {
 }
 
 export async function getPatients() {
-  const patients = await Patient.find({}, { _id: 1, name: 1 })
+  const patients = await Patient.find({}, { _id: 1, name: 1 }).sort('name')
   return JSON.parse(JSON.stringify(patients))
 }
 
