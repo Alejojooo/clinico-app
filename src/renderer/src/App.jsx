@@ -37,7 +37,7 @@ function App() {
 
   const handleNewPatient = (patient) => {
     setActivePatient(patient)
-    getPatients()
+    if (patient) getPatients()
   }
 
   const handleUpdatePatient = () => {
