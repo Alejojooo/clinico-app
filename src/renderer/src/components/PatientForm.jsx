@@ -147,7 +147,7 @@ export default function PatientForm({ patient, onNewPatient, onUpdatePatient, on
     <form className="flex size-full flex-col gap-3 p-5">
       <div className="flex w-full flex-col items-center justify-start gap-3.5">
         <div className="flex w-full flex-row items-end justify-between">
-          <h2 className="text-2xl">Identificación del paciente</h2>
+          <h2 className="text-xl">Identificación del paciente</h2>
           <div className="flex w-fit flex-row gap-2.5">
             <ActionButton
               label="Nuevo"
