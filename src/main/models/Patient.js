@@ -16,12 +16,12 @@ const patientSchema = new Schema({
   },
   birthdate: Date,
   id: String,
+  image: String,
   insurance: String,
   email: String,
   home: String,
   phone: String,
-  otherData: String,
-  image: String
+  otherData: String
 })
 
 export default model('Patient', patientSchema)

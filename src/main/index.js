@@ -9,6 +9,7 @@ import {
   updatePatient,
   deletePatient
 } from './services/patientService.js'
+import { openImage } from './services/fileSystemService.js'
 
 function createWindow() {
   // Create the browser window.
@@ -85,3 +86,4 @@ ipcMain.handle('patient:getAll', getPatients)
 ipcMain.handle('patient:getOne', getPatientById)
 ipcMain.handle('patient:update', updatePatient)
 ipcMain.handle('patient:delete', deletePatient)
+ipcMain.handle('fs:openImage', openImage)

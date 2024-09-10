@@ -9,8 +9,8 @@ import SearchBar from './components/SearchBar'
 import Record from './components/Record'
 import ModulesLayout from './components/ModulesLayout'
 import SectionsLayout from './components/SectionsLayout'
-import { useState, useEffect } from 'react'
 import ConfirmationDialog from './components/ConfirmationDialog'
+import { useState, useEffect } from 'react'
 
 function App() {
   const [patients, setPatients] = useState([])

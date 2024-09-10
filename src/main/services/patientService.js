@@ -1,14 +1,23 @@
+import { join } from 'node:path'
 import { DateTime } from 'luxon'
 import Patient from '../models/Patient'
+import { saveImage, loadImage, deleteImage } from './fileSystemService'
 
 export async function newPatient(event, formData) {
-  const newFormData = trimFormData(formData)
-  const formErrors = await validate(newFormData)
+  const formErrors = await validate(formData)
   if (Object.keys(formErrors).length === 0) {
-    const patient = await Patient.create(patientFormToEntity(newFormData))
-    return [patientEntityToForm(patient), formErrors]
+    // Se crea el registro en la base de datos.
+    const patientData = toEntityData(formData)
+    const newPatient = await Patient.create(patientData)
+    // Se guarda la imagen en local (y se actualiza la entidad).
+    const imagePath = getImagePath(newPatient._id)
+    await saveImage(formData.image, imagePath)
+    newPatient.image = imagePath
+    newPatient.save()
+
+    return [newPatient._id, formErrors]
   }
-  return [undefined, formErrors]
+  return [null, formErrors]
 }
 
 export async function getPatients() {
@@ -18,55 +27,65 @@ export async function getPatients() {
 
 export async function getPatientById(event, id) {
   const patient = await Patient.findById(id)
-  return patientEntityToForm(patient)
+  return toFormData(patient)
 }
 
 export async function updatePatient(event, id, formData) {
-  const newFormData = trimFormData(formData)
-  const formErrors = validate(newFormData)
+  const formErrors = await validate(formData)
   if (Object.keys(formErrors).length === 0) {
-    const patient = patientFormToEntity(newFormData)
+    const patient = toEntityData(formData)
     await Patient.findByIdAndUpdate(id, {
       name: patient.name,
       gender: patient.gender,
       maritalStatus: patient.maritalStatus,
       birthdate: patient.birthdate,
       id: patient.id,
+      image: formData.image ? getImagePath(id) : '',
       insurance: patient.insurance,
       email: patient.email,
       home: patient.home,
       phone: patient.phone,
       otherData: patient.otherData
     })
+    if (formData.image) await saveImage(formData.image, patient.imagePath)
+    else deleteImage(patient.imagePath)
   }
   return formErrors
 }
 
 export async function deletePatient(event, id) {
   await Patient.findByIdAndDelete(id)
+  deleteImage(getImagePath(id))
 }
 
-function patientFormToEntity(formData) {
-  const trimmed = trimFormData(formData)
-  delete trimmed.age
-  const birthdate = DateTime.fromFormat(trimmed.birthdate, 'D', { locale: 'es-GT' })
-  trimmed.birthdate = birthdate.isValid ? birthdate.toJSDate() : null
-  return trimmed
+function toEntityData(formData) {
+  const patientData = trimFormData(formData)
+  delete patientData.age
+  delete patientData.image
+  const birthdate = DateTime.fromFormat(patientData.birthdate, 'D', { locale: 'es-GT' })
+  patientData.birthdate = birthdate.isValid ? birthdate.toJSDate() : null
+  return patientData
+}
+
+function toFormData(patient) {
+  const newPatient = JSON.parse(JSON.stringify(patient))
+  const birthdate = DateTime.fromISO(newPatient.birthdate)
+  newPatient.birthdate = birthdate.isValid ? birthdate.toFormat('D', { locale: 'es-GT' }) : ''
+  newPatient.image = newPatient.image ? loadImage(newPatient.image) : ''
+  return newPatient
 }
 
 function trimFormData(formData) {
   const newFormData = { ...formData }
   for (const field in formData) {
-    newFormData[field] = newFormData[field].trim()
+    if (typeof newFormData[field] === 'string' && field !== 'imageData')
+      newFormData[field] = newFormData[field].trim()
   }
   return newFormData
 }
 
-function patientEntityToForm(patient) {
-  const newPatient = JSON.parse(JSON.stringify(patient))
-  const birthdate = DateTime.fromISO(newPatient.birthdate)
-  newPatient.birthdate = birthdate.isValid ? birthdate.toFormat('D', { locale: 'es-GT' }) : ''
-  return newPatient
+function getImagePath(id) {
+  return join(__dirname, 'static', 'img', 'patient', `${id}.jpg`)
 }
 
 async function validate(formData) {
@@ -113,6 +132,7 @@ function validateMaritalStatus(value) {
 
 function validateBirthdate(value) {
   if (value === '') return undefined
+  // Formato válido 'D': dd/mm/yyyy
   const date = DateTime.fromFormat(value, 'D', { locale: 'es-GT' })
   if (!date.isValid) return 'La fecha no es válida'
   return undefined

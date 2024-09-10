@@ -21,6 +21,7 @@ export default function PatientForm({ patient, onNewPatient, onUpdatePatient, on
     birthdate: '',
     age: '',
     id: '',
+    imageData: '',
     insurance: '',
     email: '',
     home: '',
@@ -47,9 +48,18 @@ export default function PatientForm({ patient, onNewPatient, onUpdatePatient, on
       ...formData,
       [name]: value
     })
+    console.log(formData)
+  }
+
+  const handleName = (e) => {
+    const value = e.target.value
+    setFormData({
+      ...formData,
+      name: value
+    })
     setErrors({
       ...errors,
-      [name]: undefined
+      name: null
     })
   }
 
@@ -62,7 +72,7 @@ export default function PatientForm({ patient, onNewPatient, onUpdatePatient, on
     })
     setErrors({
       ...errors,
-      gender: undefined
+      gender: null
     })
   }
 
@@ -75,7 +85,7 @@ export default function PatientForm({ patient, onNewPatient, onUpdatePatient, on
     })
     setErrors({
       ...errors,
-      maritalStatus: undefined
+      maritalStatus: null
     })
   }
 
@@ -91,7 +101,7 @@ export default function PatientForm({ patient, onNewPatient, onUpdatePatient, on
     })
     setErrors({
       ...errors,
-      birthdate: undefined
+      birthdate: null
     })
   }
 
@@ -117,7 +127,14 @@ export default function PatientForm({ patient, onNewPatient, onUpdatePatient, on
     })
     setErrors({
       ...errors,
-      id: undefined
+      id: null
+    })
+  }
+
+  const handleImage = (imageData) => {
+    setFormData({
+      ...formData,
+      imageData: imageData
     })
   }
 
@@ -175,7 +192,7 @@ export default function PatientForm({ patient, onNewPatient, onUpdatePatient, on
           name="name"
           value={formData.name}
           error={errors.name}
-          onChange={handleChange}
+          onChange={handleName}
         ></FormField>
         <FormField
           label="Sexo"
@@ -244,7 +261,12 @@ export default function PatientForm({ patient, onNewPatient, onUpdatePatient, on
             multiline
           ></FormField>
         </div>
-        <FormImageField></FormImageField>
+        <FormImageField
+          imageData={formData.imageData}
+          onImageChange={(imageData) => {
+            handleImage(imageData)
+          }}
+        ></FormImageField>
       </div>
       <div className="flex w-full flex-row gap-5">
         <FormField
