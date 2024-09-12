@@ -21,7 +21,7 @@ export default function PatientForm({ patient, onNewPatient, onUpdatePatient, on
     birthdate: '',
     age: '',
     id: '',
-    imageData: '',
+    image: '',
     insurance: '',
     email: '',
     home: '',
@@ -48,7 +48,6 @@ export default function PatientForm({ patient, onNewPatient, onUpdatePatient, on
       ...formData,
       [name]: value
     })
-    console.log(formData)
   }
 
   const handleName = (e) => {
@@ -131,10 +130,10 @@ export default function PatientForm({ patient, onNewPatient, onUpdatePatient, on
     })
   }
 
-  const handleImage = (imageData) => {
+  const handleImage = (image) => {
     setFormData({
       ...formData,
-      imageData: imageData
+      image: image
     })
   }
 
@@ -262,9 +261,9 @@ export default function PatientForm({ patient, onNewPatient, onUpdatePatient, on
           ></FormField>
         </div>
         <FormImageField
-          imageData={formData.imageData}
-          onImageChange={(imageData) => {
-            handleImage(imageData)
+          imageData={formData.image}
+          onImageChange={(image) => {
+            handleImage(image)
           }}
         ></FormImageField>
       </div>

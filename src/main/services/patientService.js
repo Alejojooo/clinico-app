@@ -15,7 +15,7 @@ export async function newPatient(event, formData) {
     newPatient.image = imagePath
     newPatient.save()
 
-    return [newPatient._id, formErrors]
+    return [toFormData(newPatient), formErrors]
   }
   return [null, formErrors]
 }
@@ -27,28 +27,30 @@ export async function getPatients() {
 
 export async function getPatientById(event, id) {
   const patient = await Patient.findById(id)
-  return toFormData(patient)
+  const patientFormData = toFormData(patient)
+  return patientFormData
 }
 
 export async function updatePatient(event, id, formData) {
-  const formErrors = await validate(formData)
+  const formErrors = await validate(formData, false)
   if (Object.keys(formErrors).length === 0) {
     const patient = toEntityData(formData)
+    const imagePath = getImagePath(id)
     await Patient.findByIdAndUpdate(id, {
       name: patient.name,
       gender: patient.gender,
       maritalStatus: patient.maritalStatus,
       birthdate: patient.birthdate,
       id: patient.id,
-      image: formData.image ? getImagePath(id) : '',
+      image: formData.image ? imagePath : '',
       insurance: patient.insurance,
       email: patient.email,
       home: patient.home,
       phone: patient.phone,
       otherData: patient.otherData
     })
-    if (formData.image) await saveImage(formData.image, patient.imagePath)
-    else deleteImage(patient.imagePath)
+    if (formData.image) await saveImage(formData.image, imagePath)
+    else deleteImage(imagePath)
   }
   return formErrors
 }
@@ -67,11 +69,14 @@ function toEntityData(formData) {
   return patientData
 }
 
-function toFormData(patient) {
+async function toFormData(patient) {
   const newPatient = JSON.parse(JSON.stringify(patient))
   const birthdate = DateTime.fromISO(newPatient.birthdate)
   newPatient.birthdate = birthdate.isValid ? birthdate.toFormat('D', { locale: 'es-GT' }) : ''
-  newPatient.image = newPatient.image ? loadImage(newPatient.image) : ''
+  if (newPatient.image) {
+    const image = await loadImage(newPatient.image)
+    newPatient.image = image ?? ''
+  }
   return newPatient
 }
 
@@ -88,13 +93,13 @@ function getImagePath(id) {
   return join(__dirname, 'static', 'img', 'patient', `${id}.jpg`)
 }
 
-async function validate(formData) {
+async function validate(formData, validateUniqueness = true) {
   const formErrors = {}
   for (const field in formData) {
     let error
     switch (field) {
       case 'name':
-        error = await validateName(formData[field])
+        error = await validateName(formData[field], validateUniqueness)
         break
       case 'gender':
         error = validateGender(formData[field])
@@ -114,33 +119,34 @@ async function validate(formData) {
   return formErrors
 }
 
-async function validateName(value) {
+async function validateName(value, validateUniqueness) {
   if (!value) return 'El nombre es requerido'
-  if (await Patient.findOne({ name: value }).lean()) return 'El nombre del paciente ya existe'
-  return undefined
+  if (validateUniqueness && (await Patient.findOne({ name: value }).lean()))
+    return 'El nombre del paciente ya existe'
+  return null
 }
 
 function validateGender(value) {
   if (!['M', 'F'].includes(value.toUpperCase())) return 'M/F'
-  return undefined
+  return null
 }
 
 function validateMaritalStatus(value) {
   if (!['S', 'C', 'D', 'V', 'U'].includes(value.toUpperCase())) return 'S/C/D/V/U'
-  return undefined
+  return null
 }
 
 function validateBirthdate(value) {
-  if (value === '') return undefined
+  if (value === '') return null
   // Formato válido 'D': dd/mm/yyyy
   const date = DateTime.fromFormat(value, 'D', { locale: 'es-GT' })
   if (!date.isValid) return 'La fecha no es válida'
-  return undefined
+  return null
 }
 
 function validateId(value) {
-  if (value === '') return undefined
+  if (value === '') return null
   const found = value.match(/[A-Z0-9]+/)
   if (!found) return 'El valor debe contener letras o números'
-  return undefined
+  return null
 }

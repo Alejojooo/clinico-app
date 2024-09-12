@@ -22,17 +22,13 @@ function App() {
     setPatients(newPatients)
   }
 
-  const getPatientById = async (id) => {
-    const patient = await window.database.getPatientById(id)
-    setActivePatient(patient)
-  }
-
   useEffect(() => {
     getPatients()
   }, [])
 
-  const handlePatientSelection = (id) => {
-    getPatientById(id)
+  const handlePatientSelection = async (id) => {
+    const patient = await window.database.getPatientById(id)
+    setActivePatient(patient)
   }
 
   const handleNewPatient = (patient) => {

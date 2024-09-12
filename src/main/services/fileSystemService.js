@@ -23,14 +23,16 @@ export async function loadImage(imagePath) {
   }
 }
 
-export async function saveImage(base64Data, imagePath) {
+export async function saveImage(base64Image, imagePath) {
   const targetDirectory = dirname(imagePath)
   if (!existsSync(targetDirectory)) mkdirSync(targetDirectory, { recursive: true })
   try {
-    await sharp(base64Data).jpeg({ quality: 80 }).toFile(imagePath)
+    const base64Data = base64Image.replace(/^data:image\/jpeg;base64,/, '')
+    const imgBuffer = Buffer.from(base64Data, 'base64')
+    await sharp(imgBuffer).jpeg({ quality: 80 }).toFile(imagePath)
     return null
-  } catch (error) {
-    return `Hubo un error guardando la imagen ${error}`
+  } catch (err) {
+    return `Hubo un error guardando la imagen ${err}`
   }
 }
 

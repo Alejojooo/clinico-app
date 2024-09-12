@@ -17,7 +17,7 @@ FormImageField.propTypes = {
 
 export default function FormImageField({ imageData, onImageChange }) {
   const [image, setImage] = useState(null)
-  const [imageVisible, setImageVisible] = useState(false)
+  const [imageVisible, setImageVisible] = useState(true)
 
   useEffect(() => {
     if (imageData) setImage(imageData)
