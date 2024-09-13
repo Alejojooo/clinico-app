@@ -9,7 +9,7 @@ import {
   updatePatient,
   deletePatient
 } from './services/patientService.js'
-import { openImage } from './services/fileSystemService.js'
+import { openImage } from './services/imageService.js'
 
 function createWindow() {
   // Create the browser window.

@@ -24,7 +24,8 @@
     "@heroicons/react": "^2.1.5",
     "electron-updater": "^6.1.7",
     "luxon": "^3.5.0",
-    "mongoose": "^8.5.3",
+    "mongodb": "^6.8.1",
+    "mongoose": "^8.6.2",
     "prop-types": "^15.8.1",
     "sharp": "^0.33.5"
   },
