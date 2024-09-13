@@ -1,7 +1,7 @@
 import { join } from 'node:path'
 import { DateTime } from 'luxon'
 import Patient from '../models/Patient'
-import { saveImage, loadImage, deleteImage } from './fileSystemService'
+import { saveImage, loadImage, deleteImage } from './imageService'
 
 export async function newPatient(event, formData) {
   const formErrors = await validate(formData)
