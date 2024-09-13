@@ -1,6 +1,5 @@
-import { join } from 'node:path'
-import { DateTime } from 'luxon'
 import Patient from '../models/Patient'
+import { DateTime } from 'luxon'
 import { saveImage, loadImage, deleteImage } from './imageService'
 
 export async function newPatient(event, formData) {
@@ -9,11 +8,8 @@ export async function newPatient(event, formData) {
     // Se crea el registro en la base de datos.
     const patientData = toEntityData(formData)
     const newPatient = await Patient.create(patientData)
-    // Se guarda la imagen en local (y se actualiza la entidad).
-    const imagePath = getImagePath(newPatient._id)
-    await saveImage(formData.image, imagePath)
-    newPatient.image = imagePath
-    newPatient.save()
+    // Se guarda la imagen en local.
+    await saveImage(formData.image, 'Patient', newPatient._id)
 
     return [toFormData(newPatient), formErrors]
   }
@@ -35,29 +31,27 @@ export async function updatePatient(event, id, formData) {
   const formErrors = await validate(formData, false)
   if (Object.keys(formErrors).length === 0) {
     const patient = toEntityData(formData)
-    const imagePath = getImagePath(id)
     await Patient.findByIdAndUpdate(id, {
       name: patient.name,
       gender: patient.gender,
       maritalStatus: patient.maritalStatus,
       birthdate: patient.birthdate,
       id: patient.id,
-      image: formData.image ? imagePath : '',
       insurance: patient.insurance,
       email: patient.email,
       home: patient.home,
       phone: patient.phone,
       otherData: patient.otherData
     })
-    if (formData.image) await saveImage(formData.image, imagePath)
-    else deleteImage(imagePath)
+    if (formData.image) await saveImage(formData.image, 'Patient', id)
+    else deleteImage('Patient', id)
   }
   return formErrors
 }
 
 export async function deletePatient(event, id) {
   await Patient.findByIdAndDelete(id)
-  deleteImage(getImagePath(id))
+  deleteImage('Patient', id)
 }
 
 function toEntityData(formData) {
@@ -87,10 +81,6 @@ function trimFormData(formData) {
       newFormData[field] = newFormData[field].trim()
   }
   return newFormData
-}
-
-function getImagePath(id) {
-  return join(__dirname, 'static', 'img', 'patient', `${id}.jpg`)
 }
 
 async function validate(formData, validateUniqueness = true) {
