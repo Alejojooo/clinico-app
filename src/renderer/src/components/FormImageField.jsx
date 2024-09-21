@@ -39,11 +39,12 @@ export default function FormImageField({ imageData, onImageChange }) {
 
   return (
     <div className="group relative size-60 overflow-clip rounded-3xl bg-primary">
-      {image && imageVisible ? (
+      {/* {image && imageVisible ? (
         <img src={image} alt="Fotografía del paciente" className="object-cover" />
       ) : (
         <UserIcon></UserIcon>
-      )}
+      )} */}
+      <img src="app://image.jpg" alt="Fotografía del paciente" className="object-cover" />
       <div className="absolute inset-x-0 bottom-0 flex h-12 w-full flex-row justify-center gap-2 bg-secondary opacity-0 transition-opacity group-hover:opacity-100">
         <IconButton
           icon={imageVisible ? <EyeSlashIcon className="size-6" /> : <EyeIcon className="size-6" />}

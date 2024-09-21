@@ -1,6 +1,6 @@
 import Patient from '../models/Patient'
 import { DateTime } from 'luxon'
-import { saveImage, loadImage, deleteImage } from './imageService'
+import { saveImage, convertToBase64, deleteImage } from './imageService'
 
 export async function newPatient(event, formData) {
   const formErrors = await validate(formData)
@@ -68,7 +68,7 @@ async function toFormData(patient) {
   const birthdate = DateTime.fromISO(newPatient.birthdate)
   newPatient.birthdate = birthdate.isValid ? birthdate.toFormat('D', { locale: 'es-GT' }) : ''
   if (newPatient.image) {
-    const image = await loadImage(newPatient.image)
+    const image = await convertToBase64(newPatient.image)
     newPatient.image = image ?? ''
   }
   return newPatient

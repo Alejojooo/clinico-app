@@ -10,10 +10,10 @@ export async function openImage() {
   })
   if (canceled) return null
   const imagePath = filePaths[0]
-  return loadImage(imagePath)
+  return convertToBase64(imagePath)
 }
 
-export async function loadImage(imagePath) {
+export async function convertToBase64(imagePath) {
   try {
     const imageBuffer = readFileSync(imagePath)
     const base64Image = await sharp(imageBuffer).jpeg({ quality: 80 }).toBuffer()
