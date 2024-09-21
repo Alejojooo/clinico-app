@@ -31,12 +31,12 @@ export async function getImage(collection, id) {
         'metadata.id': id
       })
       .toArray()
-    if (!files || files.length === 0)
-      throw new Error('No se encontró una imagen para los metadatos')
-    const fileId = files[0]._id
 
-    const data = []
+    if (!files || files.length === 0) return null
+
     const base64Image = await new Promise((resolve, reject) => {
+      const data = []
+      const fileId = files[0]._id
       gridfsBucket
         .openDownloadStream(fileId)
         .on('data', (chunk) => data.push(chunk))
@@ -93,9 +93,10 @@ export async function deleteImage(collection, id) {
         'metadata.id': id
       })
       .toArray()
-    if (!files || files.length === 0) throw new Error()
-    const fileId = files[0]._id
+    if (!files || files.length === 0)
+      throw new Error('No existe una imagen a eliminar con los metadatos proporcionados')
 
+    const fileId = files[0]._id
     await gridfsBucket.delete(fileId)
   } catch (err) {
     console.error(err)

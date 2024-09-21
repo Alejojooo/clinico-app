@@ -38,9 +38,13 @@ export default function FormImageField({ imageData, onImageChange }) {
   }
 
   return (
-    <div className="group relative size-60 overflow-clip rounded-3xl bg-primary">
-      {image && imageVisible ? (
-        <img src={image} alt="Fotografía del paciente" className="object-cover" />
+    <div className="group relative flex size-60 items-center justify-center overflow-clip rounded-3xl bg-primary">
+      {imageVisible ? (
+        image ? (
+          <img src={image} alt="Fotografía del paciente" className="object-cover" />
+        ) : (
+          <span className="text-center align-middle">No hay imagen disponible</span>
+        )
       ) : (
         <UserIcon></UserIcon>
       )}
