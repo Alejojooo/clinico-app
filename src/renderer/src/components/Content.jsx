@@ -10,6 +10,8 @@ import { CameraIcon, DocumentTextIcon, MagnifyingGlassIcon } from '@heroicons/re
 import IconButton from './IconButton'
 import ActionButton from './ActionButton'
 
+// TODO: Arreglar el tamaño de los campos (se desbordan al momento de usar flex-grow)
+
 function PatientIdentificationSection() {
   const {
     formData,
