@@ -1,24 +1,24 @@
 import PropTypes from 'prop-types'
 
-export default function ActionButton({ label, icon, onClick }) {
-  let buttonClassName =
-    'flex flex-row justify-center items-center gap-2 py-2.5 h-10 bg-primary hover:bg-secondary-light focus:bg-tertiary rounded-full drop-shadow-md transition-colors pointer-events-auto '
-  if (icon) {
-    buttonClassName += 'pl-4 pr-6'
-  } else {
-    buttonClassName += 'px-4'
-  }
+ActionButton.propTypes = {
+  label: PropTypes.string.isRequired,
+  icon: PropTypes.element,
+  onClick: PropTypes.func,
+  verticalLayout: PropTypes.bool
+}
 
+export default function ActionButton({ label, icon, onClick, verticalLayout = false }) {
   return (
-    <button className={buttonClassName} type="button" onClick={onClick}>
+    <button
+      className={`flex ${verticalLayout ? 'h-fit flex-col rounded-lg px-4' : `h-10 flex-row rounded-full ${icon ? 'pl-4 pr-6' : 'px-4'}`} items-center justify-center gap-2 bg-primary py-2.5 drop-shadow-md transition-colors hover:bg-secondary-light focus:bg-tertiary`}
+      type="button"
+      onClick={(event) => {
+        event.target.blur()
+        onClick()
+      }}
+    >
       {icon}
       <span className="text-sm font-semibold text-accent">{label}</span>
     </button>
   )
-}
-
-ActionButton.propTypes = {
-  label: PropTypes.string.isRequired,
-  icon: PropTypes.element,
-  onClick: PropTypes.func
 }

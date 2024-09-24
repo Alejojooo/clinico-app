@@ -57,6 +57,7 @@ export async function getImage(collection, id) {
 }
 
 export async function saveImage(base64Image, collection, id) {
+  if (!base64Image) return
   const metadata = {
     contentType: 'image/jpeg',
     collection: collection,
@@ -93,8 +94,7 @@ export async function deleteImage(collection, id) {
         'metadata.id': id
       })
       .toArray()
-    if (!files || files.length === 0)
-      throw new Error('No existe una imagen a eliminar con los metadatos proporcionados')
+    if (!files || files.length === 0) return
 
     const fileId = files[0]._id
     await gridfsBucket.delete(fileId)

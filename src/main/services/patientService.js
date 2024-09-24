@@ -8,7 +8,7 @@ export async function newPatient(event, formData) {
     const patientData = toEntityData(formData)
     const newPatient = await Patient.create(patientData)
     await saveImage(formData.image, 'Patient', newPatient._id)
-    return [toFormData(newPatient), formErrors]
+    return [await toFormData(newPatient), formErrors]
   }
   return [null, formErrors]
 }
@@ -20,7 +20,7 @@ export async function getPatients() {
 
 export async function getPatientById(event, id) {
   const patient = await Patient.findById(id)
-  const patientFormData = toFormData(patient)
+  const patientFormData = await toFormData(patient)
   return patientFormData
 }
 

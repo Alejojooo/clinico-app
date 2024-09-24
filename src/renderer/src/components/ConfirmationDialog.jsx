@@ -2,7 +2,7 @@ import PropTypes from 'prop-types'
 
 export default function ConfirmationDialog({ title, message, onSelection }) {
   return (
-    <div className="absolute left-0 top-0 z-10 flex h-full w-full flex-row items-center justify-center bg-accent bg-opacity-50">
+    <div className="absolute left-0 top-0 z-10 flex h-screen w-screen flex-row items-center justify-center bg-accent bg-opacity-50">
       <div className="flex flex-col items-end justify-start rounded-3xl bg-secondary-light p-6 opacity-100">
         <div className="flex flex-col items-start justify-start gap-4">
           <span className="text-2xl">{title}</span>

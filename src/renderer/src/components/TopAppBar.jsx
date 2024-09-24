@@ -1,29 +1,31 @@
-import PropTypes from 'prop-types'
-import IconButton from './IconButton.jsx'
 import {
-  Bars3Icon,
   ArrowPathIcon,
-  ArrowRightStartOnRectangleIcon
+  ArrowRightStartOnRectangleIcon,
+  Bars3Icon
 } from '@heroicons/react/24/outline'
+import { MODULES } from '../constants.js'
+import { useView } from '../hooks/useView.js'
+import IconButton from './IconButton.jsx'
+import SectionsLayout from './SectionsLayout.jsx'
 
-export default function TopAppBar({ children }) {
+export default function TopAppBar() {
+  const { activeModule } = useView()
+
   return (
-    <header className="flex h-16 w-screen flex-row items-center justify-start gap-5 px-5">
+    <header className="flex h-16 w-screen flex-none flex-row items-center justify-start gap-5 px-5">
       <div className="flex w-[30%] flex-row items-center justify-start gap-2.5">
-        <IconButton icon={<Bars3Icon className="size-6" />}></IconButton>
+        <IconButton icon={<Bars3Icon />}></IconButton>
         <h1 className="text-lg font-semibold">Clinico</h1>
       </div>
       <div className="flex flex-grow flex-row items-center justify-between">
-        {children}
+        {(activeModule === MODULES.PATIENT || activeModule === MODULES.DRUG) && (
+          <SectionsLayout></SectionsLayout>
+        )}
         <div className="flex flex-row gap-2.5">
-          <IconButton icon={<ArrowPathIcon className="size-6" />}></IconButton>
-          <IconButton icon={<ArrowRightStartOnRectangleIcon className="size-6" />}></IconButton>
+          <IconButton icon={<ArrowPathIcon />}></IconButton>
+          <IconButton icon={<ArrowRightStartOnRectangleIcon />}></IconButton>
         </div>
       </div>
     </header>
   )
-}
-
-TopAppBar.propTypes = {
-  children: PropTypes.node
 }
