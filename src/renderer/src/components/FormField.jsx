@@ -97,7 +97,7 @@ export function TextField({
           id={fieldId}
           className="size-full resize-none bg-transparent py-1 outline-none"
           name={fieldId}
-          rows="10"
+          rows="1"
           value={value}
           onChange={onChange}
           disabled={readOnly}

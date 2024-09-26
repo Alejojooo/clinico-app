@@ -26,10 +26,7 @@ export default function SearchBar({ title, length }) {
     <>
       <RecordListTitle title={title} length={length}></RecordListTitle>
       <div className="flex h-10 w-full flex-row items-center justify-start gap-1 rounded-full bg-secondary-light py-1 pl-4 pr-1">
-        <input
-          className="flex-grow bg-transparent outline-none"
-          placeholder="Nombre a buscar..."
-        ></input>
+        <input className="grow bg-transparent outline-none" placeholder="Buscar" size="1"></input>
         <IconButton icon={<AdjustmentsHorizontalIcon />} />
       </div>
     </>

@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types'
 import { useView } from '../hooks/useView'
 import { MODULES } from '../constants'
-import FilterableRecordList from './FilterableRecordList'
+import FilterableDocumentList from './FilterableRecordList'
 
 import {
   ArchiveBoxIcon,
@@ -57,12 +57,12 @@ export default function SideView({ documents, activeDocument, handleDocSelection
     <aside className="mt-2.5 flex w-[30%] flex-col items-center justify-start gap-3.5">
       <ModulesLayout></ModulesLayout>
       {(activeModule === MODULES.PATIENT || activeModule === MODULES.DRUG) && (
-        <FilterableRecordList
+        <FilterableDocumentList
           title={`Listado de ${activeModule === MODULES.PATIENT ? 'pacientes' : 'medicamentos'}`}
           documents={documents}
           activeDocument={activeDocument}
           handleDocSelection={handleDocSelection}
-        ></FilterableRecordList>
+        ></FilterableDocumentList>
       )}
     </aside>
   )

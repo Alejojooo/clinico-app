@@ -1,13 +1,13 @@
 import PropTypes from 'prop-types'
 import SearchBar from './SearchBar'
 
-Record.propTypes = {
+DocumentListItem.propTypes = {
   name: PropTypes.string.isRequired,
   isActive: PropTypes.bool,
   onClick: PropTypes.func
 }
 
-function Record({ name, isActive, onClick }) {
+function DocumentListItem({ name, isActive, onClick }) {
   return (
     <button
       className={`flex h-7 w-full flex-row items-center justify-start px-4 hover:bg-secondary focus:bg-tertiary ${isActive ? 'bg-tertiary' : ''}`}
@@ -18,11 +18,11 @@ function Record({ name, isActive, onClick }) {
   )
 }
 
-RecordList.propTypes = {
+DocumentList.propTypes = {
   children: PropTypes.node
 }
 
-function RecordList({ children }) {
+function DocumentList({ children }) {
   return (
     <div className="flex w-full flex-grow flex-col overflow-clip rounded-2xl bg-secondary-light">
       {children}
@@ -30,33 +30,33 @@ function RecordList({ children }) {
   )
 }
 
-FilterableRecordList.propTypes = {
+FilterableDocumentList.propTypes = {
   title: PropTypes.string,
   documents: PropTypes.array,
   activeDocument: PropTypes.object,
   handleDocSelection: PropTypes.func
 }
 
-export default function FilterableRecordList({
+export default function FilterableDocumentList({
   title,
   documents,
   activeDocument,
   handleDocSelection
 }) {
   return (
-    <>
+    <div className="flex grow flex-col items-center justify-start gap-3.5">
       <SearchBar title={title} length={documents.length}></SearchBar>
-      <RecordList>
+      <DocumentList>
         {documents?.length > 0 &&
           documents.map((patient) => (
-            <Record
+            <DocumentListItem
               key={patient._id}
               name={patient.name}
               isActive={activeDocument?._id === patient._id}
               onClick={() => handleDocSelection(patient._id)}
-            ></Record>
+            ></DocumentListItem>
           ))}
-      </RecordList>
-    </>
+      </DocumentList>
+    </div>
   )
 }

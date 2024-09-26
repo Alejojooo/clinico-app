@@ -6,11 +6,9 @@ import CrudButtons from './CrudButtons'
 import { SimpleTextField, CheckboxField, TextField } from './FormField'
 import PatientForm from './PatientForm'
 import SideView from './SideView'
-import { CameraIcon, DocumentTextIcon, MagnifyingGlassIcon } from '@heroicons/react/24/outline'
-import IconButton from './IconButton'
+import { CameraIcon, DocumentTextIcon } from '@heroicons/react/24/outline'
 import ActionButton from './ActionButton'
-
-// TODO: Arreglar el tamaño de los campos (se desbordan al momento de usar flex-grow)
+import FilterableDocumentList from './FilterableRecordList'
 
 function PatientIdentificationSection() {
   const {
@@ -126,12 +124,20 @@ function PatientMedicalRecordSection() {
             ></ActionButton>
           </div>
           <div className="flex size-full flex-row gap-6">
-            <div className="size-24 bg-secondary">Aquí va el historial</div>
+            <aside className="flex w-56 flex-col">
+              <FilterableDocumentList
+                title="Historial"
+                activeDocument={null}
+                documents={[]}
+                handleDocSelection={null}
+              ></FilterableDocumentList>
+            </aside>
             <div className="flex h-full grow flex-col gap-5">
               <TextField
                 label="Historia clínica"
                 fieldId="medicalRecord"
                 width="w-full"
+                height="grow"
                 multiline
               ></TextField>
               <TextField
@@ -148,6 +154,19 @@ function PatientMedicalRecordSection() {
                 height="h-28"
                 multiline
               ></TextField>
+              <div className="flex flex-row items-center justify-between">
+                <ActionButton
+                  label="Receta"
+                  icon={<DocumentTextIcon className="size-5" />}
+                ></ActionButton>
+                <SimpleTextField
+                  label="Personal médico responsable"
+                  labelWidth="w-64"
+                  value="Alejo"
+                  width="w-96"
+                  readOnly
+                ></SimpleTextField>
+              </div>
             </div>
           </div>
         </div>
