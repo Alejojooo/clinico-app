@@ -1,21 +1,14 @@
-import { join } from 'node:path'
-import { DateTime } from 'luxon'
 import Patient from '../models/Patient'
-import { saveImage, loadImage, deleteImage } from './imageService'
+import { DateTime } from 'luxon'
+import { saveImage, deleteImage, getImage } from './imageService'
 
 export async function newPatient(event, formData) {
   const formErrors = await validate(formData)
   if (Object.keys(formErrors).length === 0) {
-    // Se crea el registro en la base de datos.
     const patientData = toEntityData(formData)
     const newPatient = await Patient.create(patientData)
-    // Se guarda la imagen en local (y se actualiza la entidad).
-    const imagePath = getImagePath(newPatient._id)
-    await saveImage(formData.image, imagePath)
-    newPatient.image = imagePath
-    newPatient.save()
-
-    return [toFormData(newPatient), formErrors]
+    await saveImage(formData.image, 'Patient', newPatient._id)
+    return [await toFormData(newPatient), formErrors]
   }
   return [null, formErrors]
 }
@@ -27,7 +20,7 @@ export async function getPatients() {
 
 export async function getPatientById(event, id) {
   const patient = await Patient.findById(id)
-  const patientFormData = toFormData(patient)
+  const patientFormData = await toFormData(patient)
   return patientFormData
 }
 
@@ -35,62 +28,57 @@ export async function updatePatient(event, id, formData) {
   const formErrors = await validate(formData, false)
   if (Object.keys(formErrors).length === 0) {
     const patient = toEntityData(formData)
-    const imagePath = getImagePath(id)
     await Patient.findByIdAndUpdate(id, {
       name: patient.name,
       gender: patient.gender,
       maritalStatus: patient.maritalStatus,
       birthdate: patient.birthdate,
       id: patient.id,
-      image: formData.image ? imagePath : '',
       insurance: patient.insurance,
       email: patient.email,
       home: patient.home,
       phone: patient.phone,
       otherData: patient.otherData
     })
-    if (formData.image) await saveImage(formData.image, imagePath)
-    else deleteImage(imagePath)
+    if (formData.image) await saveImage(formData.image, 'Patient', id)
+    else await deleteImage('Patient', id)
   }
   return formErrors
 }
 
 export async function deletePatient(event, id) {
   await Patient.findByIdAndDelete(id)
-  deleteImage(getImagePath(id))
+  await deleteImage('Patient', id)
 }
 
 function toEntityData(formData) {
   const patientData = trimFormData(formData)
-  delete patientData.age
-  delete patientData.image
+
   const birthdate = DateTime.fromFormat(patientData.birthdate, 'D', { locale: 'es-GT' })
   patientData.birthdate = birthdate.isValid ? birthdate.toJSDate() : null
+
+  delete patientData.age
+  delete patientData.image
   return patientData
 }
 
 async function toFormData(patient) {
   const newPatient = JSON.parse(JSON.stringify(patient))
+
   const birthdate = DateTime.fromISO(newPatient.birthdate)
   newPatient.birthdate = birthdate.isValid ? birthdate.toFormat('D', { locale: 'es-GT' }) : ''
-  if (newPatient.image) {
-    const image = await loadImage(newPatient.image)
-    newPatient.image = image ?? ''
-  }
+
+  newPatient.image = (await getImage('Patient', newPatient._id)) ?? ''
   return newPatient
 }
 
 function trimFormData(formData) {
   const newFormData = { ...formData }
   for (const field in formData) {
-    if (typeof newFormData[field] === 'string' && field !== 'imageData')
+    if (typeof newFormData[field] === 'string' && field !== 'image')
       newFormData[field] = newFormData[field].trim()
   }
   return newFormData
-}
-
-function getImagePath(id) {
-  return join(__dirname, 'static', 'img', 'patient', `${id}.jpg`)
 }
 
 async function validate(formData, validateUniqueness = true) {

@@ -1,9 +1,12 @@
+import { DocumentTextIcon, Square3Stack3DIcon, UserCircleIcon } from '@heroicons/react/24/outline'
+import { MODULES, PATIENT_SECTIONS } from '../constants'
+import usePatient from '../hooks/usePatient'
+import { useView } from '../hooks/useView'
 import SectionButton from './SectionButton'
-import { UserCircleIcon, Square3Stack3DIcon, DocumentTextIcon } from '@heroicons/react/24/outline'
-import { useState } from 'react'
 
-export default function SectionsLayout() {
-  const [activeIndex, setActiveIndex] = useState(0)
+function PatientSectionsLayout() {
+  const { activePatient } = usePatient()
+  const { activeSection, setActiveSection } = useView()
 
   return (
     <div className="flex flex-row divide-x py-1">
@@ -11,22 +14,41 @@ export default function SectionsLayout() {
         label="Identificación"
         icon={<UserCircleIcon className="size-4" />}
         rounded="left"
-        isActive={activeIndex === 0}
-        onClick={() => setActiveIndex(0)}
+        isActive={activeSection === PATIENT_SECTIONS.IDENTIFICATION}
+        onClick={() => setActiveSection(PATIENT_SECTIONS.IDENTIFICATION)}
       ></SectionButton>
       <SectionButton
         label="Historias"
         icon={<Square3Stack3DIcon className="size-4" />}
-        isActive={activeIndex === 1}
-        onClick={() => setActiveIndex(1)}
+        isActive={activeSection === PATIENT_SECTIONS.MEDICAL_RECORDS}
+        onClick={() => {
+          console.log(activePatient)
+          if (activePatient) setActiveSection(PATIENT_SECTIONS.MEDICAL_RECORDS)
+        }}
       ></SectionButton>
       <SectionButton
         label="Reporte"
         icon={<DocumentTextIcon className="size-4" />}
         rounded="right"
-        isActive={activeIndex === 2}
-        onClick={() => setActiveIndex(2)}
+        isActive={activeSection === PATIENT_SECTIONS.REPORT}
+        onClick={() => setActiveSection(PATIENT_SECTIONS.REPORT)}
       ></SectionButton>
     </div>
   )
+}
+
+export default function SectionsLayout() {
+  const { activeModule } = useView()
+
+  switch (activeModule) {
+    case MODULES.PATIENT: {
+      return <PatientSectionsLayout></PatientSectionsLayout>
+    }
+    case MODULES.DRUG: {
+      return <div></div>
+    }
+    default: {
+      throw new Error('There is no section layout for ' + activeModule)
+    }
+  }
 }

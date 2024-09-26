@@ -1,7 +1,7 @@
 import sharp from 'sharp'
-import { readFileSync, unlinkSync, existsSync, mkdirSync } from 'node:fs'
-import { dirname } from 'node:path'
+import { readFileSync } from 'node:fs'
 import { dialog } from 'electron'
+import { gridfsBucket } from '../database'
 
 export async function openImage() {
   const { canceled, filePaths } = await dialog.showOpenDialog({
@@ -10,10 +10,10 @@ export async function openImage() {
   })
   if (canceled) return null
   const imagePath = filePaths[0]
-  return loadImage(imagePath)
+  return convertToBase64(imagePath)
 }
 
-export async function loadImage(imagePath) {
+async function convertToBase64(imagePath) {
   try {
     const imageBuffer = readFileSync(imagePath)
     const base64Image = await sharp(imageBuffer).jpeg({ quality: 80 }).toBuffer()
@@ -23,25 +23,82 @@ export async function loadImage(imagePath) {
   }
 }
 
-export async function saveImage(base64Image, imagePath) {
-  const targetDirectory = dirname(imagePath)
-  if (!existsSync(targetDirectory)) mkdirSync(targetDirectory, { recursive: true })
+export async function getImage(collection, id) {
   try {
-    const base64Data = base64Image.replace(/^data:image\/jpeg;base64,/, '')
-    const imgBuffer = Buffer.from(base64Data, 'base64')
-    await sharp(imgBuffer).jpeg({ quality: 80 }).toFile(imagePath)
-    return null
+    const files = await gridfsBucket
+      .find({
+        'metadata.collection': collection,
+        'metadata.id': id
+      })
+      .toArray()
+
+    if (!files || files.length === 0) return null
+
+    const base64Image = await new Promise((resolve, reject) => {
+      const data = []
+      const fileId = files[0]._id
+      gridfsBucket
+        .openDownloadStream(fileId)
+        .on('data', (chunk) => data.push(chunk))
+        .on('error', () => {
+          reject(new Error('Error al cargar la imagen'))
+        })
+        .on('end', () => {
+          const buffer = Buffer.concat(data)
+          const base64Image = `data:image/jpeg;base64,${buffer.toString('base64')}`
+          resolve(base64Image)
+        })
+    })
+    return base64Image
   } catch (err) {
-    return `Hubo un error guardando la imagen ${err}`
+    console.error(err)
+    return null
   }
 }
 
-export function deleteImage(imagePath) {
-  if (!imagePath) return 'No se especificó una ruta válida para la imagen.'
+export async function saveImage(base64Image, collection, id) {
+  if (!base64Image) return
+  const metadata = {
+    contentType: 'image/jpeg',
+    collection: collection,
+    id: id
+  }
   try {
-    unlinkSync(imagePath)
-    return null
+    const base64Data = base64Image.replace(/^data:image\/jpeg;base64,/, '')
+    const imgBuffer = Buffer.from(base64Data, 'base64')
+    const image = await sharp(imgBuffer).resize({ width: 800 }).jpeg({ quality: 80 }).toBuffer()
+    gridfsBucket
+      .openUploadStream(`${metadata.collection}-${metadata.id}.jpg`, {
+        metadata: {
+          collection,
+          id
+        }
+      })
+      .end(image)
+      .on('finish', () => {
+        console.log('Imagen guardada en GridFS')
+      })
+      .on('error', () => {
+        throw new Error('Error al guardar la imagen')
+      })
   } catch (err) {
-    return `No se pudo eliminar la imagen en ${imagePath}`
+    console.error(err)
+  }
+}
+
+export async function deleteImage(collection, id) {
+  try {
+    const files = await gridfsBucket
+      .find({
+        'metadata.collection': collection,
+        'metadata.id': id
+      })
+      .toArray()
+    if (!files || files.length === 0) return
+
+    const fileId = files[0]._id
+    await gridfsBucket.delete(fileId)
+  } catch (err) {
+    console.error(err)
   }
 }

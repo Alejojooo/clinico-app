@@ -1,40 +1,41 @@
-import ModuleButton from './ModuleButton'
 import {
-  UserGroupIcon,
   ArchiveBoxIcon,
   BookOpenIcon,
-  Cog6ToothIcon
+  Cog6ToothIcon,
+  UserGroupIcon
 } from '@heroicons/react/24/outline'
-import { useState } from 'react'
+import { MODULES } from '../constants'
+import { useView } from '../hooks/useView'
+import ModuleButton from './ModuleButton'
 
 export default function ModulesLayout() {
-  const [activeIndex, setActiveIndex] = useState(0)
+  const { activeModule, changeModule } = useView()
 
   return (
     <nav className="flex h-fit w-full flex-col">
       <ModuleButton
         name="Pacientes"
         icon={<UserGroupIcon className="size-6" />}
-        isActive={activeIndex === 0}
-        onClick={() => setActiveIndex(0)}
+        isActive={activeModule === MODULES.PATIENT}
+        onClick={() => changeModule(MODULES.PATIENT)}
       ></ModuleButton>
       <ModuleButton
         name="Fármacos"
         icon={<ArchiveBoxIcon className="size-6" />}
-        isActive={activeIndex === 1}
-        onClick={() => setActiveIndex(1)}
+        isActive={activeModule === MODULES.DRUG}
+        onClick={() => changeModule(MODULES.DRUG)}
       ></ModuleButton>
       <ModuleButton
         name="Agenda"
         icon={<BookOpenIcon className="size-6" />}
-        isActive={activeIndex === 2}
-        onClick={() => setActiveIndex(2)}
+        isActive={activeModule === MODULES.AGENDA}
+        onClick={() => changeModule(MODULES.AGENDA)}
       ></ModuleButton>
       <ModuleButton
         name="Herramientas"
         icon={<Cog6ToothIcon className="size-6" />}
-        isActive={activeIndex === 3}
-        onClick={() => setActiveIndex(3)}
+        isActive={activeModule === MODULES.TOOLS}
+        onClick={() => changeModule(MODULES.TOOLS)}
       ></ModuleButton>
     </nav>
   )
