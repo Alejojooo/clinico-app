@@ -1,6 +1,7 @@
-import Patient from '../models/Patient'
-import { DateTime } from 'luxon'
+import { Patient } from '../models/Patient'
 import { saveImage, deleteImage, getImage } from './imageService'
+import { localeFormatToJSDate, JSDateToLocaleFormat } from './dateService'
+import { trimFormData } from './utils'
 
 export async function newPatient(event, formData) {
   const formErrors = await validate(formData)
@@ -53,9 +54,7 @@ export async function deletePatient(event, id) {
 
 function toEntityData(formData) {
   const patientData = trimFormData(formData)
-
-  const birthdate = DateTime.fromFormat(patientData.birthdate, 'D', { locale: 'es-GT' })
-  patientData.birthdate = birthdate.isValid ? birthdate.toJSDate() : null
+  patientData.birthdate = localeFormatToJSDate(patientData.birthdate)
 
   delete patientData.age
   delete patientData.image
@@ -64,21 +63,10 @@ function toEntityData(formData) {
 
 async function toFormData(patient) {
   const newPatient = JSON.parse(JSON.stringify(patient))
-
-  const birthdate = DateTime.fromISO(newPatient.birthdate)
-  newPatient.birthdate = birthdate.isValid ? birthdate.toFormat('D', { locale: 'es-GT' }) : ''
+  newPatient.birthdate = JSDateToLocaleFormat(patient.birthdate)
 
   newPatient.image = (await getImage('Patient', newPatient._id)) ?? ''
   return newPatient
-}
-
-function trimFormData(formData) {
-  const newFormData = { ...formData }
-  for (const field in formData) {
-    if (typeof newFormData[field] === 'string' && field !== 'image')
-      newFormData[field] = newFormData[field].trim()
-  }
-  return newFormData
 }
 
 async function validate(formData, validateUniqueness = true) {
@@ -126,9 +114,7 @@ function validateMaritalStatus(value) {
 
 function validateBirthdate(value) {
   if (value === '') return null
-  // Formato válido 'D': dd/mm/yyyy
-  const date = DateTime.fromFormat(value, 'D', { locale: 'es-GT' })
-  if (!date.isValid) return 'La fecha no es válida'
+  if (!localeFormatToJSDate(value)) return 'La fecha no es válida'
   return null
 }
 
