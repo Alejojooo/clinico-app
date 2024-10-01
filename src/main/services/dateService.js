@@ -1,7 +1,7 @@
 import { DateTime } from 'luxon'
 
 const ISO_FORMAT = "yyyy-MM-dd'T'HH:mm"
-const ISO_FORMAT_PRETTY = 'yyyy-MM-dd HH:mm'
+const PRETTY_FORMAT = 'dd/MM/yyyy HH:mm'
 
 export function ISOToJSDate(date) {
   const datetime = DateTime.fromISO(date)
@@ -13,7 +13,7 @@ export function JSDateToISO(date, opts) {
   const datetime = DateTime.fromISO(date.toISOString().slice(0, -1))
   if (!datetime.isValid) return ''
   if (opts?.includeTime) {
-    if (opts?.pretty) return datetime.toFormat(ISO_FORMAT_PRETTY)
+    if (opts?.pretty) return datetime.toFormat(PRETTY_FORMAT)
     else return datetime.toFormat(ISO_FORMAT)
   } else {
     return datetime.toISODate()

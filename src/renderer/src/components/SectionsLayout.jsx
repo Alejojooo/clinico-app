@@ -6,7 +6,7 @@ import SectionButton from './SectionButton'
 
 function PatientSectionsLayout() {
   const { activePatient } = usePatient()
-  const { activeSection, setActiveSection } = useView()
+  const { activeSection, setActiveSection, addSnackbar } = useView()
 
   return (
     <div className="flex flex-row divide-x">
@@ -23,6 +23,7 @@ function PatientSectionsLayout() {
         isActive={activeSection === PATIENT_SECTIONS.MEDICAL_RECORDS}
         onClick={() => {
           if (activePatient) setActiveSection(PATIENT_SECTIONS.MEDICAL_RECORDS)
+          else addSnackbar('Primero seleccione un paciente')
         }}
       ></SectionButton>
       <SectionButton

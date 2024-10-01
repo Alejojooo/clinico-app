@@ -10,13 +10,14 @@
   - ✅ Solo enviar al backend los campos que necesita
 - ✅ Validar los datos EN EL MODELO (Mongoose) (ver documentación)
 - Mensajes de información en el frontend <------ ACTUAL
-- Vista de historia clínica funcional
+- Vista de historia clínica funcional <------ ACTUAL
   - ✅ reducer para historia clínica
   - ✅ hook para historia clínica
   - ✅ Pasarle el paciente activo
   - ✅ Rellenar los campos con los del paciente activo
   - Fotos
   - Receta
+- Agregar función de búsqueda de registros
 - Agregar botones de desplazamiento en la lista de entidades (⏮️◀️ ▶️⏭)
 
 # Frontend

@@ -1,9 +1,10 @@
 import { useContext, useEffect, useReducer, useState } from 'react'
 import { MedicalRecordContext } from '../context/medicalRecord'
 import { ACTIONS, initialState, medicalRecordReducer } from '../reducers/medicalRecord'
+import { calculateAge } from '../utils/date'
 import { clean } from '../utils/form'
 import usePatient from './usePatient'
-import { calculateAge } from '../utils/date'
+import { useView } from './useView'
 
 export default function useMedicalRecord() {
   const context = useContext(MedicalRecordContext)
@@ -12,6 +13,7 @@ export default function useMedicalRecord() {
   }
 
   const { activePatient } = usePatient()
+  const { addSnackbar } = useView()
   const { activeMedicalRecord, setActiveMedicalRecord } = context
   const [medicalRecords, setMedicalRecords] = useState([])
   const [state, dispatch] = useReducer(medicalRecordReducer, initialState)
@@ -48,6 +50,7 @@ export default function useMedicalRecord() {
 
   const handleNewMedicalRecord = async () => {
     if (activeMedicalRecord) {
+      addSnackbar('Se va a crear una nueva historia clínica')
       dispatch({ type: ACTIONS.CLEAR_FORM })
       setActiveMedicalRecord(null)
       return
@@ -56,29 +59,43 @@ export default function useMedicalRecord() {
     const newFormData = { ...getCleanForm(), patientId: activePatient._id }
     const { outcome, payload } = await window.medicalRecord.newMedicalRecord(newFormData)
     if (outcome === 'success') {
+      addSnackbar(
+        `Se creó una nueva historia clínica${!state.formData.date ? ' con la fecha de hoy' : ''}`
+      )
       setActiveMedicalRecord(payload)
       await getMedicalRecords()
     }
   }
 
   const handleUpdateMedicalRecord = async () => {
-    if (!activeMedicalRecord) return
+    if (!activeMedicalRecord) {
+      addSnackbar('Primero seleccione una historia clínica')
+      return
+    }
 
     const newFormData = { ...getCleanForm(), patientId: activePatient._id }
     const { outcome } = await window.medicalRecord.updateMedicalRecord(
       activeMedicalRecord._id,
       newFormData
     )
-    if (outcome === 'success') await getMedicalRecords()
+    if (outcome === 'success') {
+      addSnackbar('Se actualizó la historia clínica')
+      await getMedicalRecords()
+    }
   }
 
   const handleDeleteMedicalRecord = async () => {
-    if (!activeMedicalRecord) return
+    if (!activeMedicalRecord) {
+      addSnackbar('Primero seleccione una historia clínica')
+      return
+    }
+
     const option = await window.dialog.showConfirmDialog(
       'Eliminar historia clínica',
       '¿Está seguro de eliminar esta historia clínica?'
     )
     if (option === window.dialog.OK_OPTION) {
+      addSnackbar('Se eliminó la historia clínica')
       await window.medicalRecord.deleteMedicalRecord(activeMedicalRecord._id)
       setActiveMedicalRecord(null)
       getMedicalRecords()
