@@ -7,6 +7,8 @@ Snackbar.propTypes = {
   onRemove: PropTypes.func
 }
 
+// TODO: Arreglar la visualización de los snackbars al momento de aparecer/desaparecer
+
 export function Snackbar({ message, onRemove }) {
   const [visible, setVisible] = useState(false)
 
