@@ -61,7 +61,10 @@ export default function usePatient() {
   }
 
   const handleUpdatePatient = async () => {
-    if (!activePatient) return
+    if (!activePatient) {
+      addSnackbar('Primero seleccione a un paciente')
+      return
+    }
     const { outcome, payload } = await window.patient.updatePatient(
       activePatient._id,
       getCleanForm()
@@ -74,7 +77,10 @@ export default function usePatient() {
   }
 
   const handleDeletePatient = async () => {
-    if (!activePatient) return
+    if (!activePatient) {
+      addSnackbar('Primero seleccione a un paciente')
+      return
+    }
     const option = await window.dialog.showConfirmDialog(
       'Eliminar paciente',
       '¿Está seguro de eliminar este paciente?'

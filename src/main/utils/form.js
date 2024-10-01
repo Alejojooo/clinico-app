@@ -1,13 +1,7 @@
-import { ISOToJSDate } from '../services/dateService'
-
 export function formToEntity(formData, requiredFields) {
   const newData = { ...formData }
   for (const field in formData) {
     if (!requiredFields.includes(field)) delete newData[field]
-    else {
-      const isDate = ISOToJSDate(formData[field])
-      if (isDate) newData[field] = isDate
-    }
   }
   return newData
 }

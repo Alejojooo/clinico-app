@@ -10,14 +10,14 @@ export function ISOToJSDate(date) {
 }
 
 export function JSDateToISO(date, opts) {
-  const datetime = DateTime.fromJSDate(date)
-  if (datetime.isValid) {
-    if (opts?.includeTime) {
-      if (opts?.pretty) return datetime.toFormat(ISO_FORMAT_PRETTY)
-      else return datetime.toFormat(ISO_FORMAT)
-    } else {
-      return datetime.toISODate()
-    }
+  const datetime = DateTime.fromISO(date.toISOString().slice(0, -1))
+  if (!datetime.isValid) return ''
+  if (opts?.includeTime) {
+    const newLocal = datetime.toFormat(ISO_FORMAT_PRETTY)
+    console.log(newLocal)
+    if (opts?.pretty) return newLocal
+    else return datetime.toFormat(ISO_FORMAT)
+  } else {
+    return datetime.toISODate()
   }
-  return ''
 }
