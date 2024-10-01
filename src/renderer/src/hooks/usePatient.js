@@ -33,7 +33,7 @@ export default function usePatient() {
   }
 
   const handleImage = (image) => {
-    dispatch({ type: ACTIONS.FIELD_CHANGE, field: { name: image, value: image } })
+    dispatch({ type: ACTIONS.FIELD_CHANGE, field: { name: 'image', value: image } })
   }
 
   const getCleanForm = () => {
@@ -56,6 +56,7 @@ export default function usePatient() {
       await getPatients()
       addSnackbar('Se creó un nuevo paciente')
     } else {
+      addSnackbar('Ocurrió un error al crear un nuevo paciente')
       dispatch({ type: ACTIONS.SET_ERRORS, errors: payload })
     }
   }
@@ -65,13 +66,17 @@ export default function usePatient() {
       addSnackbar('Primero seleccione a un paciente')
       return
     }
+
+    console.log(getCleanForm())
     const { outcome, payload } = await window.patient.updatePatient(
       activePatient._id,
       getCleanForm()
     )
     if (outcome === 'success') {
+      addSnackbar('Se actualizó el paciente')
       await getPatients()
     } else {
+      addSnackbar('Ocurrió un error al actualizar el paciente')
       dispatch({ type: ACTIONS.SET_ERRORS, errors: payload })
     }
   }
@@ -86,6 +91,7 @@ export default function usePatient() {
       '¿Está seguro de eliminar este paciente?'
     )
     if (option === window.dialog.OK_OPTION) {
+      addSnackbar('Se eliminó el paciente')
       await window.patient.deletePatient(activePatient._id)
       setActivePatient(null)
       getPatients()
