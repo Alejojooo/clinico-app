@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types'
 import { useView } from '../hooks/useView'
-import { MODULES } from '../constants'
+import { MODULES } from '../utils/view'
 import FilterableDocumentList from './FilterableRecordList'
 
 import {

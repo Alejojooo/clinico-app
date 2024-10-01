@@ -3,28 +3,28 @@ import PropTypes from 'prop-types'
 import ActionButton from './ActionButton'
 
 CrudButtons.propTypes = {
-  onNewPatient: PropTypes.func,
-  onUpdatePatient: PropTypes.func,
-  onDeletePatient: PropTypes.func
+  onNew: PropTypes.func,
+  onUpdate: PropTypes.func,
+  onDelete: PropTypes.func
 }
 
-export default function CrudButtons({ onNewPatient, onUpdatePatient, onDeletePatient }) {
+export default function CrudButtons({ onNew, onUpdate, onDelete }) {
   return (
     <div className="flex w-fit flex-row gap-2.5">
       <ActionButton
         label="Nuevo"
         icon={<PlusIcon className="size-4" />}
-        onClick={onNewPatient}
+        onClick={onNew}
       ></ActionButton>
       <ActionButton
         label="Actualizar"
         icon={<CheckIcon className="size-4" />}
-        onClick={onUpdatePatient}
+        onClick={onUpdate}
       ></ActionButton>
       <ActionButton
         label="Eliminar"
         icon={<XMarkIcon className="size-4" />}
-        onClick={onDeletePatient}
+        onClick={onDelete}
       ></ActionButton>
     </div>
   )

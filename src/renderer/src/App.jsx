@@ -1,10 +1,10 @@
+import PropTypes from 'prop-types'
 import Content from './components/Content'
 import TopAppBar from './components/TopAppBar'
-import { MODULES } from './constants'
 import { PatientProvider } from './context/patient'
 import { ViewProvider } from './context/view'
 import { useView } from './hooks/useView'
-import PropTypes from 'prop-types'
+import { MODULES } from './utils/view'
 
 Provider.propTypes = {
   children: PropTypes.node

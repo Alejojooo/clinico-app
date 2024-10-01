@@ -1,38 +1,47 @@
-import { DateTime, Interval } from 'luxon'
+import { calculateAge } from '../utils/date'
 
 // 1. Estado inicial
-export const initialPatientFormData = {
-  name: '',
-  gender: '',
-  maritalStatus: '',
-  birthdate: '',
-  age: '',
-  id: '',
-  image: '',
-  insurance: '',
-  email: '',
-  home: '',
-  phone: '',
-  otherData: ''
+export const initialState = {
+  formData: {
+    name: '',
+    gender: '',
+    maritalStatus: '',
+    birthdate: '',
+    age: '',
+    id: '',
+    image: '',
+    insurance: '',
+    email: '',
+    home: '',
+    phone: '',
+    otherData: ''
+  },
+  errors: {}
+}
+
+export const ACTIONS = {
+  SET_PATIENT: 'SET_PATIENT',
+  SET_ERRORS: 'SET_ERRORS',
+  CLEAR_FORM: 'CLEAR_FORM',
+  FIELD_CHANGE: 'FIELD_CHANGE'
 }
 
 // 2. Función reductora
 export const patientReducer = (state, action) => {
   switch (action.type) {
-    case 'patient': {
-      if (!action.patient) return { formData: initialPatientFormData, errors: {} }
+    case ACTIONS.SET_PATIENT: {
+      if (!action.patient) return initialState
       const newPatient = action.patient
       newPatient.age = calculateAge(newPatient.birthdate)
       return { formData: newPatient, errors: {} }
     }
-    case 'clear-form': {
-      return { formData: initialPatientFormData, errors: {} }
-    }
-    case 'new-patient':
-    case 'update-patient': {
+    case ACTIONS.SET_ERRORS: {
       return { formData: state.formData, errors: action.errors ?? {} }
     }
-    case 'field-change': {
+    case ACTIONS.CLEAR_FORM: {
+      return initialState
+    }
+    case ACTIONS.FIELD_CHANGE: {
       const { name, value } = action.field
       const { formData, errors } = state
       const newFieldValues = handleField(name, value)
@@ -63,8 +72,7 @@ const handleField = (name, value) => {
       return { [name]: newValue }
     }
     case 'birthdate': {
-      const date = DateTime.fromFormat(value, 'D', { locale: 'es-GT' })
-      const age = date.isValid ? calculateAge(value) : ''
+      const age = calculateAge(value)
       return { [name]: value, age: age }
     }
     case 'id': {
@@ -75,19 +83,4 @@ const handleField = (name, value) => {
       return { [name]: value }
     }
   }
-}
-
-const calculateAge = (value) => {
-  if (!value) return ''
-  const birthdate = DateTime.fromFormat(value, 'D', { locale: 'es-GT' })
-  const duration = Interval.fromDateTimes(birthdate, DateTime.now())
-    .toDuration(['years', 'months', 'days'])
-    .toObject()
-  if (Object.keys(duration).length === 0) return '0a'
-  // De 0 a 1 año se cuentan los meses y días
-  // De 1 a 12 años se cuentan los años y meses
-  // A partir de los 13 años se dejan de contar los meses
-  if (duration.years >= 13) return `${duration.years}a`
-  else if (duration.years >= 1) return `${duration.years}a ${duration.months}m`
-  else return `${duration.months}m ${Math.floor(duration.days)}d`
 }

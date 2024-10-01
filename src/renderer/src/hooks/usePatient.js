@@ -1,24 +1,22 @@
 import { useContext, useEffect, useReducer, useState } from 'react'
 import { PatientContext } from '../context/patient'
-import { initialPatientFormData, patientReducer } from '../reducers/patient'
+import { initialState, ACTIONS, patientReducer } from '../reducers/patient'
+import { clean } from '../utils/form'
+import { useView } from './useView'
 
 export default function usePatient() {
   const context = useContext(PatientContext)
   if (context === undefined) {
     throw new Error('usePatient must be used within a PatientProvider')
   }
+
   const { activePatient, setActivePatient } = context
-
+  const { addSnackbar } = useView()
   const [patients, setPatients] = useState([])
-  const [renderConfirmationScreen, setRenderConfirmationScreen] = useState(false)
-
-  const [state, dispatch] = useReducer(patientReducer, {
-    formData: initialPatientFormData,
-    errors: {}
-  })
+  const [state, dispatch] = useReducer(patientReducer, initialState)
 
   useEffect(() => {
-    dispatch({ type: 'patient', patient: activePatient })
+    dispatch({ type: ACTIONS.SET_PATIENT, patient: activePatient })
   }, [activePatient])
 
   useEffect(() => {
@@ -26,59 +24,70 @@ export default function usePatient() {
   }, [])
 
   const getPatients = async () => {
-    const newPatients = await window.database.getPatients()
+    const newPatients = await window.patient.getPatients()
     setPatients(newPatients)
   }
 
   const handleField = (e) => {
-    dispatch({ type: 'field-change', field: e.target })
+    dispatch({ type: ACTIONS.FIELD_CHANGE, field: e.target })
   }
 
   const handleImage = (image) => {
-    dispatch({ type: 'field-change', field: { name: image, value: image } })
+    dispatch({ type: ACTIONS.FIELD_CHANGE, field: { name: image, value: image } })
+  }
+
+  const getCleanForm = () => {
+    const newForm = clean(state.formData)
+    delete newForm.age
+    return newForm
   }
 
   const handleNewPatient = async () => {
     if (activePatient) {
-      dispatch({ type: 'new-patient' })
+      dispatch({ type: ACTIONS.CLEAR_FORM })
       setActivePatient(null)
+      addSnackbar('Mensaje 1')
+      return
+    }
+
+    const { outcome, payload } = await window.patient.newPatient(getCleanForm())
+    if (outcome === 'success') {
+      setActivePatient(payload)
+      await getPatients()
     } else {
-      const [patient, errors] = await window.database.newPatient(state.formData)
-      dispatch({ type: 'new-patient', errors: errors })
-      if (patient) {
-        setActivePatient(patient)
-        await getPatients()
-      }
+      addSnackbar('Error')
+      dispatch({ type: ACTIONS.SET_ERRORS, errors: payload })
     }
   }
 
   const handleUpdatePatient = async () => {
     if (!activePatient) return
-    const errors = await window.database.updatePatient(activePatient._id, state.formData)
-    dispatch({ type: 'update-patient', errors: errors })
-    await getPatients()
+    const { outcome, payload } = await window.patient.updatePatient(
+      activePatient._id,
+      getCleanForm()
+    )
+    if (outcome === 'success') {
+      await getPatients()
+    } else {
+      dispatch({ type: ACTIONS.SET_ERRORS, errors: payload })
+    }
   }
 
-  const handleDeletePatient = async (option) => {
+  const handleDeletePatient = async () => {
     if (!activePatient) return
-    switch (option) {
-      case 'ok':
-        await window.database.deletePatient(activePatient._id)
-        setActivePatient(null)
-        setRenderConfirmationScreen(false)
-        getPatients()
-        break
-      case 'cancel':
-        setRenderConfirmationScreen(false)
-        break
-      default:
-        setRenderConfirmationScreen(true)
-        break
+    const option = await window.dialog.showConfirmDialog(
+      'Eliminar paciente',
+      '¿Está seguro de eliminar este paciente?'
+    )
+    if (option === window.dialog.OK_OPTION) {
+      await window.patient.deletePatient(activePatient._id)
+      setActivePatient(null)
+      getPatients()
     }
   }
 
   const handlePatientSelection = async (id) => {
-    const patient = await window.database.getPatientById(id)
+    const patient = await window.patient.getPatientById(id)
     setActivePatient(patient)
   }
 
@@ -87,7 +96,6 @@ export default function usePatient() {
     errors: state.errors,
     activePatient,
     patients,
-    renderConfirmationScreen,
     handleField,
     handleImage,
     handleNewPatient,

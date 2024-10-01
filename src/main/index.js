@@ -1,15 +1,24 @@
-import { app, shell, BrowserWindow, ipcMain } from 'electron'
+import { electronApp, is, optimizer } from '@electron-toolkit/utils'
+import { app, BrowserWindow, ipcMain, shell } from 'electron'
 import { join } from 'path'
-import { electronApp, optimizer, is } from '@electron-toolkit/utils'
 import icon from '../../resources/icon.png?asset'
-import {
-  newPatient,
-  getPatients,
-  getPatientById,
-  updatePatient,
-  deletePatient
-} from './services/patientService.js'
 import { openImage } from './services/imageService.js'
+import {
+  deleteMedicalRecord,
+  getMedicalRecordById,
+  getMedicalRecords,
+  newMedicalRecord,
+  updateMedicalRecord
+} from './services/medicalRecordService.js'
+import {
+  deletePatient,
+  getPatientById,
+  getPatients,
+  newPatient,
+  updatePatient
+} from './services/patientService.js'
+import { showConfirmDialog } from './services/dialogService.js'
+import { setMainWindow } from './utils/windowManager.js'
 
 function createWindow() {
   // Create the browser window.
@@ -41,6 +50,7 @@ function createWindow() {
   } else {
     mainWindow.loadFile(join(__dirname, '../renderer/index.html'))
   }
+  setMainWindow(mainWindow)
 }
 
 // This method will be called when Electron has finished
@@ -80,10 +90,16 @@ app.on('window-all-closed', () => {
 
 // In this file you can include the rest of your app"s specific main process
 // code. You can also put them in separate files and require them here.
-import('./database.js')
+import('./utils/database.js')
 ipcMain.handle('patient:new', newPatient)
 ipcMain.handle('patient:getAll', getPatients)
 ipcMain.handle('patient:getOne', getPatientById)
 ipcMain.handle('patient:update', updatePatient)
 ipcMain.handle('patient:delete', deletePatient)
-ipcMain.handle('fs:openImage', openImage)
+ipcMain.handle('medicalRecord:new', newMedicalRecord)
+ipcMain.handle('medicalRecord:getAll', getMedicalRecords)
+ipcMain.handle('medicalRecord:getOne', getMedicalRecordById)
+ipcMain.handle('medicalRecord:update', updateMedicalRecord)
+ipcMain.handle('medicalRecord:delete', deleteMedicalRecord)
+ipcMain.handle('dialog:showConfirmDialog', showConfirmDialog)
+ipcMain.handle('image:openImage', openImage)

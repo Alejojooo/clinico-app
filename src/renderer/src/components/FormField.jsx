@@ -1,36 +1,46 @@
 import PropTypes from 'prop-types'
 
-// TODO: Probar a quitarle el fieldId a age
-// TODO: Probar a cambiar el type="date" para birthdate
-
 CheckboxField.propTypes = {
-  label: PropTypes.string.isRequired,
-  fieldId: PropTypes.string
+  label: PropTypes.string,
+  fieldId: PropTypes.string,
+  isChecked: PropTypes.bool,
+  onChange: PropTypes.func
 }
 
-export function CheckboxField({ label, fieldId }) {
+export function CheckboxField({ label, fieldId, isChecked, onChange }) {
   return (
     <div className="flex flex-row items-center gap-2.5">
       <label className="text-sm font-semibold" htmlFor={fieldId}>
         {label}
       </label>
-      <input id={fieldId} type="checkbox" className="size-4" />
+      <input
+        id={fieldId}
+        name={fieldId}
+        type="checkbox"
+        className="size-4"
+        checked={isChecked}
+        onChange={onChange}
+      />
     </div>
   )
 }
 
 SimpleTextField.propTypes = {
-  label: PropTypes.string.isRequired,
+  type: PropTypes.string,
+  label: PropTypes.string,
   labelWidth: PropTypes.string,
   fieldId: PropTypes.string,
   width: PropTypes.string,
   height: PropTypes.string,
   gap: PropTypes.string,
-  value: PropTypes.string.isRequired,
-  readOnly: PropTypes.bool
+  value: PropTypes.string,
+  onChange: PropTypes.func,
+  readOnly: PropTypes.bool,
+  hidden: PropTypes.bool
 }
 
 export function SimpleTextField({
+  type = 'text',
   label,
   labelWidth = '',
   fieldId,
@@ -38,21 +48,24 @@ export function SimpleTextField({
   height = '',
   gap = 'gap-2.5',
   value,
-  readOnly = false
+  onChange,
+  readOnly = false,
+  hidden = false
 }) {
   return (
     <div
-      className={`flex flex-row items-center ${gap} ${height} ${width === 'grow' ? 'grow' : ''}`}
+      className={`flex flex-row items-center ${gap} ${height} ${width === 'grow' ? 'grow' : ''} ${hidden ? 'hidden' : 'block'}`}
     >
       <label htmlFor={fieldId} className={`text-sm font-semibold ${labelWidth}`}>
         {label}
       </label>
       <input
+        type={type}
         id={fieldId}
-        name={readOnly ? fieldId : ''}
-        type="text"
+        name={fieldId}
         className={`rounded-md border bg-transparent px-2.5 py-1 outline-none ${width === 'grow' ? 'text-start' : 'text-center'} text-sm ${width}`}
         value={value}
+        onChange={onChange}
         disabled={readOnly}
       />
     </div>
@@ -60,11 +73,12 @@ export function SimpleTextField({
 }
 
 TextField.propTypes = {
-  label: PropTypes.string.isRequired,
+  type: PropTypes.string,
+  label: PropTypes.string,
   fieldId: PropTypes.string,
   width: PropTypes.string,
   height: PropTypes.string,
-  value: PropTypes.string.isRequired,
+  value: PropTypes.string,
   error: PropTypes.string,
   onChange: PropTypes.func,
   readOnly: PropTypes.bool,
@@ -72,6 +86,7 @@ TextField.propTypes = {
 }
 
 export function TextField({
+  type = 'text',
   label,
   fieldId,
   width = 'w-24',
@@ -82,9 +97,11 @@ export function TextField({
   readOnly = false,
   multiline = false
 }) {
+  if (type !== 'text' && multiline)
+    throw new Error('TextField has to be of type text to be multiline')
   return (
     <div
-      className={`relative mt-2 py-2 pl-4 ${error ? 'mb-3 border-error text-error' : 'border-neutral text-accent'} ${width} ${height} rounded border`}
+      className={`relative mt-2 py-2 ${type.startsWith('date') ? 'px-4' : 'pl-4'} ${error ? 'mb-3 border-error text-error' : 'border-neutral text-accent'} ${width} ${height} rounded border`}
     >
       <label
         className="absolute -top-2.5 left-3 h-fit w-fit bg-primary px-1 text-xs"
@@ -107,7 +124,7 @@ export function TextField({
           id={fieldId}
           className="size-full bg-transparent py-1 outline-none"
           name={fieldId}
-          type="text"
+          type={type}
           value={value}
           onChange={onChange}
           disabled={readOnly}

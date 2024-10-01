@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types'
-import { TextField } from './FormField'
-import FormImageField from './FormImageField'
-import CrudButtons from './CrudButtons'
+import { TextField } from '../FormField'
+import FormImageField from '../FormImageField'
+import CrudButtons from '../CrudButtons'
 
 PatientForm.propTypes = {
   formData: PropTypes.object,
@@ -23,15 +23,15 @@ export default function PatientForm({
   onDeletePatient
 }) {
   return (
-    <main>
-      <form className="flex size-full flex-col gap-3 rounded-2xl bg-white p-5">
+    <main className="h-full grow">
+      <form className="flex h-full grow flex-col gap-3 rounded-2xl bg-white p-5">
         <div className="flex w-full flex-col items-center justify-start gap-3.5">
           <div className="flex w-full flex-row items-end justify-between">
             <h2 className="text-xl">Identificación del paciente</h2>
             <CrudButtons
-              onNewPatient={onNewPatient}
-              onUpdatePatient={onUpdatePatient}
-              onDeletePatient={onDeletePatient}
+              onNew={onNewPatient}
+              onUpdate={onUpdatePatient}
+              onDelete={onDeletePatient}
             ></CrudButtons>
           </div>
           <div className="w-full border-t border-secondary"></div>
@@ -62,9 +62,10 @@ export default function PatientForm({
         </div>
         <div className="flex w-full flex-row gap-5">
           <TextField
+            type="date"
             label="Fecha de nacimiento"
             fieldId="birthdate"
-            width="w-80"
+            width="w-60 flex-none"
             value={formData.birthdate}
             error={errors.birthdate}
             onChange={onField}
@@ -72,7 +73,7 @@ export default function PatientForm({
           <TextField
             label="Edad"
             fieldId="age"
-            width="w-40"
+            width="w-40 flex-none"
             value={formData.age}
             readOnly
           ></TextField>

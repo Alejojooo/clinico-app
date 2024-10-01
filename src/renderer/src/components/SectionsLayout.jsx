@@ -1,7 +1,7 @@
 import { DocumentTextIcon, Square3Stack3DIcon, UserCircleIcon } from '@heroicons/react/24/outline'
-import { MODULES, PATIENT_SECTIONS } from '../constants'
 import usePatient from '../hooks/usePatient'
 import { useView } from '../hooks/useView'
+import { MODULES, PATIENT_SECTIONS } from '../utils/view'
 import SectionButton from './SectionButton'
 
 function PatientSectionsLayout() {
@@ -9,7 +9,7 @@ function PatientSectionsLayout() {
   const { activeSection, setActiveSection } = useView()
 
   return (
-    <div className="flex flex-row divide-x py-1">
+    <div className="flex flex-row divide-x">
       <SectionButton
         label="Identificación"
         icon={<UserCircleIcon className="size-4" />}
@@ -22,7 +22,6 @@ function PatientSectionsLayout() {
         icon={<Square3Stack3DIcon className="size-4" />}
         isActive={activeSection === PATIENT_SECTIONS.MEDICAL_RECORDS}
         onClick={() => {
-          console.log(activePatient)
           if (activePatient) setActiveSection(PATIENT_SECTIONS.MEDICAL_RECORDS)
         }}
       ></SectionButton>

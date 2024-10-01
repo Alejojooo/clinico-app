@@ -10,7 +10,7 @@ export default function useImage(imageData, onImageChange) {
   }, [imageData])
 
   const handleOpenImage = async () => {
-    const newImage = await window.fs.openImage()
+    const newImage = await window.image.openImage()
     if (newImage) {
       setImage(newImage)
       onImageChange(newImage)

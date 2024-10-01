@@ -1,13 +1,23 @@
 import { DateTime } from 'luxon'
 
-export function localeFormatToJSDate(date) {
-  const dateTime = DateTime.fromFormat(date, 'D', { locale: 'es-GT' })
-  if (dateTime.isValid) return dateTime.toJSDate()
+const ISO_FORMAT = "yyyy-MM-dd'T'HH:mm"
+const ISO_FORMAT_PRETTY = 'yyyy-MM-dd HH:mm'
+
+export function ISOToJSDate(date) {
+  const datetime = DateTime.fromISO(date)
+  if (datetime.isValid) return datetime.toJSDate()
   return null
 }
 
-export function JSDateToLocaleFormat(date) {
-  const dateTime = DateTime.fromJSDate(date)
-  if (dateTime.isValid) return dateTime.toFormat('D', { locale: 'es-GT' })
+export function JSDateToISO(date, opts) {
+  const datetime = DateTime.fromJSDate(date)
+  if (datetime.isValid) {
+    if (opts?.includeTime) {
+      if (opts?.pretty) return datetime.toFormat(ISO_FORMAT_PRETTY)
+      else return datetime.toFormat(ISO_FORMAT)
+    } else {
+      return datetime.toISODate()
+    }
+  }
   return ''
 }

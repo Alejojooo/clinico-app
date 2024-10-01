@@ -1,15 +1,11 @@
 import sharp from 'sharp'
 import { readFileSync } from 'node:fs'
-import { dialog } from 'electron'
-import { gridfsBucket } from '../database'
+import { gridfsBucket } from '../utils/database'
+import { openImageDialog } from './dialogService'
 
 export async function openImage() {
-  const { canceled, filePaths } = await dialog.showOpenDialog({
-    properties: ['openFile'],
-    filters: [{ name: 'Images', extensions: ['jpg', 'png', 'gif'] }]
-  })
-  if (canceled) return null
-  const imagePath = filePaths[0]
+  const imagePath = await openImageDialog()
+  if (!imagePath) return null
   return convertToBase64(imagePath)
 }
 

@@ -2,18 +2,19 @@ import PropTypes from 'prop-types'
 import SearchBar from './SearchBar'
 
 DocumentListItem.propTypes = {
-  name: PropTypes.string.isRequired,
+  label: PropTypes.string.isRequired,
   isActive: PropTypes.bool,
   onClick: PropTypes.func
 }
 
-function DocumentListItem({ name, isActive, onClick }) {
+function DocumentListItem({ label, isActive, onClick }) {
   return (
     <button
+      type="button"
       className={`flex h-7 w-full flex-row items-center justify-start px-4 hover:bg-secondary focus:bg-tertiary ${isActive ? 'bg-tertiary' : ''}`}
       onClick={onClick}
     >
-      {name}
+      {label}
     </button>
   )
 }
@@ -44,16 +45,16 @@ export default function FilterableDocumentList({
   handleDocSelection
 }) {
   return (
-    <div className="flex grow flex-col items-center justify-start gap-3.5">
+    <div className="flex w-full grow flex-col items-center justify-start gap-3.5">
       <SearchBar title={title} length={documents.length}></SearchBar>
       <DocumentList>
         {documents?.length > 0 &&
-          documents.map((patient) => (
+          documents.map((doc) => (
             <DocumentListItem
-              key={patient._id}
-              name={patient.name}
-              isActive={activeDocument?._id === patient._id}
-              onClick={() => handleDocSelection(patient._id)}
+              key={doc._id}
+              label={doc.label}
+              isActive={activeDocument?._id === doc._id}
+              onClick={() => handleDocSelection(doc._id)}
             ></DocumentListItem>
           ))}
       </DocumentList>

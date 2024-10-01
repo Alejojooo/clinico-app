@@ -4,8 +4,8 @@ import {
   Cog6ToothIcon,
   UserGroupIcon
 } from '@heroicons/react/24/outline'
-import { MODULES } from '../constants'
 import { useView } from '../hooks/useView'
+import { MODULES } from '../utils/view'
 import ModuleButton from './ModuleButton'
 
 export default function ModulesLayout() {

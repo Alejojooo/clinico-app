@@ -3,8 +3,8 @@ import {
   ArrowRightStartOnRectangleIcon,
   Bars3Icon
 } from '@heroicons/react/24/outline'
-import { MODULES } from '../constants.js'
 import { useView } from '../hooks/useView.js'
+import { MODULES } from '../utils/view.js'
 import IconButton from './IconButton.jsx'
 import SectionsLayout from './SectionsLayout.jsx'
 
