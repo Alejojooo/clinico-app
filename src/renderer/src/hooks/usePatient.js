@@ -46,7 +46,7 @@ export default function usePatient() {
     if (activePatient) {
       dispatch({ type: ACTIONS.CLEAR_FORM })
       setActivePatient(null)
-      addSnackbar('Mensaje 1')
+      addSnackbar('Se va a crear un nuevo paciente')
       return
     }
 
@@ -54,8 +54,8 @@ export default function usePatient() {
     if (outcome === 'success') {
       setActivePatient(payload)
       await getPatients()
+      addSnackbar('Se creó un nuevo paciente')
     } else {
-      addSnackbar('Error')
       dispatch({ type: ACTIONS.SET_ERRORS, errors: payload })
     }
   }

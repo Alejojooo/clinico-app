@@ -48,7 +48,7 @@ const patientSchema = new Schema({
   birthdate: {
     type: Date,
     validate: {
-      validator: (value) => value === null || ISOToJSDate(value) !== null,
+      validator: (value) => value !== null || ISOToJSDate(value) !== null,
       message: 'La fecha no es válida'
     },
     default: null
