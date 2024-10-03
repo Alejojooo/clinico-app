@@ -7,15 +7,15 @@ import {
   UserIcon
 } from '@heroicons/react/24/outline'
 import PropTypes from 'prop-types'
-import useImage from '../hooks/useImage'
-import IconButton from './IconButton'
+import useImage from '../../hooks/useImage'
+import IconButton from '../Buttons/IconButton'
 
-FormImageField.propTypes = {
+ImageField.propTypes = {
   imageData: PropTypes.string,
   onImageChange: PropTypes.func
 }
 
-export default function FormImageField({ imageData, onImageChange }) {
+export default function ImageField({ imageData, onImageChange }) {
   const [image, imageVisible, setImageVisible, handleOpenImage, handleDeleteImage] = useImage(
     imageData,
     onImageChange

@@ -2,7 +2,23 @@ import { DocumentTextIcon, Square3Stack3DIcon, UserCircleIcon } from '@heroicons
 import usePatient from '../hooks/usePatient'
 import { useView } from '../hooks/useView'
 import { MODULES, PATIENT_SECTIONS } from '../utils/view'
-import SectionButton from './SectionButton'
+import SectionButton from './Buttons/SectionButton'
+
+export default function SectionsLayout() {
+  const { activeModule } = useView()
+
+  switch (activeModule) {
+    case MODULES.PATIENT: {
+      return <PatientSectionsLayout></PatientSectionsLayout>
+    }
+    case MODULES.DRUG: {
+      return <div></div>
+    }
+    default: {
+      throw new Error('There is no section layout for ' + activeModule)
+    }
+  }
+}
 
 function PatientSectionsLayout() {
   const { activePatient } = usePatient()
@@ -35,20 +51,4 @@ function PatientSectionsLayout() {
       ></SectionButton>
     </div>
   )
-}
-
-export default function SectionsLayout() {
-  const { activeModule } = useView()
-
-  switch (activeModule) {
-    case MODULES.PATIENT: {
-      return <PatientSectionsLayout></PatientSectionsLayout>
-    }
-    case MODULES.DRUG: {
-      return <div></div>
-    }
-    default: {
-      throw new Error('There is no section layout for ' + activeModule)
-    }
-  }
 }

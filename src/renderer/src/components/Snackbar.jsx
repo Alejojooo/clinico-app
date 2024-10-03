@@ -1,6 +1,6 @@
-import PropTypes from 'prop-types'
-import { useState, useEffect } from 'react'
 import { InformationCircleIcon } from '@heroicons/react/24/outline'
+import PropTypes from 'prop-types'
+import { useEffect, useState } from 'react'
 
 Snackbar.propTypes = {
   message: PropTypes.string.isRequired,

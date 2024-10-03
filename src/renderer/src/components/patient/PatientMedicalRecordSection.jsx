@@ -1,9 +1,10 @@
 import { CameraIcon, DocumentTextIcon } from '@heroicons/react/24/outline'
-import ActionButton from '../ActionButton'
-import CrudButtons from '../CrudButtons'
-import FilterableDocumentList from '../FilterableRecordList'
-import { CheckboxField, SimpleTextField, TextField } from '../FormField'
 import useMedicalRecord from '../../hooks/useMedicalRecord'
+import ActionButton from '../Buttons/ActionButton'
+import CrudButtons from '../Buttons/CrudButtons'
+import FilterableDocumentList from '../FilterableDocumentList'
+import CheckboxField from '../FormFields/CheckboxField'
+import { SimpleTextField, TextField } from '../FormFields/TextField'
 
 export default function PatientMedicalRecordSection() {
   const {

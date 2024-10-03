@@ -5,7 +5,7 @@ import {
 } from '@heroicons/react/24/outline'
 import { useView } from '../hooks/useView.js'
 import { MODULES } from '../utils/view.js'
-import IconButton from './IconButton.jsx'
+import IconButton from './Buttons/IconButton.jsx'
 import SectionsLayout from './SectionsLayout.jsx'
 
 export default function TopAppBar() {

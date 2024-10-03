@@ -6,11 +6,11 @@ import { ViewProvider } from './context/view'
 import { useView } from './hooks/useView'
 import { MODULES } from './utils/view'
 
-Provider.propTypes = {
+EntityProvider.propTypes = {
   children: PropTypes.node
 }
 
-function Provider({ children }) {
+function EntityProvider({ children }) {
   const { activeModule } = useView()
 
   switch (activeModule) {
@@ -22,16 +22,16 @@ function Provider({ children }) {
 
 function App() {
   return (
-    <ViewProvider>
-      <div className="relative flex h-screen w-screen flex-col bg-primary text-accent">
-        <Provider>
+    <div className="relative flex h-screen w-screen flex-col bg-primary text-accent">
+      <ViewProvider>
+        <EntityProvider>
           <TopAppBar></TopAppBar>
           <div className="flex w-full flex-grow flex-row gap-5 px-5 pb-5">
             <Content></Content>
           </div>
-        </Provider>
-      </div>
-    </ViewProvider>
+        </EntityProvider>
+      </ViewProvider>
+    </div>
   )
 }
 
