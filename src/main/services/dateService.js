@@ -10,6 +10,7 @@ export function ISOToJSDate(date) {
 }
 
 export function JSDateToISO(date, opts) {
+  if (!date) return ''
   const datetime = DateTime.fromISO(date.toISOString().slice(0, -1))
   if (!datetime.isValid) return ''
   if (opts?.includeTime) {
