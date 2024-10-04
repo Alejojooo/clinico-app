@@ -20,11 +20,18 @@ const patientSchema = new Schema({
     required: [true, 'El nombre es requerido'],
     unique: true,
     validate: {
-      validator: async (value) => {
+      validator: async function (value) {
+        // Si no se encuentra un paciente con el mismo nombre, retornar true
         const patient = await mongoose.models.Patient.findOne({ name: value }).select('_id name')
-        // `this` hace referencia al documento actual
-        // Si se encuentra un paciente con el mismo nombre y no es el mismo documento, retornar false
-        return !patient || patient._id.toString() === this._id.toString()
+        if (!patient) return true
+
+        if (this instanceof mongoose.Query) {
+          // `this` hace referencia al Query
+          return patient._id.toString() === this.get('_id')
+        } else {
+          // `this` hace referencia al documento actual
+          return patient._id.toString() === this._id.toString()
+        }
       },
       message: 'El nombre del paciente ya existe'
     }

@@ -29,7 +29,7 @@ export async function getPatientById(event, id) {
 export async function updatePatient(event, id, formData) {
   try {
     const patientData = formToEntity(formData, PATIENT_SCHEMA_FIELDS)
-    await Patient.findByIdAndUpdate(id, patientData)
+    await Patient.findByIdAndUpdate(id, patientData, { runValidators: true })
     if (formData.image) await saveImage(formData.image, 'Patient', id)
     else await deleteImage('Patient', id)
     return { outcome: 'success', payload: {} }
