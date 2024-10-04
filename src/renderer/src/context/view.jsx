@@ -20,12 +20,13 @@ export function ViewProvider({ children }) {
   }
 
   const addSnackbar = (message) => {
-    const id = Date.now()
-    setSnackbars([...snackbars, { id, message }])
+    const newSnackbar = { id: Date.now(), message: message }
+    setSnackbars([...snackbars, newSnackbar])
   }
 
   const removeSnackbar = (id) => {
-    setSnackbars(snackbars.filter((snackbar) => snackbar.id !== id))
+    const newSnackbars = snackbars.filter((snackbar) => snackbar.id !== id)
+    setSnackbars(newSnackbars)
   }
 
   return (

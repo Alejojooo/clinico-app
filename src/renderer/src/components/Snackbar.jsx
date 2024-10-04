@@ -2,26 +2,33 @@ import { InformationCircleIcon } from '@heroicons/react/24/outline'
 import PropTypes from 'prop-types'
 import { useEffect, useState } from 'react'
 
-Snackbar.propTypes = {
-  message: PropTypes.string.isRequired,
+// TODO: Arreglar la visualización de los snackbars al momento de aparecer/desaparecer
+
+SnackbarPile.propTypes = {
+  snackbars: PropTypes.array,
   onRemove: PropTypes.func
 }
 
-// TODO: Arreglar la visualización de los snackbars al momento de aparecer/desaparecer
+export function SnackbarPile({ snackbars }) {
+  return (
+    <div className="fixed bottom-8 right-8 z-50 flex flex-col items-end space-y-2">
+      {snackbars.map(({ id, message }) => (
+        <Snackbar key={id} message={message}></Snackbar>
+      ))}
+    </div>
+  )
+}
 
-export function Snackbar({ message, onRemove }) {
-  const [visible, setVisible] = useState(false)
+Snackbar.propTypes = {
+  message: PropTypes.string.isRequired
+}
+
+export function Snackbar({ message }) {
+  const [visible, setVisible] = useState(true)
 
   useEffect(() => {
-    setVisible(true)
-
-    const timeout = setTimeout(() => {
-      setVisible(false)
-      setTimeout(onRemove, 300)
-    }, 3000)
-
-    return () => clearTimeout(timeout)
-  }, [onRemove])
+    setTimeout(() => setVisible(false), 3000)
+  }, [])
 
   return (
     <div
@@ -29,21 +36,6 @@ export function Snackbar({ message, onRemove }) {
     >
       <InformationCircleIcon className="size-6" />
       <span className="block w-96 text-sm">{message}</span>
-    </div>
-  )
-}
-
-SnackbarPile.propTypes = {
-  snackbars: PropTypes.array,
-  onRemove: PropTypes.func
-}
-
-export function SnackbarPile({ snackbars, onRemove }) {
-  return (
-    <div className="fixed bottom-8 right-8 z-50 flex flex-col items-end space-y-2">
-      {snackbars.map(({ id, message }) => (
-        <Snackbar key={id} message={message} onRemove={() => onRemove(id)}></Snackbar>
-      ))}
     </div>
   )
 }
