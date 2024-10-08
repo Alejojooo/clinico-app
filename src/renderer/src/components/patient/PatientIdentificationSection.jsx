@@ -6,24 +6,13 @@ import { TextField } from '../FormFields/TextField'
 import SideView from '../SideView'
 import { calculateAge } from '../../utils/date'
 
-PatientForm.propTypes = {
-  formData: PropTypes.object,
-  errors: PropTypes.object,
-  disabledButtons: PropTypes.array,
-  onField: PropTypes.func,
-  onImage: PropTypes.func,
-  onNewPatient: PropTypes.func,
-  onUpdatePatient: PropTypes.func,
-  onDeletePatient: PropTypes.func
-}
-
 export default function PatientIdentificationSection() {
   const {
     formData,
     errors,
     activePatient,
-    disabledButtons,
     patients,
+    disabledButtons,
     handleField,
     handleImage,
     handleNewPatient,
@@ -51,6 +40,17 @@ export default function PatientIdentificationSection() {
       ></PatientForm>
     </>
   )
+}
+
+PatientForm.propTypes = {
+  formData: PropTypes.object,
+  errors: PropTypes.object,
+  disabledButtons: PropTypes.array,
+  onField: PropTypes.func,
+  onImage: PropTypes.func,
+  onNewPatient: PropTypes.func,
+  onUpdatePatient: PropTypes.func,
+  onDeletePatient: PropTypes.func
 }
 
 function PatientForm({

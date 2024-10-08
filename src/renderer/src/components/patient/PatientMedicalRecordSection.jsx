@@ -12,6 +12,7 @@ export default function PatientMedicalRecordSection() {
     activePatient,
     activeMedicalRecord,
     medicalRecords,
+    disabledButtons,
     calculateAge,
     handleField,
     handleCheckbox,
@@ -30,6 +31,7 @@ export default function PatientMedicalRecordSection() {
             onNew={handleNewMedicalRecord}
             onUpdate={handleUpdateMedicalRecord}
             onDelete={handleDeleteMedicalRecord}
+            disabledButtons={disabledButtons}
           ></CrudButtons>
         </div>
         <div className="flex size-full flex-col items-start justify-start gap-2.5">

@@ -9,9 +9,19 @@ export function ISOToJSDate(date) {
   return null
 }
 
-export function JSDateToISO(date, opts) {
+export function DateToISO(date, opts) {
   if (!date) return ''
-  const datetime = DateTime.fromISO(date.toISOString().slice(0, -1))
+  const ISODateString = date.toISOString()
+  return formatISO(ISODateString.slice(0, ISODateString.indexOf('T')), opts)
+}
+
+export function DatetimeToISO(date, opts) {
+  if (!date) return ''
+  return formatISO(date.toISOString(), opts)
+}
+
+function formatISO(date, opts) {
+  const datetime = DateTime.fromISO(date)
   if (!datetime.isValid) return ''
   if (opts?.includeTime) {
     if (opts?.pretty) return datetime.toFormat(PRETTY_FORMAT)

@@ -14,8 +14,21 @@ export function ViewProvider({ children }) {
   const [activeSection, setActiveSection] = useState(DEFAULT_SECTION_PER_MODULE[MODULES.PATIENT])
   const [snackbars, setSnackbars] = useState([])
   const snackbarsRef = useRef([])
+  const prevModule = useRef(activeModule)
+  const prevSection = useRef(activeSection)
 
-  useEffect(() => {}, [])
+  useEffect(() => {
+    if (prevModule.current !== activeModule || prevSection.current !== activeSection) {
+      changeSnackbars([])
+      prevModule.current = activeModule
+      prevSection.current = activeSection
+    }
+  }, [activeModule, activeSection])
+
+  const changeSnackbars = (values) => {
+    snackbarsRef.current = values
+    setSnackbars(snackbarsRef.current)
+  }
 
   const changeModule = (module) => {
     setActiveModule(module)
@@ -25,15 +38,13 @@ export function ViewProvider({ children }) {
   const addSnackbar = (message, persistent = false) => {
     const id = Date.now()
     const newSnackbar = { id, message, persistent }
-    snackbarsRef.current = [...snackbarsRef.current, newSnackbar]
-    setSnackbars(snackbarsRef.current)
+    changeSnackbars([...snackbarsRef.current, newSnackbar])
     return id
   }
 
   const removeSnackbar = (id, delay = 300) => {
     setTimeout(() => {
-      snackbarsRef.current = snackbarsRef.current.filter((snackbar) => snackbar.id !== id)
-      setSnackbars(snackbarsRef.current)
+      changeSnackbars(snackbarsRef.current.filter((snackbar) => snackbar.id !== id))
     }, delay)
   }
 

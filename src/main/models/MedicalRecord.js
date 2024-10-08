@@ -1,13 +1,6 @@
 import { model, Schema } from 'mongoose'
 
-export const MEDICAL_RECORD_SCHEMA_FIELDS = [
-  'date',
-  'firstTime',
-  'record',
-  'diagnosis',
-  'treatment',
-  'patientId'
-]
+export const SCHEMA_FIELDS = ['date', 'firstTime', 'record', 'diagnosis', 'treatment', 'patientId']
 
 const medicalRecordSchema = new Schema({
   date: {

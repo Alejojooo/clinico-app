@@ -1,4 +1,4 @@
-import { useContext, useEffect, useReducer, useState } from 'react'
+import { useContext, useEffect, useReducer, useState, useRef } from 'react'
 import { PatientContext } from '../context/patient'
 import { initialState, ACTIONS, patientReducer } from '../reducers/patient'
 import { clean } from '../utils/form'
@@ -17,6 +17,8 @@ export default function usePatient() {
   const { showSnackbar, showPersistentSnackbar, clearPersistentSnackbar } = useSnackbar()
   const { hasChanged, setOriginalData } = useFormChanged(state.formData)
 
+  const messageSent = useRef(false)
+
   useEffect(() => {
     dispatch({ type: ACTIONS.SET_PATIENT, patient: activePatient })
   }, [activePatient])
@@ -31,7 +33,10 @@ export default function usePatient() {
   }
 
   const handleField = (e) => {
-    if (activePatient && hasChanged) showPersistentSnackbar('Hay cambios no guardados')
+    if (activePatient && hasChanged && !messageSent.current) {
+      showPersistentSnackbar('Hay cambios no guardados')
+      messageSent.current = true
+    }
     dispatch({ type: ACTIONS.FIELD_CHANGE, field: e.target })
   }
 
@@ -51,12 +56,10 @@ export default function usePatient() {
       dispatch({ type: ACTIONS.CLEAR_FORM })
       setActivePatient(null)
       showPersistentSnackbar('Se va a crear un nuevo paciente')
-      console.log('active:', activePatient)
       return
     }
 
     const { outcome, payload } = await window.patient.newPatient(getCleanForm())
-    console.log('outcome', outcome, 'payload', payload)
     if (outcome === 'success') {
       setActivePatient(payload)
       showSnackbar('Se creó un nuevo paciente', true)
@@ -112,6 +115,7 @@ export default function usePatient() {
     setOriginalData(patient)
     setActivePatient(patient)
     clearPersistentSnackbar()
+    messageSent.current = false
   }
 
   const getDisabledButtons = () => {
@@ -123,8 +127,8 @@ export default function usePatient() {
     formData: state.formData,
     errors: state.errors,
     activePatient,
-    disabledButtons: getDisabledButtons(),
     patients,
+    disabledButtons: getDisabledButtons(),
     handleField,
     handleImage,
     handleNewPatient,

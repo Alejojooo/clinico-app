@@ -1,5 +1,5 @@
 import mongoose, { model, Schema } from 'mongoose'
-import { JSDateToISO } from '../services/dateService'
+import { DateToISO } from '../services/dateService'
 
 export const SCHEMA_FIELDS = [
   'name',
@@ -55,7 +55,7 @@ const patientSchema = new Schema({
   birthdate: {
     type: Date,
     validate: {
-      validator: (value) => (value !== null ? JSDateToISO(value) : true),
+      validator: (value) => (value !== null ? DateToISO(value) : true),
       message: 'La fecha no es válida'
     },
     default: null
