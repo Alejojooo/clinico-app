@@ -1,13 +1,16 @@
 import { useState, useEffect } from 'react'
 
 export default function useImage(imageData, onImageChange) {
-  const [image, setImage] = useState(null)
+  const [image, setImage] = useState(imageData ?? null)
   const [imageVisible, setImageVisible] = useState(true)
 
   useEffect(() => {
-    if (imageData) setImage(imageData)
-    else setImage(null)
+    setImage(imageData ?? null)
   }, [imageData])
+
+  const handleImageVisibility = () => {
+    setImageVisible(!imageVisible)
+  }
 
   const handleOpenImage = async () => {
     const newImage = await window.image.openImage()
@@ -22,5 +25,5 @@ export default function useImage(imageData, onImageChange) {
     onImageChange(null)
   }
 
-  return [image, imageVisible, setImageVisible, handleOpenImage, handleDeleteImage]
+  return { image, imageVisible, handleImageVisibility, handleOpenImage, handleDeleteImage }
 }

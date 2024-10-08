@@ -29,7 +29,7 @@ export function SimpleTextField({
 }) {
   return (
     <div
-      className={`flex flex-row items-center ${gap} ${height} ${width === 'grow' ? 'grow' : ''} ${hidden ? 'hidden' : 'block'}`}
+      className={`flex flex-row items-center text-accent ${gap} ${height} ${width === 'grow' ? 'grow' : ''} ${hidden ? 'hidden' : 'block'}`}
     >
       <label htmlFor={fieldId} className={`text-sm font-semibold ${labelWidth}`}>
         {label}
@@ -38,7 +38,7 @@ export function SimpleTextField({
         type={type}
         id={fieldId}
         name={fieldId}
-        className={`rounded-md border bg-transparent px-2.5 py-1 outline-none ${width === 'grow' ? 'text-start' : 'text-center'} text-sm ${width}`}
+        className={`rounded-md border border-neutral bg-transparent px-2.5 py-1 outline-none ${width === 'grow' ? 'text-start' : 'text-center'} text-sm ${width}`}
         value={value}
         onChange={onChange}
         disabled={readOnly}

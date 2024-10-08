@@ -15,7 +15,9 @@ module.exports = {
       tertiary: '#BECEDD',
       neutral: '#647994',
       accent: '#193152',
-      error: '#941b1b'
+      error: '#941b1b',
+      disabled: '#e9ecef',
+      'disabled-accent': '#6c757d'
     },
     extend: {
       fontFamily: {

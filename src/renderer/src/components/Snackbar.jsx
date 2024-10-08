@@ -1,41 +1,62 @@
-import { InformationCircleIcon } from '@heroicons/react/24/outline'
+import { InformationCircleIcon, XMarkIcon } from '@heroicons/react/24/outline'
 import PropTypes from 'prop-types'
-import { useEffect, useState } from 'react'
+import IconButton from './Buttons/IconButton'
+import { useState, useEffect } from 'react'
 
 // TODO: Arreglar la visualización de los snackbars al momento de aparecer/desaparecer
 
 SnackbarPile.propTypes = {
   snackbars: PropTypes.array,
-  onRemove: PropTypes.func
+  onDismiss: PropTypes.func
 }
 
-export function SnackbarPile({ snackbars }) {
+export function SnackbarPile({ snackbars, onDismiss }) {
   return (
     <div className="fixed bottom-8 right-8 z-50 flex flex-col items-end space-y-2">
-      {snackbars.map(({ id, message }) => (
-        <Snackbar key={id} message={message}></Snackbar>
+      {snackbars.map(({ id, message, persistent }) => (
+        <Snackbar
+          key={id}
+          message={message}
+          persistent={persistent}
+          onDismiss={() => onDismiss(id)}
+        ></Snackbar>
       ))}
     </div>
   )
 }
 
 Snackbar.propTypes = {
-  message: PropTypes.string.isRequired
+  message: PropTypes.string.isRequired,
+  persistent: PropTypes.bool,
+  onDismiss: PropTypes.func
 }
 
-export function Snackbar({ message }) {
+export function Snackbar({ message, persistent, onDismiss }) {
   const [visible, setVisible] = useState(true)
 
   useEffect(() => {
-    setTimeout(() => setVisible(false), 3000)
-  }, [])
+    if (!persistent) setTimeout(handleDismiss, 3000)
+  }, [persistent])
+
+  const handleDismiss = () => {
+    setVisible(false)
+    onDismiss()
+  }
 
   return (
     <div
-      className={`flex flex-row gap-2.5 rounded-lg border bg-neutral px-4 py-3 text-primary shadow-lg transition-opacity duration-300 ${visible ? 'opacity-100' : 'opacity-0'}`}
+      className={`flex max-w-[400px] flex-row gap-2.5 rounded-lg border bg-neutral px-4 py-3 text-primary shadow-lg transition-opacity duration-300 ${visible ? 'opacity-100' : 'opacity-0'}`}
     >
       <InformationCircleIcon className="size-6" />
       <span className="block w-96 text-sm">{message}</span>
+      {!persistent && (
+        <IconButton
+          icon={<XMarkIcon className="size-6" />}
+          onClick={handleDismiss}
+          noPadding
+          alternative
+        ></IconButton>
+      )}
     </div>
   )
 }

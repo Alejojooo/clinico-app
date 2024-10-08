@@ -1,5 +1,3 @@
-import { calculateAge } from '../utils/date'
-
 // 1. Estado inicial
 export const initialState = {
   formData: {
@@ -7,10 +5,9 @@ export const initialState = {
     gender: '',
     maritalStatus: '',
     birthdate: '',
-    age: '',
     id: '',
-    image: '',
     insurance: '',
+    image: '',
     email: '',
     home: '',
     phone: '',
@@ -32,7 +29,6 @@ export const patientReducer = (state, action) => {
     case ACTIONS.SET_PATIENT: {
       if (!action.patient) return initialState
       const newPatient = action.patient
-      newPatient.age = calculateAge(newPatient.birthdate)
       return { formData: newPatient, errors: {} }
     }
     case ACTIONS.SET_ERRORS: {
@@ -70,10 +66,6 @@ const handleField = (name, value) => {
       let newValue = value.toUpperCase()
       if (!['S', 'C', 'D', 'V', 'U'].includes(newValue)) newValue = ''
       return { [name]: newValue }
-    }
-    case 'birthdate': {
-      const age = calculateAge(value)
-      return { [name]: value, age: age }
     }
     case 'id': {
       const newValue = value.toUpperCase().replace(/\W+/, '')

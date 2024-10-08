@@ -1,7 +1,7 @@
 import mongoose, { model, Schema } from 'mongoose'
 import { JSDateToISO } from '../services/dateService'
 
-export const PATIENT_SCHEMA_FIELDS = [
+export const SCHEMA_FIELDS = [
   'name',
   'gender',
   'maritalStatus',
@@ -27,7 +27,7 @@ const patientSchema = new Schema({
 
         if (this instanceof mongoose.Query) {
           // `this` hace referencia al Query
-          return patient._id.toString() === this.get('_id')
+          return patient._id.toString() === this.getQuery()._id.toString()
         } else {
           // `this` hace referencia al documento actual
           return patient._id.toString() === this._id.toString()
@@ -66,6 +66,7 @@ const patientSchema = new Schema({
     default: ''
   },
   insurance: { type: String, default: '' },
+  image: { type: Schema.Types.ObjectId },
   email: { type: String, default: '' },
   home: { type: String, default: '' },
   phone: { type: String, default: '' },

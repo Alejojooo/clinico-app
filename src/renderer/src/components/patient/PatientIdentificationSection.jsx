@@ -1,13 +1,15 @@
 import PropTypes from 'prop-types'
 import usePatient from '../../hooks/usePatient'
 import CrudButtons from '../Buttons/CrudButtons'
+import ImageField from '../FormFields/ImageField'
 import { TextField } from '../FormFields/TextField'
 import SideView from '../SideView'
-import ImageField from '../formFields/ImageField'
+import { calculateAge } from '../../utils/date'
 
 PatientForm.propTypes = {
   formData: PropTypes.object,
   errors: PropTypes.object,
+  disabledButtons: PropTypes.array,
   onField: PropTypes.func,
   onImage: PropTypes.func,
   onNewPatient: PropTypes.func,
@@ -20,6 +22,7 @@ export default function PatientIdentificationSection() {
     formData,
     errors,
     activePatient,
+    disabledButtons,
     patients,
     handleField,
     handleImage,
@@ -39,6 +42,7 @@ export default function PatientIdentificationSection() {
       <PatientForm
         formData={formData}
         errors={errors}
+        disabledButtons={disabledButtons}
         onField={handleField}
         onImage={handleImage}
         onNewPatient={handleNewPatient}
@@ -52,6 +56,7 @@ export default function PatientIdentificationSection() {
 function PatientForm({
   formData,
   errors,
+  disabledButtons,
   onField,
   onImage,
   onNewPatient,
@@ -68,6 +73,7 @@ function PatientForm({
               onNew={onNewPatient}
               onUpdate={onUpdatePatient}
               onDelete={onDeletePatient}
+              disabledButtons={disabledButtons}
             ></CrudButtons>
           </div>
           <div className="w-full border-t border-secondary"></div>
@@ -110,7 +116,7 @@ function PatientForm({
             label="Edad"
             fieldId="age"
             width="w-40 flex-none"
-            value={formData.age}
+            value={calculateAge(formData.birthdate)}
             readOnly
           ></TextField>
           <TextField

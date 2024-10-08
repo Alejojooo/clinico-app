@@ -1,14 +1,14 @@
 import { MedicalRecord } from '../models/MedicalRecord'
-import { Patient, PATIENT_SCHEMA_FIELDS } from '../models/Patient'
-import { formToEntity, parseErrors, serialize } from '../utils/form'
+import { Patient, SCHEMA_FIELDS } from '../models/Patient'
+import { cleanData, parseErrors, serialize } from '../utils/form'
 import { JSDateToISO } from './dateService'
-import { deleteImage, getImage, saveImage } from './imageService'
+import { deleteImage, generateImageHash, getImage, getFilename, saveImage } from './imageService'
 
 export async function newPatient(event, formData) {
   try {
-    const patientData = formToEntity(formData, PATIENT_SCHEMA_FIELDS)
+    const patientData = cleanData(formData, SCHEMA_FIELDS)
+    patientData.image = await saveImage(formData.image)
     const newPatient = await Patient.create(patientData)
-    await saveImage(formData.image, 'Patient', newPatient._id)
     return { outcome: 'success', payload: await toFormData(newPatient) }
   } catch (err) {
     return { outcome: 'failure', payload: parseErrors(err.errors) }
@@ -28,10 +28,24 @@ export async function getPatientById(event, id) {
 
 export async function updatePatient(event, id, formData) {
   try {
-    const patientData = formToEntity(formData, PATIENT_SCHEMA_FIELDS)
-    await Patient.findByIdAndUpdate(id, patientData, { runValidators: true })
-    if (formData.image) await saveImage(formData.image, 'Patient', id)
-    else await deleteImage('Patient', id)
+    const patientData = cleanData(formData, SCHEMA_FIELDS)
+    const targetPatient = await Patient.findById(id)
+    // Procesar los campos generales
+    for (const field in patientData) {
+      targetPatient[field] = patientData[field]
+    }
+    // Procesar la imagen
+    if (formData.image) {
+      const formDataImageHash = generateImageHash(formData.image)
+      const targetPatientImageHash = await getFilename(targetPatient.image)
+      if (formDataImageHash !== targetPatientImageHash)
+        targetPatient.image = await saveImage(formData.image)
+    } else if (targetPatient.image) {
+      await deleteImage(targetPatient.image)
+      targetPatient.image = null
+    }
+    // Guardar el registro
+    await targetPatient.save()
     return { outcome: 'success', payload: {} }
   } catch (err) {
     return { outcome: 'failure', payload: parseErrors(err.errors) }
@@ -39,14 +53,15 @@ export async function updatePatient(event, id, formData) {
 }
 
 export async function deletePatient(event, id) {
+  const imageId = await Patient.findById(id).select('image')
+  await deleteImage(imageId)
   await Patient.findByIdAndDelete(id)
-  await deleteImage('Patient', id)
   await MedicalRecord.deleteMany({ patientId: id })
 }
 
 async function toFormData(patient) {
   const patientData = serialize(patient)
   patientData.birthdate = JSDateToISO(patient.birthdate)
-  patientData.image = (await getImage('Patient', patientData._id)) ?? ''
+  patientData.image = await getImage(patient.image)
   return patientData
 }

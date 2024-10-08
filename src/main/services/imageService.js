@@ -1,7 +1,9 @@
-import sharp from 'sharp'
+import { createHash } from 'node:crypto'
 import { readFileSync } from 'node:fs'
+import sharp from 'sharp'
 import { gridfsBucket } from '../utils/database'
 import { openImageDialog } from './dialogService'
+import { ObjectId } from 'mongodb'
 
 export async function openImage() {
   const imagePath = await openImageDialog()
@@ -19,22 +21,13 @@ async function convertToBase64(imagePath) {
   }
 }
 
-export async function getImage(collection, id) {
+export async function getImage(imageId) {
+  if (!imageId) return null
   try {
-    const files = await gridfsBucket
-      .find({
-        'metadata.collection': collection,
-        'metadata.id': id
-      })
-      .toArray()
-
-    if (!files || files.length === 0) return null
-
     const base64Image = await new Promise((resolve, reject) => {
       const data = []
-      const fileId = files[0]._id
       gridfsBucket
-        .openDownloadStream(fileId)
+        .openDownloadStream(getObjectId(imageId))
         .on('data', (chunk) => data.push(chunk))
         .on('error', () => {
           reject(new Error('Error al cargar la imagen'))
@@ -52,48 +45,63 @@ export async function getImage(collection, id) {
   }
 }
 
-export async function saveImage(base64Image, collection, id) {
-  if (!base64Image) return
-  const metadata = {
-    contentType: 'image/jpeg',
-    collection: collection,
-    id: id
+function getObjectId(imageId) {
+  if (imageId instanceof ObjectId) return imageId
+  if (typeof imageId === 'string') return new ObjectId(imageId)
+  throw new Error('No se pudo convertir la imageId proporcionada')
+}
+
+export function generateImageHash(base64Image) {
+  if (!base64Image || typeof base64Image !== 'string') return null
+  const base64Data = base64Image.replace(/^data:image\/\w+;base64,/, '')
+  const imgBuffer = Buffer.from(base64Data, 'base64')
+  return createHash('sha256').update(imgBuffer).digest('hex')
+}
+
+export async function getFilename(imageId) {
+  try {
+    const files = await gridfsBucket.find({ _id: getObjectId(imageId) }).toArray()
+    if (!files || files.length === 0) return null
+    return files[0].filename
+  } catch (err) {
+    console.error(err)
+    return null
   }
+}
+
+export async function saveImage(base64Image, name) {
+  if (!base64Image) return null
+  const metadata = {
+    contentType: 'image/jpeg'
+  }
+
   try {
     const base64Data = base64Image.replace(/^data:image\/jpeg;base64,/, '')
     const imgBuffer = Buffer.from(base64Data, 'base64')
     const image = await sharp(imgBuffer).resize({ width: 800 }).jpeg({ quality: 80 }).toBuffer()
-    gridfsBucket
-      .openUploadStream(`${metadata.collection}-${metadata.id}.jpg`, {
-        metadata: {
-          collection,
-          id
-        }
-      })
-      .end(image)
-      .on('finish', () => {
-        console.log('Imagen guardada en GridFS')
-      })
-      .on('error', () => {
-        throw new Error('Error al guardar la imagen')
-      })
+    const imageName = `${name ?? generateImageHash(base64Image)}.jpg`
+    const uploadStream = gridfsBucket.openUploadStream(imageName, { metadata: metadata })
+
+    return new Promise((resolve, reject) => {
+      uploadStream
+        .end(image)
+        .on('finish', () => {
+          console.log('Imagen guardada en GridFS')
+          resolve(uploadStream.id)
+        })
+        .on('error', () => {
+          reject(new Error('Error al guardar la imagen'))
+        })
+    })
   } catch (err) {
     console.error(err)
+    return null
   }
 }
 
-export async function deleteImage(collection, id) {
+export async function deleteImage(imageId) {
   try {
-    const files = await gridfsBucket
-      .find({
-        'metadata.collection': collection,
-        'metadata.id': id
-      })
-      .toArray()
-    if (!files || files.length === 0) return
-
-    const fileId = files[0]._id
-    await gridfsBucket.delete(fileId)
+    await gridfsBucket.delete(getObjectId(imageId))
   } catch (err) {
     console.error(err)
   }

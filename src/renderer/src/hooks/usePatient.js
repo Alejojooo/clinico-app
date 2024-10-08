@@ -1,4 +1,4 @@
-import { useContext, useEffect, useReducer, useState } from 'react'
+import { useContext, useEffect, useReducer, useState, useRef } from 'react'
 import { PatientContext } from '../context/patient'
 import { initialState, ACTIONS, patientReducer } from '../reducers/patient'
 import { clean } from '../utils/form'
@@ -11,9 +11,13 @@ export default function usePatient() {
   }
 
   const { activePatient, setActivePatient } = context
-  const { addSnackbar } = useView()
+  const { addSnackbar, removeSnackbar } = useView()
   const [patients, setPatients] = useState([])
   const [state, dispatch] = useReducer(patientReducer, initialState)
+
+  const originalData = useRef(null)
+  const updateFinished = useRef(true)
+  const snackbarId = useRef(null)
 
   useEffect(() => {
     dispatch({ type: ACTIONS.SET_PATIENT, patient: activePatient })
@@ -23,17 +27,33 @@ export default function usePatient() {
     getPatients()
   }, [])
 
+  const showPersistentSnackbar = (message) => {
+    snackbarId.current = addSnackbar(message, true)
+    updateFinished.current = false
+  }
+
+  const clearPersistentSnackbar = () => {
+    updateFinished.current = true
+    if (snackbarId.current) {
+      removeSnackbar(snackbarId.current, 1)
+      snackbarId.current = null
+    }
+  }
+
   const getPatients = async () => {
     const newPatients = await window.patient.getPatients()
     setPatients(newPatients)
   }
 
   const handleField = (e) => {
+    if (originalData !== state.formData && updateFinished.current && activePatient)
+      showPersistentSnackbar('Hay cambios no guardados')
     dispatch({ type: ACTIONS.FIELD_CHANGE, field: e.target })
   }
 
   const handleImage = (image) => {
-    dispatch({ type: ACTIONS.FIELD_CHANGE, field: { name: 'image', value: image } })
+    const event = { target: { name: 'image', value: image } }
+    handleField(event)
   }
 
   const getCleanForm = () => {
@@ -46,18 +66,21 @@ export default function usePatient() {
     if (activePatient) {
       dispatch({ type: ACTIONS.CLEAR_FORM })
       setActivePatient(null)
-      addSnackbar('Se va a crear un nuevo paciente')
+      clearPersistentSnackbar()
+      showPersistentSnackbar('Se va a crear un nuevo paciente')
+      console.log('active:', activePatient)
       return
     }
 
     const { outcome, payload } = await window.patient.newPatient(getCleanForm())
     if (outcome === 'success') {
       setActivePatient(payload)
-      await getPatients()
+      clearPersistentSnackbar()
       addSnackbar('Se creó un nuevo paciente')
+      await getPatients()
     } else {
-      addSnackbar('Ocurrió un error al crear un nuevo paciente')
       dispatch({ type: ACTIONS.SET_ERRORS, errors: payload })
+      addSnackbar('Ocurrió un error al crear un nuevo paciente')
     }
   }
 
@@ -66,18 +89,22 @@ export default function usePatient() {
       addSnackbar('Primero seleccione a un paciente')
       return
     }
+    if (originalData.current === state.formData) {
+      addSnackbar('No hay cambios que guardar')
+      return
+    }
 
-    console.log(getCleanForm())
     const { outcome, payload } = await window.patient.updatePatient(
       activePatient._id,
       getCleanForm()
     )
     if (outcome === 'success') {
       addSnackbar('Se actualizó el paciente')
+      clearPersistentSnackbar()
       await getPatients()
     } else {
-      addSnackbar('Ocurrió un error al actualizar el paciente')
       dispatch({ type: ACTIONS.SET_ERRORS, errors: payload })
+      addSnackbar('Ocurrió un error al actualizar el paciente')
     }
   }
 
@@ -91,22 +118,30 @@ export default function usePatient() {
       '¿Está seguro de eliminar este paciente?'
     )
     if (option === window.dialog.OK_OPTION) {
-      addSnackbar('Se eliminó el paciente')
-      await window.patient.deletePatient(activePatient._id)
       setActivePatient(null)
+      await window.patient.deletePatient(activePatient._id)
+      addSnackbar('Se eliminó el paciente')
       getPatients()
     }
   }
 
   const handlePatientSelection = async (id) => {
     const patient = await window.patient.getPatientById(id)
+    originalData.current = patient
     setActivePatient(patient)
+    clearPersistentSnackbar()
+  }
+
+  const getDisabledButtons = () => {
+    if (!activePatient) return ['update', 'delete']
+    else return []
   }
 
   return {
     formData: state.formData,
     errors: state.errors,
     activePatient,
+    disabledButtons: getDisabledButtons(),
     patients,
     handleField,
     handleImage,

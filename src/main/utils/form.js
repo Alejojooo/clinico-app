@@ -1,4 +1,4 @@
-export function formToEntity(formData, requiredFields) {
+export function cleanData(formData, requiredFields) {
   const newData = { ...formData }
   for (const field in formData) {
     if (!requiredFields.includes(field)) delete newData[field]

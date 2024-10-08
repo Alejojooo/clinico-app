@@ -1,11 +1,11 @@
 import { MEDICAL_RECORD_SCHEMA_FIELDS, MedicalRecord } from '../models/MedicalRecord'
 import { Patient } from '../models/Patient'
-import { formToEntity, parseErrors, serialize } from '../utils/form'
+import { cleanData, parseErrors, serialize } from '../utils/form'
 import { JSDateToISO } from './dateService'
 
 export async function newMedicalRecord(event, formData) {
   try {
-    const medicalRecordData = formToEntity(formData, MEDICAL_RECORD_SCHEMA_FIELDS)
+    const medicalRecordData = cleanData(formData, MEDICAL_RECORD_SCHEMA_FIELDS)
     const newMedicalRecord = await MedicalRecord.create(medicalRecordData)
     Patient.findByIdAndUpdate(medicalRecordData.patientId, {
       $push: { medicalRecords: newMedicalRecord._id }
@@ -35,7 +35,7 @@ export async function getMedicalRecordById(event, id) {
 
 export async function updateMedicalRecord(event, id, formData) {
   try {
-    const medicalRecordData = formToEntity(formData, MEDICAL_RECORD_SCHEMA_FIELDS)
+    const medicalRecordData = cleanData(formData, MEDICAL_RECORD_SCHEMA_FIELDS)
     await MedicalRecord.findByIdAndUpdate(id, medicalRecordData)
     return { outcome: 'success', payload: {} }
   } catch (err) {

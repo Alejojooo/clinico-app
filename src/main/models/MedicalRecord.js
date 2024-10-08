@@ -25,7 +25,8 @@ const medicalRecordSchema = new Schema({
     type: Schema.Types.ObjectId,
     ref: 'Patient',
     required: true
-  }
+  },
+  photos: [{ type: Schema.Types.ObjectId }]
 })
 
 export const MedicalRecord = model('MedicalRecord', medicalRecordSchema)
