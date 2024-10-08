@@ -1,8 +1,9 @@
-import { useContext, useEffect, useReducer, useState, useRef } from 'react'
+import { useContext, useEffect, useReducer, useState } from 'react'
 import { PatientContext } from '../context/patient'
 import { initialState, ACTIONS, patientReducer } from '../reducers/patient'
 import { clean } from '../utils/form'
-import { useView } from './useView'
+import useSnackbar from './useSnackbar'
+import useFormChanged from './useFormChanged'
 
 export default function usePatient() {
   const context = useContext(PatientContext)
@@ -10,14 +11,11 @@ export default function usePatient() {
     throw new Error('usePatient must be used within a PatientProvider')
   }
 
-  const { activePatient, setActivePatient } = context
-  const { addSnackbar, removeSnackbar } = useView()
   const [patients, setPatients] = useState([])
   const [state, dispatch] = useReducer(patientReducer, initialState)
-
-  const originalData = useRef(null)
-  const updateFinished = useRef(true)
-  const snackbarId = useRef(null)
+  const { activePatient, setActivePatient } = context
+  const { showSnackbar, showPersistentSnackbar, clearPersistentSnackbar } = useSnackbar()
+  const { hasChanged, setOriginalData } = useFormChanged(state.formData)
 
   useEffect(() => {
     dispatch({ type: ACTIONS.SET_PATIENT, patient: activePatient })
@@ -27,27 +25,13 @@ export default function usePatient() {
     getPatients()
   }, [])
 
-  const showPersistentSnackbar = (message) => {
-    snackbarId.current = addSnackbar(message, true)
-    updateFinished.current = false
-  }
-
-  const clearPersistentSnackbar = () => {
-    updateFinished.current = true
-    if (snackbarId.current) {
-      removeSnackbar(snackbarId.current, 1)
-      snackbarId.current = null
-    }
-  }
-
   const getPatients = async () => {
     const newPatients = await window.patient.getPatients()
     setPatients(newPatients)
   }
 
   const handleField = (e) => {
-    if (originalData !== state.formData && updateFinished.current && activePatient)
-      showPersistentSnackbar('Hay cambios no guardados')
+    if (activePatient && hasChanged) showPersistentSnackbar('Hay cambios no guardados')
     dispatch({ type: ACTIONS.FIELD_CHANGE, field: e.target })
   }
 
@@ -66,31 +50,30 @@ export default function usePatient() {
     if (activePatient) {
       dispatch({ type: ACTIONS.CLEAR_FORM })
       setActivePatient(null)
-      clearPersistentSnackbar()
       showPersistentSnackbar('Se va a crear un nuevo paciente')
       console.log('active:', activePatient)
       return
     }
 
     const { outcome, payload } = await window.patient.newPatient(getCleanForm())
+    console.log('outcome', outcome, 'payload', payload)
     if (outcome === 'success') {
       setActivePatient(payload)
-      clearPersistentSnackbar()
-      addSnackbar('Se creó un nuevo paciente')
+      showSnackbar('Se creó un nuevo paciente', true)
       await getPatients()
     } else {
       dispatch({ type: ACTIONS.SET_ERRORS, errors: payload })
-      addSnackbar('Ocurrió un error al crear un nuevo paciente')
+      showSnackbar('Ocurrió un error al crear un nuevo paciente')
     }
   }
 
   const handleUpdatePatient = async () => {
     if (!activePatient) {
-      addSnackbar('Primero seleccione a un paciente')
+      showSnackbar('Primero seleccione a un paciente')
       return
     }
-    if (originalData.current === state.formData) {
-      addSnackbar('No hay cambios que guardar')
+    if (!hasChanged) {
+      showSnackbar('No hay cambios que guardar')
       return
     }
 
@@ -99,18 +82,17 @@ export default function usePatient() {
       getCleanForm()
     )
     if (outcome === 'success') {
-      addSnackbar('Se actualizó el paciente')
-      clearPersistentSnackbar()
+      showSnackbar('Se actualizó el paciente', true)
       await getPatients()
     } else {
       dispatch({ type: ACTIONS.SET_ERRORS, errors: payload })
-      addSnackbar('Ocurrió un error al actualizar el paciente')
+      showSnackbar('Ocurrió un error al actualizar el paciente')
     }
   }
 
   const handleDeletePatient = async () => {
     if (!activePatient) {
-      addSnackbar('Primero seleccione a un paciente')
+      showSnackbar('Primero seleccione a un paciente')
       return
     }
     const option = await window.dialog.showConfirmDialog(
@@ -120,14 +102,14 @@ export default function usePatient() {
     if (option === window.dialog.OK_OPTION) {
       setActivePatient(null)
       await window.patient.deletePatient(activePatient._id)
-      addSnackbar('Se eliminó el paciente')
+      showSnackbar('Se eliminó el paciente')
       getPatients()
     }
   }
 
   const handlePatientSelection = async (id) => {
     const patient = await window.patient.getPatientById(id)
-    originalData.current = patient
+    setOriginalData(patient)
     setActivePatient(patient)
     clearPersistentSnackbar()
   }
