@@ -41,6 +41,7 @@ function PatientSectionsLayout() {
           if (activePatient) setActiveSection(PATIENT_SECTIONS.MEDICAL_RECORDS)
           else addSnackbar('Primero seleccione un paciente')
         }}
+        disabled={!activePatient}
       ></SectionButton>
       <SectionButton
         label="Reporte"
