@@ -53,7 +53,7 @@ export async function updatePatient(event, id, formData) {
 }
 
 export async function deletePatient(event, id) {
-  const imageId = await Patient.findById(id).select('image')
+  const imageId = serialize(await Patient.findById(id))?.image
   await deleteImage(imageId)
   await Patient.findByIdAndDelete(id)
   await MedicalRecord.deleteMany({ patientId: id })

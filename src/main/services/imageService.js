@@ -100,6 +100,7 @@ export async function saveImage(base64Image, name) {
 }
 
 export async function deleteImage(imageId) {
+  if (!imageId) return
   try {
     await gridfsBucket.delete(getObjectId(imageId))
   } catch (err) {
