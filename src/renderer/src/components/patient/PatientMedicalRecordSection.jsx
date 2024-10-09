@@ -100,6 +100,7 @@ export default function PatientMedicalRecordSection() {
               icon={<CameraIcon className="size-6" />}
               label="Fotos"
               verticalLayout
+              disabled={disabledButtons?.includes('photos')}
             ></ActionButton>
           </div>
           <div className="flex size-full flex-row gap-6">
@@ -143,6 +144,7 @@ export default function PatientMedicalRecordSection() {
                 <ActionButton
                   label="Receta"
                   icon={<DocumentTextIcon className="size-5" />}
+                  disabled={disabledButtons?.includes('prescription')}
                 ></ActionButton>
                 <SimpleTextField
                   label="Personal médico responsable"

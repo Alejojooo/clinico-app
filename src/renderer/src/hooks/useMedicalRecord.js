@@ -123,7 +123,7 @@ export default function useMedicalRecord() {
   }
 
   const getDisabledButtons = () => {
-    if (!activeMedicalRecord) return ['update', 'delete']
+    if (!activeMedicalRecord) return ['update', 'delete', 'photos', 'prescription']
     else return
   }
 
