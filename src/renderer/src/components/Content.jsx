@@ -1,6 +1,6 @@
 import { useView } from '../hooks/useView'
 import { MODULES } from '../utils/view'
-import PatientModule from './patient/PatientModule'
+import PatientModule from './Patient/PatientModule'
 
 export default function Content() {
   const { activeModule } = useView()

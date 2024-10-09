@@ -16,10 +16,10 @@ export default function IconButton({
   alternative = false
 }) {
   return (
-    <div className="flex items-center">
+    <div className="flex items-center justify-center">
       <button
         type="button"
-        className={`size-full items-center justify-center rounded-full ${noPadding ? '' : 'p-2'} transition-colors ${alternative ? 'hover:text-accent' : 'hover:bg-secondary-light'} ${solid ? 'bg-primary drop-shadow-md' : ''}`}
+        className={`flex size-full items-center justify-center rounded-full ${noPadding ? '' : 'p-2'} transition-colors ${alternative ? 'hover:text-accent' : 'hover:bg-secondary-light'} ${solid ? 'bg-primary drop-shadow-md' : ''}`}
         onClick={onClick}
       >
         {icon}

@@ -6,7 +6,7 @@ import FilterableDocumentList from '../FilterableDocumentList'
 import CheckboxField from '../FormFields/CheckboxField'
 import { SimpleTextField, TextField } from '../FormFields/TextField'
 
-export default function PatientMedicalRecordSection() {
+export default function MedicalRecordSection() {
   const {
     formData,
     activePatient,
@@ -19,7 +19,8 @@ export default function PatientMedicalRecordSection() {
     handleNewMedicalRecord,
     handleUpdateMedicalRecord,
     handleDeleteMedicalRecord,
-    handleMedicalRecordSelection
+    handleMedicalRecordSelection,
+    handlePhotoSection
   } = useMedicalRecord()
 
   return (
@@ -99,6 +100,7 @@ export default function PatientMedicalRecordSection() {
             <ActionButton
               icon={<CameraIcon className="size-6" />}
               label="Fotos"
+              onClick={handlePhotoSection}
               verticalLayout
               disabled={disabledButtons?.includes('photos')}
             ></ActionButton>

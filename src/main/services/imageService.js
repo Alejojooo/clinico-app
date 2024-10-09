@@ -58,6 +58,12 @@ export function generateImageHash(base64Image) {
   return createHash('sha256').update(imgBuffer).digest('hex')
 }
 
+export async function imagesAreEqual(base64Image, imageId) {
+  const formDataImageHash = generateImageHash(base64Image)
+  const targetImageHash = await getFilename(imageId)
+  return formDataImageHash === targetImageHash
+}
+
 export async function getFilename(imageId) {
   try {
     const files = await gridfsBucket.find({ _id: getObjectId(imageId) }).toArray()

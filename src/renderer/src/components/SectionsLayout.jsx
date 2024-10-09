@@ -2,7 +2,7 @@ import { DocumentTextIcon, Square3Stack3DIcon, UserCircleIcon } from '@heroicons
 import usePatient from '../hooks/usePatient'
 import { useView } from '../hooks/useView'
 import { MODULES, PATIENT_SECTIONS } from '../utils/view'
-import SectionButton from './Buttons/SectionButton'
+import SegmentedButton from './Buttons/SegmentedButton'
 
 export default function SectionsLayout() {
   const { activeModule } = useView()
@@ -25,31 +25,36 @@ function PatientSectionsLayout() {
   const { activeSection, setActiveSection, addSnackbar } = useView()
 
   return (
-    <div className="flex flex-row divide-x">
-      <SectionButton
+    <div className="flex flex-row">
+      <SegmentedButton
+        className="border-r"
         label="Identificación"
         icon={<UserCircleIcon className="size-4" />}
         rounded="left"
         isActive={activeSection === PATIENT_SECTIONS.IDENTIFICATION}
         onClick={() => setActiveSection(PATIENT_SECTIONS.IDENTIFICATION)}
-      ></SectionButton>
-      <SectionButton
+      ></SegmentedButton>
+      <SegmentedButton
+        className="border-r"
         label="Historias"
         icon={<Square3Stack3DIcon className="size-4" />}
-        isActive={activeSection === PATIENT_SECTIONS.MEDICAL_RECORDS}
+        isActive={
+          activeSection === PATIENT_SECTIONS.MEDICAL_RECORDS ||
+          activeSection === PATIENT_SECTIONS.MEDICAL_RECORDS_PHOTOS
+        }
         onClick={() => {
           if (activePatient) setActiveSection(PATIENT_SECTIONS.MEDICAL_RECORDS)
           else addSnackbar('Primero seleccione un paciente')
         }}
         disabled={!activePatient}
-      ></SectionButton>
-      <SectionButton
+      ></SegmentedButton>
+      <SegmentedButton
         label="Reporte"
         icon={<DocumentTextIcon className="size-4" />}
         rounded="right"
         isActive={activeSection === PATIENT_SECTIONS.REPORT}
         onClick={() => setActiveSection(PATIENT_SECTIONS.REPORT)}
-      ></SectionButton>
+      ></SegmentedButton>
     </div>
   )
 }

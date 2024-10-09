@@ -6,6 +6,8 @@ import { clean } from '../utils/form'
 import usePatient from './usePatient'
 import useSnackbar from './useSnackbar'
 import useFormChanged from './useFormChanged'
+import { useView } from './useView'
+import { PATIENT_SECTIONS } from '../utils/view'
 
 export default function useMedicalRecord() {
   const context = useContext(MedicalRecordContext)
@@ -16,6 +18,7 @@ export default function useMedicalRecord() {
   const [medicalRecords, setMedicalRecords] = useState([])
   const [state, dispatch] = useReducer(medicalRecordReducer, initialState)
   const { activePatient } = usePatient()
+  const { setActiveSection } = useView()
   const { activeMedicalRecord, setActiveMedicalRecord } = context
   const { showSnackbar, showPersistentSnackbar, clearPersistentSnackbar } = useSnackbar()
   const { hasChanged, setOriginalData } = useFormChanged(state.formData)
@@ -122,6 +125,10 @@ export default function useMedicalRecord() {
     messageSent.current = false
   }
 
+  const handlePhotoSection = () => {
+    setActiveSection(PATIENT_SECTIONS.MEDICAL_RECORDS_PHOTOS)
+  }
+
   const getDisabledButtons = () => {
     if (!activeMedicalRecord) return ['update', 'delete', 'photos', 'prescription']
     else return
@@ -139,6 +146,7 @@ export default function useMedicalRecord() {
     handleNewMedicalRecord,
     handleUpdateMedicalRecord,
     handleDeleteMedicalRecord,
-    handleMedicalRecordSelection
+    handleMedicalRecordSelection,
+    handlePhotoSection
   }
 }

@@ -2,7 +2,7 @@ import { MedicalRecord } from '../models/MedicalRecord'
 import { Patient, SCHEMA_FIELDS } from '../models/Patient'
 import { cleanData, parseErrors, serialize } from '../utils/form'
 import { DateToISO } from './dateService'
-import { deleteImage, generateImageHash, getImage, getFilename, saveImage } from './imageService'
+import { deleteImage, getImage, saveImage, imagesAreEqual } from './imageService'
 
 export async function newPatient(event, formData) {
   try {
@@ -32,14 +32,11 @@ export async function updatePatient(event, id, formData) {
     const targetPatient = await Patient.findById(id)
     // Procesar los campos generales
     for (const field in patientData) {
-      targetPatient[field] = patientData[field]
+      if (field !== 'image') targetPatient[field] = patientData[field]
     }
     // Procesar la imagen
-    if (formData.image) {
-      const formDataImageHash = generateImageHash(formData.image)
-      const targetPatientImageHash = await getFilename(targetPatient.image)
-      if (formDataImageHash !== targetPatientImageHash)
-        targetPatient.image = await saveImage(formData.image)
+    if (formData.image && !imagesAreEqual(formData.image, targetPatient.image)) {
+      targetPatient.image = await saveImage(formData.image)
     } else if (targetPatient.image) {
       await deleteImage(targetPatient.image)
       targetPatient.image = null
@@ -55,8 +52,8 @@ export async function updatePatient(event, id, formData) {
 export async function deletePatient(event, id) {
   const imageId = serialize(await Patient.findById(id))?.image
   await deleteImage(imageId)
-  await Patient.findByIdAndDelete(id)
   await MedicalRecord.deleteMany({ patientId: id })
+  await Patient.findByIdAndDelete(id)
 }
 
 async function toFormData(patient) {

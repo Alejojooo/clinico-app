@@ -1,4 +1,4 @@
-import mongoose, { model, Schema } from 'mongoose'
+import { model, models, Query, Schema } from 'mongoose'
 import { DateToISO } from '../services/dateService'
 
 export const SCHEMA_FIELDS = [
@@ -22,10 +22,10 @@ const patientSchema = new Schema({
     validate: {
       validator: async function (value) {
         // Si no se encuentra un paciente con el mismo nombre, retornar true
-        const patient = await mongoose.models.Patient.findOne({ name: value }).select('_id name')
+        const patient = await models.Patient.findOne({ name: value }).select('_id name')
         if (!patient) return true
 
-        if (this instanceof mongoose.Query) {
+        if (this instanceof Query) {
           // `this` hace referencia al Query
           return patient._id.toString() === this.getQuery()._id.toString()
         } else {
