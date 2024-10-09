@@ -106,7 +106,7 @@ export default function usePatient() {
       setActivePatient(null)
       await window.patient.deletePatient(activePatient._id)
       showSnackbar('Se eliminó el paciente')
-      getPatients()
+      await getPatients()
     }
   }
 

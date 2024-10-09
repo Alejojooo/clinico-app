@@ -12,23 +12,22 @@ import FilterableDocumentList from '../FilterableDocumentList'
 import { SimpleTextField } from '../FormFields/TextField'
 import ActionButton from '../Buttons/ActionButton'
 import IconButton from '../Buttons/IconButton'
-import { useView } from '../../hooks/useView'
-import { PATIENT_SECTIONS } from '../../utils/view'
-import useMedicalRecord from '../../hooks/useMedicalRecord'
-
-import { useState } from 'react'
+import useMedicalRecordPhoto from '../../hooks/useMedicalRecordPhoto'
 
 export default function MedicalRecordPhotosSection() {
-  const [photos, setPhotos] = useState([])
-
-  const { activeMedicalRecord } = useMedicalRecord()
-  const { setActiveSection } = useView()
-
-  useEffect(() => {
-    getPhotos()
-  }, [])
-
-  const getPhotos = () => {}
+  const {
+    formData,
+    activePhoto,
+    photos,
+    disabledButtons,
+    handleField,
+    handleOpenPhoto,
+    handleUpdatePhotoDescription,
+    handleSavePhoto,
+    handleDeletePhoto,
+    handlePhotoSelection,
+    handleMedicalRecordSection
+  } = useMedicalRecordPhoto()
 
   return (
     <main className="flex size-full flex-row gap-5 px-5 py-5">
@@ -36,15 +35,15 @@ export default function MedicalRecordPhotosSection() {
         <button
           type="button"
           className="flex w-full flex-row items-center gap-2.5 border-b border-secondary pb-1"
-          onClick={() => setActiveSection(PATIENT_SECTIONS.MEDICAL_RECORDS)}
+          onClick={handleMedicalRecordSection}
         >
           <ArrowLeftIcon className="size-5" />
           <span className="text-base">Volver al historial clínico</span>
         </button>
         <FilterableDocumentList
-          activeDocument={null}
-          documents={[]}
-          handleDocSelection={null}
+          activeDocument={activePhoto}
+          documents={photos}
+          handleDocSelection={handlePhotoSelection}
           title="Imágenes"
         ></FilterableDocumentList>
         <div className="flex w-full flex-col gap-2.5">
@@ -55,11 +54,14 @@ export default function MedicalRecordPhotosSection() {
               icon={<FolderIcon className="size-4" />}
               label="Archivo"
               rounded="left"
+              onClick={handleOpenPhoto}
+              disabled={disabledButtons.includes('open')}
             ></SegmentedButton>
             <SegmentedButton
               icon={<CameraIcon className="size-4" />}
               label="Cámara"
               rounded="right"
+              disabled={disabledButtons.includes('camera')}
             ></SegmentedButton>
           </div>
         </div>
@@ -71,22 +73,34 @@ export default function MedicalRecordPhotosSection() {
               icon={<DocumentArrowDownIcon className="size-4" />}
               label="Guardar"
               rounded="left"
+              onClick={handleSavePhoto}
+              disabled={disabledButtons.includes('save')}
             ></SegmentedButton>
             <SegmentedButton
               icon={<XMarkIcon className="size-4" />}
               label="Eliminar"
               rounded="right"
+              onClick={handleDeletePhoto}
+              disabled={disabledButtons.includes('delete')}
             ></SegmentedButton>
           </div>
         </div>
       </div>
       <div className="flex h-full grow flex-col gap-2.5">
         <div className="flex w-full flex-row items-center gap-5">
-          <SimpleTextField label="Descripción" value="Texto de ejemplo" readOnly></SimpleTextField>
+          <SimpleTextField
+            fieldId="description"
+            label="Descripción"
+            onChange={handleField}
+            value={formData.description}
+            readOnly={formData.image ? false : true}
+          ></SimpleTextField>
           <div className="flex flex-row items-center gap-2.5">
             <ActionButton
               icon={<ArrowPathIcon className="size-4" />}
               label="Actualizar"
+              onClick={handleUpdatePhotoDescription}
+              disabled={disabledButtons.includes('update')}
             ></ActionButton>
             <div className="flex size-10 items-center justify-center">
               <IconButton icon={<ArrowsPointingOutIcon className="size-5" />} solid></IconButton>
@@ -94,7 +108,11 @@ export default function MedicalRecordPhotosSection() {
           </div>
         </div>
         <div className="flex size-full items-center justify-center overflow-clip rounded-2xl bg-white">
-          <img className="object-cover" />
+          {formData.image ? (
+            <img className="object-cover" src={formData.image} />
+          ) : (
+            <span>No hay imagen para mostrar</span>
+          )}
         </div>
       </div>
     </main>

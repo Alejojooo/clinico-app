@@ -19,6 +19,13 @@ import {
 } from './services/patientService.js'
 import { showConfirmDialog } from './services/dialogService.js'
 import { setMainWindow } from './utils/windowManager.js'
+import {
+  deleteMedicalRecordPhoto,
+  getMedicalRecordPhotoById,
+  getMedicalRecordPhotos,
+  newMedicalRecordPhoto,
+  updateMedicalRecordPhotoDescription
+} from './services/medicalRecordPhotosService.js'
 
 function createWindow() {
   // Create the browser window.
@@ -101,5 +108,10 @@ ipcMain.handle('medicalRecord:getAll', getMedicalRecords)
 ipcMain.handle('medicalRecord:getOne', getMedicalRecordById)
 ipcMain.handle('medicalRecord:update', updateMedicalRecord)
 ipcMain.handle('medicalRecord:delete', deleteMedicalRecord)
+ipcMain.handle('medicalRecordPhoto:new', newMedicalRecordPhoto)
+ipcMain.handle('medicalRecordPhoto:getAll', getMedicalRecordPhotos)
+ipcMain.handle('medicalRecordPhoto:getOne', getMedicalRecordPhotoById)
+ipcMain.handle('medicalRecordPhoto:update', updateMedicalRecordPhotoDescription)
+ipcMain.handle('medicalRecordPhoto:delete', deleteMedicalRecordPhoto)
 ipcMain.handle('dialog:showConfirmDialog', showConfirmDialog)
 ipcMain.handle('image:openImage', openImage)

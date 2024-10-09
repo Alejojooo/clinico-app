@@ -1,8 +1,8 @@
-import { MedicalRecord } from '../models/MedicalRecord'
 import { Patient, SCHEMA_FIELDS } from '../models/Patient'
 import { cleanData, parseErrors, serialize } from '../utils/form'
 import { DateToISO } from './dateService'
-import { deleteImage, getImage, saveImage, imagesAreEqual } from './imageService'
+import { deleteImage, getImage, imagesAreEqual, saveImage } from './imageService'
+import { deleteMedicalRecord } from './medicalRecordService'
 
 export async function newPatient(event, formData) {
   try {
@@ -50,9 +50,13 @@ export async function updatePatient(event, id, formData) {
 }
 
 export async function deletePatient(event, id) {
-  const imageId = serialize(await Patient.findById(id))?.image
-  await deleteImage(imageId)
-  await MedicalRecord.deleteMany({ patientId: id })
+  const targetPatient = serialize(await Patient.findById(id))
+  if (!targetPatient) return
+
+  await deleteImage(targetPatient.image)
+  targetPatient.medicalRecords.forEach(async function (id) {
+    await deleteMedicalRecord(null, id)
+  })
   await Patient.findByIdAndDelete(id)
 }
 

@@ -1,4 +1,5 @@
 import { SCHEMA_FIELDS, MedicalRecord } from '../models/MedicalRecord'
+import { MedicalRecordPhoto } from '../models/MedicalRecordPhoto'
 import { Patient } from '../models/Patient'
 import { cleanData, parseErrors, serialize } from '../utils/form'
 import { DatetimeToISO } from './dateService'
@@ -44,8 +45,9 @@ export async function updateMedicalRecord(event, id, formData) {
 }
 
 export async function deleteMedicalRecord(event, id) {
-  await MedicalRecord.findByIdAndDelete(id)
+  await MedicalRecordPhoto.deleteMany({ medicalRecordId: id })
   await Patient.updateOne({ medicalRecords: id }, { $pull: { medicalRecords: id } })
+  await MedicalRecord.findByIdAndDelete(id)
 }
 
 function toFormData(medicalRecord) {

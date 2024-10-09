@@ -20,6 +20,15 @@ const medicalRecord = {
   deleteMedicalRecord: (id) => ipcRenderer.invoke('medicalRecord:delete', id)
 }
 
+const medicalRecordPhoto = {
+  newPhoto: (photo) => ipcRenderer.invoke('medicalRecordPhoto:new', photo),
+  getPhotos: (medicalRecordId) => ipcRenderer.invoke('medicalRecordPhoto:getAll', medicalRecordId),
+  getPhotoById: (id) => ipcRenderer.invoke('medicalRecordPhoto:getOne', id),
+  updatePhotoDescription: (id, description) =>
+    ipcRenderer.invoke('medicalRecordPhoto:update', id, description),
+  deletePhoto: (id) => ipcRenderer.invoke('medicalRecordPhoto:delete', id)
+}
+
 const dialog = {
   OK_OPTION: OPTIONS.OK,
   CANCEL_OPTION: OPTIONS.CANCEL,
@@ -39,6 +48,7 @@ if (process.contextIsolated) {
     contextBridge.exposeInMainWorld('electron', electronAPI)
     contextBridge.exposeInMainWorld('patient', patient)
     contextBridge.exposeInMainWorld('medicalRecord', medicalRecord)
+    contextBridge.exposeInMainWorld('medicalRecordPhoto', medicalRecordPhoto)
     contextBridge.exposeInMainWorld('dialog', dialog)
     contextBridge.exposeInMainWorld('image', image)
   } catch (error) {
@@ -48,6 +58,7 @@ if (process.contextIsolated) {
   window.electron = electronAPI
   window.patient = patient
   window.medicalRecord = medicalRecord
+  window.medicalRecordPhoto = medicalRecordPhoto
   window.dialog = dialog
   window.image = image
 }

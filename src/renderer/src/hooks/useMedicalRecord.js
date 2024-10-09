@@ -54,7 +54,6 @@ export default function useMedicalRecord() {
   const getCleanForm = () => {
     const newForm = clean(state.formData)
     if (!state.formData.date) newForm.date = new Date().toISOString()
-    console.log('date', newForm.date)
     return newForm
   }
 
