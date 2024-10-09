@@ -14,7 +14,7 @@
   - ✅ hook para historia clínica
   - ✅ Pasarle el paciente activo
   - ✅ Rellenar los campos con los del paciente activo
-  - Fotos
+  - ✅ Fotos
   - Receta
 - ✅ Corregir validaciones en updates
 - ✅ Deshabilitar los otros botones del CRUD acorde a la acción que se está haciendo
@@ -24,6 +24,7 @@
   - ✅ Limpiar el div que contiene los mensajes de información (implm. pendiente de removeSnackbar)
 - ✅ Copiar lo realizado para el módulo de historias clínicas.
 - ✅ Optimizar la carga de imágenes para imágenes idénticas.
+- Vista de medicamentos
 - Agregar función de búsqueda de registros
 - Agregar botones de desplazamiento en la lista de entidades (⏮️◀️ ▶️⏭)
 - Evitar que la lista de documentos cambie de tamaño al tener muchos documentos.
