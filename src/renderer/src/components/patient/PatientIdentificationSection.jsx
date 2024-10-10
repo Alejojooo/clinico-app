@@ -34,9 +34,9 @@ export default function PatientIdentificationSection() {
         disabledButtons={disabledButtons}
         onField={handleField}
         onImage={handleImage}
-        onNewPatient={handleNewPatient}
-        onUpdatePatient={handleUpdatePatient}
-        onDeletePatient={handleDeletePatient}
+        onNew={handleNewPatient}
+        onUpdate={handleUpdatePatient}
+        onDelete={handleDeletePatient}
       ></PatientForm>
     </>
   )
@@ -48,9 +48,9 @@ PatientForm.propTypes = {
   disabledButtons: PropTypes.array,
   onField: PropTypes.func,
   onImage: PropTypes.func,
-  onNewPatient: PropTypes.func,
-  onUpdatePatient: PropTypes.func,
-  onDeletePatient: PropTypes.func
+  onNew: PropTypes.func,
+  onUpdate: PropTypes.func,
+  onDelete: PropTypes.func
 }
 
 function PatientForm({
@@ -59,16 +59,16 @@ function PatientForm({
   disabledButtons,
   onField,
   onImage,
-  onNewPatient,
-  onUpdatePatient,
-  onDeletePatient
+  onNew,
+  onUpdate,
+  onDelete
 }) {
   return (
     <main className="h-full grow">
       <form className="flex h-full grow flex-col gap-3 rounded-2xl bg-white p-5">
         <Header
           title="Identificación del paciente"
-          handlers={{ onNew: onNewPatient, onUpdate: onUpdatePatient, onDelete: onDeletePatient }}
+          handlers={{ onNew, onUpdate, onDelete }}
           disabledButtons={disabledButtons}
         ></Header>
         <div className="flex w-full flex-row gap-5">

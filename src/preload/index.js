@@ -29,6 +29,14 @@ const medicalRecordPhoto = {
   deletePhoto: (id) => ipcRenderer.invoke('medicalRecordPhoto:delete', id)
 }
 
+const drug = {
+  newDrug: (drug) => ipcRenderer.invoke('drug:new', drug),
+  getDrugs: () => ipcRenderer.invoke('drug:getAll'),
+  getDrugById: (id) => ipcRenderer.invoke('drug:getOne', id),
+  updateDrug: (id, drug) => ipcRenderer.invoke('drug:update', id, drug),
+  deleteDrug: (id) => ipcRenderer.invoke('drug:delete', id)
+}
+
 const dialog = {
   OK_OPTION: OPTIONS.OK,
   CANCEL_OPTION: OPTIONS.CANCEL,
@@ -49,6 +57,7 @@ if (process.contextIsolated) {
     contextBridge.exposeInMainWorld('patient', patient)
     contextBridge.exposeInMainWorld('medicalRecord', medicalRecord)
     contextBridge.exposeInMainWorld('medicalRecordPhoto', medicalRecordPhoto)
+    contextBridge.exposeInMainWorld('drug', drug)
     contextBridge.exposeInMainWorld('dialog', dialog)
     contextBridge.exposeInMainWorld('image', image)
   } catch (error) {
@@ -59,6 +68,7 @@ if (process.contextIsolated) {
   window.patient = patient
   window.medicalRecord = medicalRecord
   window.medicalRecordPhoto = medicalRecordPhoto
+  window.drug = drug
   window.dialog = dialog
   window.image = image
 }

@@ -26,6 +26,7 @@ import {
   newMedicalRecordPhoto,
   updateMedicalRecordPhotoDescription
 } from './services/medicalRecordPhotosService.js'
+import { deleteDrug, getDrugById, getDrugs, newDrug, updateDrug } from './services/drugService.js'
 
 function createWindow() {
   // Create the browser window.
@@ -98,20 +99,31 @@ app.on('window-all-closed', () => {
 // In this file you can include the rest of your app"s specific main process
 // code. You can also put them in separate files and require them here.
 import('./utils/database.js')
+
 ipcMain.handle('patient:new', newPatient)
 ipcMain.handle('patient:getAll', getPatients)
 ipcMain.handle('patient:getOne', getPatientById)
 ipcMain.handle('patient:update', updatePatient)
 ipcMain.handle('patient:delete', deletePatient)
+
 ipcMain.handle('medicalRecord:new', newMedicalRecord)
 ipcMain.handle('medicalRecord:getAll', getMedicalRecords)
 ipcMain.handle('medicalRecord:getOne', getMedicalRecordById)
 ipcMain.handle('medicalRecord:update', updateMedicalRecord)
 ipcMain.handle('medicalRecord:delete', deleteMedicalRecord)
+
 ipcMain.handle('medicalRecordPhoto:new', newMedicalRecordPhoto)
 ipcMain.handle('medicalRecordPhoto:getAll', getMedicalRecordPhotos)
 ipcMain.handle('medicalRecordPhoto:getOne', getMedicalRecordPhotoById)
 ipcMain.handle('medicalRecordPhoto:update', updateMedicalRecordPhotoDescription)
 ipcMain.handle('medicalRecordPhoto:delete', deleteMedicalRecordPhoto)
+
+ipcMain.handle('drug:new', newDrug)
+ipcMain.handle('drug:getAll', getDrugs)
+ipcMain.handle('drug:getOne', getDrugById)
+ipcMain.handle('drug:update', updateDrug)
+ipcMain.handle('drug:delete', deleteDrug)
+
 ipcMain.handle('dialog:showConfirmDialog', showConfirmDialog)
+
 ipcMain.handle('image:openImage', openImage)

@@ -72,7 +72,7 @@ export default function usePatient() {
 
   const handleUpdatePatient = async () => {
     if (!activePatient) {
-      showSnackbar('Primero seleccione a un paciente')
+      showSnackbar('Primero seleccione un paciente')
       return
     }
     if (!hasChanged) {
@@ -95,7 +95,7 @@ export default function usePatient() {
 
   const handleDeletePatient = async () => {
     if (!activePatient) {
-      showSnackbar('Primero seleccione a un paciente')
+      showSnackbar('Primero seleccione un paciente')
       return
     }
     const option = await window.dialog.showConfirmDialog(
