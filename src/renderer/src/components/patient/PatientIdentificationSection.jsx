@@ -1,10 +1,10 @@
 import PropTypes from 'prop-types'
 import usePatient from '../../hooks/usePatient'
-import CrudButtons from '../Buttons/CrudButtons'
 import ImageField from '../FormFields/ImageField'
 import { TextField } from '../FormFields/TextField'
 import SideView from '../SideView'
 import { calculateAge } from '../../utils/date'
+import Header from '../Header'
 
 export default function PatientIdentificationSection() {
   const {
@@ -66,18 +66,11 @@ function PatientForm({
   return (
     <main className="h-full grow">
       <form className="flex h-full grow flex-col gap-3 rounded-2xl bg-white p-5">
-        <div className="flex w-full flex-col items-center justify-start gap-3.5">
-          <div className="flex w-full flex-row items-end justify-between">
-            <h2 className="text-xl">Identificación del paciente</h2>
-            <CrudButtons
-              onNew={onNewPatient}
-              onUpdate={onUpdatePatient}
-              onDelete={onDeletePatient}
-              disabledButtons={disabledButtons}
-            ></CrudButtons>
-          </div>
-          <div className="w-full border-t border-secondary"></div>
-        </div>
+        <Header
+          title="Identificación del paciente"
+          handlers={{ onNew: onNewPatient, onUpdate: onUpdatePatient, onDelete: onDeletePatient }}
+          disabledButtons={disabledButtons}
+        ></Header>
         <div className="flex w-full flex-row gap-5">
           <TextField
             label="Nombre"

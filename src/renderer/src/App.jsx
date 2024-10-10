@@ -17,6 +17,9 @@ function EntityProvider({ children }) {
     case MODULES.PATIENT: {
       return <PatientProvider>{children}</PatientProvider>
     }
+    default: {
+      return <>{children}</>
+    }
   }
 }
 

@@ -27,7 +27,8 @@
 - Vista de medicamentos
 - Agregar función de búsqueda de registros
 - Agregar botones de desplazamiento en la lista de entidades (⏮️◀️ ▶️⏭)
-- Evitar que la lista de documentos cambie de tamaño al tener muchos documentos.
+- Evitar que la lista de documentos cambie de tamaño al tener muchos documentos
+- Añadir hints cuando se pasa el cursor sobre un botón
 
 # Frontend
 
