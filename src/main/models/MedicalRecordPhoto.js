@@ -11,7 +11,7 @@ const medicalRecordPhotoSchema = new Schema({
     unique: true,
     validate: {
       validator: async function (value) {
-        return validateUniqueness(this, models.MedicalRecordPhoto, 'description', value)
+        return await validateUniqueness(this, models.MedicalRecordPhoto, 'description', value)
       },
       message: 'Ingrese una descripción única para la imagen'
     }

@@ -22,7 +22,7 @@ const patientSchema = new Schema({
     unique: true,
     validate: {
       validator: async function (value) {
-        return validateUniqueness(this, models.Patient, 'name', value)
+        return await validateUniqueness(this, models.Patient, 'name', value)
       },
       message: 'El nombre del paciente ya existe'
     }
