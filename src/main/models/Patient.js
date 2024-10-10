@@ -1,5 +1,6 @@
-import { model, models, Query, Schema } from 'mongoose'
+import { model, models, Schema } from 'mongoose'
 import { DateToISO } from '../services/dateService'
+import { validateUniqueness } from './Validator'
 
 export const SCHEMA_FIELDS = [
   'name',
@@ -21,17 +22,7 @@ const patientSchema = new Schema({
     unique: true,
     validate: {
       validator: async function (value) {
-        // Si no se encuentra un paciente con el mismo nombre, retornar true
-        const patient = await models.Patient.findOne({ name: value }).select('_id name')
-        if (!patient) return true
-
-        if (this instanceof Query) {
-          // `this` hace referencia al Query
-          return patient._id.toString() === this.getQuery()._id.toString()
-        } else {
-          // `this` hace referencia al documento actual
-          return patient._id.toString() === this._id.toString()
-        }
+        return validateUniqueness(this, models.Patient, 'name', value)
       },
       message: 'El nombre del paciente ya existe'
     }

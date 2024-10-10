@@ -7,8 +7,10 @@ import { deleteMedicalRecord } from './medicalRecordService'
 export async function newPatient(event, formData) {
   try {
     const patientData = cleanData(formData, SCHEMA_FIELDS)
-    patientData.image = await saveImage(formData.image)
     const newPatient = await Patient.create(patientData)
+    newPatient.image = await saveImage(formData.image)
+    newPatient.save()
+
     return { outcome: 'success', payload: await toFormData(newPatient) }
   } catch (err) {
     return { outcome: 'failure', payload: parseErrors(err.errors) }

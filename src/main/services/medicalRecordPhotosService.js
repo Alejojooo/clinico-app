@@ -6,8 +6,10 @@ import { deleteImage, getImage, saveImage } from './imageService'
 export async function newMedicalRecordPhoto(event, formData) {
   try {
     const photoData = cleanData(formData, SCHEMA_FIELDS)
-    photoData.image = await saveImage(formData.image)
     const newPhoto = await MedicalRecordPhoto.create(photoData)
+    newPhoto.image = await saveImage(formData.image)
+    newPhoto.save()
+
     MedicalRecord.findByIdAndUpdate(formData.medicalRecordId, {
       $push: { photos: newPhoto.image }
     })
