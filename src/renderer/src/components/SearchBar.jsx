@@ -18,15 +18,23 @@ function DocumentListTitle({ title, length }) {
 
 SearchBar.propTypes = {
   title: PropTypes.string.isRequired,
-  length: PropTypes.number.isRequired
+  length: PropTypes.number.isRequired,
+  value: PropTypes.string,
+  onInput: PropTypes.func
 }
 
-export default function SearchBar({ title, length }) {
+export default function SearchBar({ title, length, value, onInput }) {
   return (
     <>
       <DocumentListTitle title={title} length={length}></DocumentListTitle>
       <div className="flex h-10 w-full flex-row items-center justify-start gap-1 rounded-full bg-secondary-light py-1 pl-4 pr-1">
-        <input className="grow bg-transparent outline-none" placeholder="Buscar" size="1"></input>
+        <input
+          className="grow bg-transparent outline-none"
+          placeholder="Buscar"
+          size="1"
+          value={value}
+          onChange={onInput}
+        ></input>
         <IconButton icon={<AdjustmentsHorizontalIcon className="size-6" />} />
       </div>
     </>

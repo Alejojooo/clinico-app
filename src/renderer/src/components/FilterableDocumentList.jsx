@@ -1,5 +1,6 @@
 import PropTypes from 'prop-types'
 import SearchBar from './SearchBar'
+import { useState, useEffect } from 'react'
 
 DocumentListItem.propTypes = {
   label: PropTypes.string.isRequired,
@@ -44,12 +45,38 @@ export default function FilterableDocumentList({
   activeDocument,
   handleDocSelection
 }) {
+  const [searchValue, setSearchValue] = useState('')
+  const [filteredDocuments, setFilteredDocuments] = useState(documents)
+
+  useEffect(() => {
+    setFilteredDocuments(documents)
+  }, [documents])
+
+  const handleInput = (e) => {
+    // Si no hay documentos para filtrar
+    if (!(documents?.length > 0)) return
+
+    const newValue = e.target.value.trim()
+    if (newValue === '') {
+      setFilteredDocuments(documents)
+    } else {
+      const newFilteredDocuments = documents.filter((doc) => doc.label.includes(newValue))
+      setFilteredDocuments(newFilteredDocuments)
+    }
+    setSearchValue(newValue)
+  }
+
   return (
     <div className="flex w-full grow flex-col items-center justify-start gap-3.5">
-      <SearchBar title={title} length={documents.length}></SearchBar>
+      <SearchBar
+        title={title}
+        length={filteredDocuments.length}
+        value={searchValue}
+        onInput={handleInput}
+      ></SearchBar>
       <DocumentList>
-        {documents?.length > 0 &&
-          documents.map((doc) => (
+        {filteredDocuments?.length > 0 &&
+          filteredDocuments.map((doc) => (
             <DocumentListItem
               key={doc._id}
               label={doc.label}

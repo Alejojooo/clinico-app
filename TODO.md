@@ -25,8 +25,9 @@
 - ✅ Copiar lo realizado para el módulo de historias clínicas.
 - ✅ Optimizar la carga de imágenes para imágenes idénticas.
 - ✅ Vista de medicamentos
-- Reconfigurar el guardado de imágenes (algunas imágenes se guardan/visualizan demasiado grandes)
 - Agregar función de búsqueda de registros
+  - ✅ Función simple de filtro
+- Reconfigurar el guardado de imágenes (algunas imágenes se guardan/visualizan demasiado grandes)
 - Agregar botones de desplazamiento en la lista de entidades (⏮️◀️ ▶️⏭)
 - Evitar que la lista de documentos cambie de tamaño al tener muchos documentos
 - Añadir hints cuando se pasa el cursor sobre un botón
