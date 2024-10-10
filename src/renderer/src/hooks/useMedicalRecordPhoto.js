@@ -105,6 +105,7 @@ export default function useMedicalRecordPhoto() {
     )
     if (option === window.dialog.OK_OPTION) {
       setActivePhoto(null)
+      setFormData(initialFormData)
       await window.medicalRecordPhoto.deletePhoto(activePhoto._id)
       showSnackbar('Se eliminó la fotografía')
       await getPhotos()
