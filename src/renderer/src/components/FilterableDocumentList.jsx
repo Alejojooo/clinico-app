@@ -2,36 +2,6 @@ import PropTypes from 'prop-types'
 import SearchBar from './SearchBar'
 import { useState, useEffect } from 'react'
 
-DocumentListItem.propTypes = {
-  label: PropTypes.string.isRequired,
-  isActive: PropTypes.bool,
-  onClick: PropTypes.func
-}
-
-function DocumentListItem({ label, isActive, onClick }) {
-  return (
-    <button
-      type="button"
-      className={`flex h-7 w-full flex-row items-center justify-start px-4 hover:bg-secondary focus:bg-tertiary ${isActive ? 'bg-tertiary' : ''}`}
-      onClick={onClick}
-    >
-      {label}
-    </button>
-  )
-}
-
-DocumentList.propTypes = {
-  children: PropTypes.node
-}
-
-function DocumentList({ children }) {
-  return (
-    <div className="flex w-full flex-grow flex-col overflow-clip rounded-2xl bg-secondary-light">
-      {children}
-    </div>
-  )
-}
-
 FilterableDocumentList.propTypes = {
   title: PropTypes.string,
   documents: PropTypes.array,
@@ -86,5 +56,35 @@ export default function FilterableDocumentList({
           ))}
       </DocumentList>
     </div>
+  )
+}
+
+DocumentList.propTypes = {
+  children: PropTypes.node
+}
+
+function DocumentList({ children }) {
+  return (
+    <div className="flex w-full flex-grow flex-col overflow-clip rounded-2xl bg-secondary-light">
+      {children}
+    </div>
+  )
+}
+
+DocumentListItem.propTypes = {
+  label: PropTypes.string.isRequired,
+  isActive: PropTypes.bool,
+  onClick: PropTypes.func
+}
+
+function DocumentListItem({ label, isActive, onClick }) {
+  return (
+    <button
+      type="button"
+      className={`flex h-7 w-full flex-row items-center justify-start px-4 hover:bg-secondary focus:bg-tertiary ${isActive ? 'bg-tertiary' : ''}`}
+      onClick={onClick}
+    >
+      {label}
+    </button>
   )
 }
