@@ -27,10 +27,13 @@
 - ✅ Vista de medicamentos
 - Agregar función de búsqueda de registros
   - ✅ Función simple de filtro
-- Reconfigurar el guardado de imágenes (algunas imágenes se guardan/visualizan demasiado grandes)
-- Agregar botones de desplazamiento en la lista de entidades (⏮️◀️ ▶️⏭)
 - Evitar que la lista de documentos cambie de tamaño al tener muchos documentos
-- Añadir hints cuando se pasa el cursor sobre un botón
+- Reconfigurar el guardado de imágenes (algunas imágenes se guardan/visualizan demasiado grandes)
+- Agregar fotos desde cámara
+- Agregar botones de desplazamiento en la lista de entidades (⏮️◀️ ▶️⏭)
+- Añadir hints
+  - Cuando se pasa el cursor sobre un botón
+  - Cuando un input está activo
 
 # Frontend
 
