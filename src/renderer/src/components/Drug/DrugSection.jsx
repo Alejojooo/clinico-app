@@ -58,7 +58,7 @@ function DrugForm({ formData, errors, disabledButtons, onField, onNew, onUpdate,
           disabledButtons={disabledButtons}
         ></Header>
         <div className="flex w-full flex-row gap-5">
-          <div className="flex h-full grow flex-col gap-5">
+          <div className="flex h-full grow flex-col gap-3">
             <TextField
               label="Nombre comercial"
               fieldId="tradeName"
