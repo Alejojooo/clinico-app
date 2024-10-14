@@ -1,5 +1,5 @@
 import { dialog } from 'electron'
-import { getMainWindow } from '../utils/windowManager'
+import { getMainWindow } from './windowManager'
 
 export const OPTIONS = {
   OK: 0,

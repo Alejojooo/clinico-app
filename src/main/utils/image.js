@@ -1,8 +1,8 @@
 import { createHash } from 'node:crypto'
 import { readFileSync } from 'node:fs'
 import sharp from 'sharp'
-import { gridfsBucket } from '../utils/database'
-import { openImageDialog } from './dialogService'
+import { gridfsBucket } from './database'
+import { openImageDialog } from './dialog'
 import { ObjectId } from 'mongodb'
 
 export async function openImage() {

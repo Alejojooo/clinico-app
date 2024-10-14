@@ -4,7 +4,7 @@ export const initialState = {
     name: '',
     gender: '',
     maritalStatus: '',
-    birthdate: '',
+    birthdate: null,
     id: '',
     insurance: '',
     image: '',

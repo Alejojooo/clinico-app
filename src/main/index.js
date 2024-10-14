@@ -2,7 +2,14 @@ import { electronApp, is, optimizer } from '@electron-toolkit/utils'
 import { app, BrowserWindow, ipcMain, shell } from 'electron'
 import { join } from 'path'
 import icon from '../../resources/icon.png?asset'
-import { openImage } from './services/imageService.js'
+import { deleteDrug, getDrugById, getDrugs, newDrug, updateDrug } from './services/drugService.js'
+import {
+  deleteMedicalRecordPhoto,
+  getMedicalRecordPhotoById,
+  getMedicalRecordPhotos,
+  newMedicalRecordPhoto,
+  updateMedicalRecordPhotoDescription
+} from './services/medicalRecordPhotosService.js'
 import {
   deleteMedicalRecord,
   getMedicalRecordById,
@@ -17,16 +24,9 @@ import {
   newPatient,
   updatePatient
 } from './services/patientService.js'
-import { showConfirmDialog } from './services/dialogService.js'
+import { showConfirmDialog } from './utils/dialog.js'
+import { openImage } from './utils/image.js'
 import { setMainWindow } from './utils/windowManager.js'
-import {
-  deleteMedicalRecordPhoto,
-  getMedicalRecordPhotoById,
-  getMedicalRecordPhotos,
-  newMedicalRecordPhoto,
-  updateMedicalRecordPhotoDescription
-} from './services/medicalRecordPhotosService.js'
-import { deleteDrug, getDrugById, getDrugs, newDrug, updateDrug } from './services/drugService.js'
 
 function createWindow() {
   // Create the browser window.

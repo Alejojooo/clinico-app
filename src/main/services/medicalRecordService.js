@@ -1,8 +1,8 @@
-import { SCHEMA_FIELDS, MedicalRecord } from '../models/MedicalRecord'
+import { MedicalRecord, SCHEMA_FIELDS } from '../models/MedicalRecord'
 import { MedicalRecordPhoto } from '../models/MedicalRecordPhoto'
 import { Patient } from '../models/Patient'
+import { formatDate, toUIDate } from '../utils/date'
 import { cleanData, parseErrors, serialize } from '../utils/form'
-import { DatetimeToISO } from './dateService'
 
 export async function newMedicalRecord(event, formData) {
   try {
@@ -24,7 +24,7 @@ export async function getMedicalRecords(event, patientId) {
   return serialize(
     medicalRecords.map((medicalRecord) => ({
       _id: medicalRecord._id,
-      label: DatetimeToISO(medicalRecord.date, { includeTime: true, pretty: true })
+      label: formatDate(medicalRecord.date, { pretty: true })
     }))
   )
 }
@@ -52,6 +52,6 @@ export async function deleteMedicalRecord(event, id) {
 
 function toFormData(medicalRecord) {
   const newMedicalRecord = serialize(medicalRecord)
-  newMedicalRecord.date = DatetimeToISO(medicalRecord.date, { includeTime: true })
+  newMedicalRecord.date = toUIDate(medicalRecord.date)
   return newMedicalRecord
 }

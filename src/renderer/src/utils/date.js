@@ -1,19 +1,17 @@
-import { DateTime, Interval } from 'luxon'
+import dayjs from 'dayjs'
+import duration from 'dayjs/plugin/duration'
+dayjs.extend(duration)
 
 export const calculateAge = (value) => {
-  const birthdate = DateTime.fromISO(value)
-  if (!birthdate.isValid) return ''
+  console.log(value)
+  if (!value || !value.isValid()) return ''
 
-  const duration = Interval.fromDateTimes(birthdate, DateTime.now())
-    .toDuration(['years', 'months', 'days'])
-    .toObject()
-
-  const birthdateIsAfterToday = Object.keys(duration).length === 0
-  if (birthdateIsAfterToday) return '0a'
+  const duration = dayjs.duration(dayjs().diff(value))
+  if (value.isAfter(dayjs())) return '0a'
   // De 0 a 1 año se cuentan los meses y días
-  if (duration.years >= 13) return `${duration.years}a`
+  if (duration.years() >= 13) return `${duration.years()}a`
   // De 1 a 12 años se cuentan los años y meses
-  else if (duration.years >= 1) return `${duration.years}a ${duration.months}m`
+  else if (duration.years() >= 1) return `${duration.years()}a ${duration.months()}m`
   // A partir de los 13 años se dejan de contar los meses
-  else return `${duration.months}m ${Math.floor(duration.days)}d`
+  else return `${duration.months()}m ${duration.days()}d`
 }

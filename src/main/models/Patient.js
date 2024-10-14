@@ -1,6 +1,6 @@
 import { model, models, Schema } from 'mongoose'
-import { DateToISO } from '../services/dateService'
-import { validateUniqueness } from './Validator'
+import { isValidDate } from '../utils/date'
+import { validateUniqueness } from '../utils/validator'
 
 export const SCHEMA_FIELDS = [
   'name',
@@ -46,7 +46,7 @@ const patientSchema = new Schema({
   birthdate: {
     type: Date,
     validate: {
-      validator: (value) => (value !== null ? DateToISO(value) : true),
+      validator: (value) => (value !== null ? isValidDate(value) : true),
       message: 'La fecha no es válida'
     },
     default: null

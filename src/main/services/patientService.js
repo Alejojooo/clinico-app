@@ -1,7 +1,7 @@
 import { Patient, SCHEMA_FIELDS } from '../models/Patient'
+import { toUIDate } from '../utils/date'
 import { cleanData, parseErrors, serialize } from '../utils/form'
-import { DateToISO } from './dateService'
-import { deleteImage, getImage, imagesAreEqual, saveImage } from './imageService'
+import { deleteImage, getImage, imagesAreEqual, saveImage } from '../utils/image'
 import { deleteMedicalRecord } from './medicalRecordService'
 
 export async function newPatient(event, formData) {
@@ -64,7 +64,7 @@ export async function deletePatient(event, id) {
 
 async function toFormData(patient) {
   const patientData = serialize(patient)
-  patientData.birthdate = DateToISO(patient.birthdate)
+  patientData.birthdate = toUIDate(patient.birthdate)
   patientData.image = await getImage(patient.image)
   return patientData
 }

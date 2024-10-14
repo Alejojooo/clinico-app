@@ -1,5 +1,5 @@
 import { model, models, Schema } from 'mongoose'
-import { validateUniqueness } from './Validator'
+import { validateUniqueness } from '../utils/validator'
 
 export const SCHEMA_FIELDS = [
   'tradeName',

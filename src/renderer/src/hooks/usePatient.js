@@ -40,6 +40,11 @@ export default function usePatient() {
     dispatch({ type: ACTIONS.FIELD_CHANGE, field: e.target })
   }
 
+  const handleDate = (value) => {
+    const event = { target: { name: 'birthdate', value: value } }
+    handleField(event)
+  }
+
   const handleImage = (image) => {
     const event = { target: { name: 'image', value: image } }
     handleField(event)
@@ -130,6 +135,7 @@ export default function usePatient() {
     patients,
     disabledButtons: getDisabledButtons(),
     handleField,
+    handleDate,
     handleImage,
     handleNewPatient,
     handleUpdatePatient,

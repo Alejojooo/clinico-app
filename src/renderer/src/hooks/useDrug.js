@@ -32,7 +32,6 @@ export default function useDrug() {
       messageSent.current = true
     }
     dispatch({ type: ACTIONS.FIELD_CHANGE, field: e.target })
-    console.log(e.target.value.replace('\n', 'ENTER'))
   }
 
   const getCleanForm = () => {

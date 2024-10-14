@@ -1,14 +1,12 @@
-import {
-  CameraIcon,
-  EyeIcon,
-  EyeSlashIcon,
-  FolderIcon,
-  TrashIcon,
-  UserIcon
-} from '@heroicons/react/24/outline'
+import { EyeIcon, EyeSlashIcon, UserIcon } from '@heroicons/react/24/outline'
+import DeleteOutlinedIcon from '@mui/icons-material/DeleteOutlined'
+import FolderOutlinedIcon from '@mui/icons-material/FolderOutlined'
+import PhotoCameraOutlinedIcon from '@mui/icons-material/PhotoCameraOutlined'
+import VisibilityOffOutlinedIcon from '@mui/icons-material/VisibilityOffOutlined'
+import VisibilityOutlinedIcon from '@mui/icons-material/VisibilityOutlined'
+import { IconButton } from '@mui/material'
 import PropTypes from 'prop-types'
 import useImage from '../../hooks/useImage'
-import IconButton from '../Buttons/IconButton'
 
 ImageField.propTypes = {
   imageData: PropTypes.string,
@@ -31,13 +29,18 @@ export default function ImageField({ imageData, onImageChange }) {
         <UserIcon></UserIcon>
       )}
       <div className="absolute inset-x-0 bottom-0 flex w-full flex-row justify-center gap-2 bg-secondary opacity-0 transition-opacity group-hover:opacity-100">
-        <IconButton
-          icon={imageVisible ? <EyeSlashIcon className="size-6" /> : <EyeIcon className="size-6" />}
-          onClick={handleImageVisibility}
-        />
-        <IconButton icon={<CameraIcon className="size-6" />} />
-        <IconButton icon={<FolderIcon className="size-6" />} onClick={handleOpenImage} />
-        <IconButton icon={<TrashIcon className="size-6" />} onClick={handleDeleteImage} />
+        <IconButton onClick={handleImageVisibility}>
+          {imageVisible ? <VisibilityOutlinedIcon /> : <VisibilityOffOutlinedIcon />}
+        </IconButton>
+        <IconButton>
+          <PhotoCameraOutlinedIcon />
+        </IconButton>
+        <IconButton onClick={handleOpenImage}>
+          <FolderOutlinedIcon />
+        </IconButton>
+        <IconButton onClick={handleDeleteImage}>
+          <DeleteOutlinedIcon />
+        </IconButton>
       </div>
     </div>
   )
