@@ -1,6 +1,6 @@
 import { model, models, Schema } from 'mongoose'
-import { DateToISO } from '../services/dateService'
-import { validateUniqueness } from './Validator'
+import { DateToISO } from '../utils/date'
+import { validateUniqueness } from '../utils/validator'
 
 export const SCHEMA_FIELDS = [
   'name',

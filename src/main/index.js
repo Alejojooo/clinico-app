@@ -2,7 +2,7 @@ import { electronApp, is, optimizer } from '@electron-toolkit/utils'
 import { app, BrowserWindow, ipcMain, shell } from 'electron'
 import { join } from 'path'
 import icon from '../../resources/icon.png?asset'
-import { openImage } from './services/imageService.js'
+import { openImage } from './utils/image.js'
 import {
   deleteMedicalRecord,
   getMedicalRecordById,
@@ -17,7 +17,7 @@ import {
   newPatient,
   updatePatient
 } from './services/patientService.js'
-import { showConfirmDialog } from './services/dialogService.js'
+import { showConfirmDialog } from './utils/dialog.js'
 import { setMainWindow } from './utils/windowManager.js'
 import {
   deleteMedicalRecordPhoto,

@@ -1,7 +1,7 @@
 import { Patient, SCHEMA_FIELDS } from '../models/Patient'
 import { cleanData, parseErrors, serialize } from '../utils/form'
-import { DateToISO } from './dateService'
-import { deleteImage, getImage, imagesAreEqual, saveImage } from './imageService'
+import { DateToISO } from '../utils/date'
+import { deleteImage, getImage, imagesAreEqual, saveImage } from '../utils/image'
 import { deleteMedicalRecord } from './medicalRecordService'
 
 export async function newPatient(event, formData) {

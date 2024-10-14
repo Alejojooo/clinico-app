@@ -2,7 +2,7 @@ import { SCHEMA_FIELDS, MedicalRecord } from '../models/MedicalRecord'
 import { MedicalRecordPhoto } from '../models/MedicalRecordPhoto'
 import { Patient } from '../models/Patient'
 import { cleanData, parseErrors, serialize } from '../utils/form'
-import { DatetimeToISO } from './dateService'
+import { DatetimeToISO } from '../utils/date'
 
 export async function newMedicalRecord(event, formData) {
   try {

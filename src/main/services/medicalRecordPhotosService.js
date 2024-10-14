@@ -1,7 +1,7 @@
 import { MedicalRecord } from '../models/MedicalRecord'
 import { MedicalRecordPhoto, SCHEMA_FIELDS } from '../models/MedicalRecordPhoto'
 import { cleanData, parseErrors, serialize } from '../utils/form'
-import { deleteImage, getImage, saveImage } from './imageService'
+import { deleteImage, getImage, saveImage } from '../utils/image'
 
 export async function newMedicalRecordPhoto(event, formData) {
   try {

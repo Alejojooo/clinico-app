@@ -1,6 +1,6 @@
 import { contextBridge, ipcRenderer } from 'electron'
 import { electronAPI } from '@electron-toolkit/preload'
-import { OPTIONS } from '../main/services/dialogService'
+import { OPTIONS } from '../main/utils/dialog'
 
 // Custom APIs for renderer
 const patient = {
