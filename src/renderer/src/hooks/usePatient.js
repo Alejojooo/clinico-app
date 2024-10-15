@@ -57,9 +57,6 @@ export default function usePatient() {
   }
 
   const handleNewPatient = async () => {
-    console.log(state.formData)
-    return
-
     if (activePatient) {
       dispatch({ type: ACTIONS.CLEAR_FORM })
       setActivePatient(null)

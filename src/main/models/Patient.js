@@ -1,6 +1,6 @@
 import { model, models, Schema } from 'mongoose'
 import { isValidDate } from '../utils/date'
-import { validateUniqueness } from '../utils/validator'
+import { validateUnique } from '../utils/validator'
 
 export const SCHEMA_FIELDS = [
   'name',
@@ -22,7 +22,7 @@ const patientSchema = new Schema({
     unique: true,
     validate: {
       validator: async function (value) {
-        return await validateUniqueness(this, models.Patient, 'name', value)
+        return await validateUnique(this, models.Patient, 'name', value)
       },
       message: 'El nombre del paciente ya existe'
     }
@@ -33,7 +33,7 @@ const patientSchema = new Schema({
       values: ['M', 'F'],
       message: 'M/F'
     },
-    required: [true, 'M/F']
+    required: [true, 'Elija una opción']
   },
   maritalStatus: {
     type: String,
@@ -41,7 +41,7 @@ const patientSchema = new Schema({
       values: ['S', 'C', 'D', 'V', 'U'],
       message: 'S/C/D/V/U'
     },
-    required: [true, 'S/C/D/V/U']
+    required: [true, 'Elija una opción']
   },
   birthdate: {
     type: Date,

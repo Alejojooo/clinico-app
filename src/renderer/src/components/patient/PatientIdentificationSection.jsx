@@ -1,4 +1,4 @@
-import { Box, FormControl, InputLabel, MenuItem, Select } from '@mui/material'
+import { Box, FormControl, FormHelperText, InputLabel, MenuItem, Select } from '@mui/material'
 import TextField from '@mui/material/TextField'
 import { DatePicker } from '@mui/x-date-pickers'
 import dayjs from 'dayjs'
@@ -91,7 +91,7 @@ function PatientForm({
             fullWidth
           />
           <Box sx={{ minWidth: 150 }}>
-            <FormControl fullWidth>
+            <FormControl error={errors.gender} fullWidth>
               <InputLabel id="gender-label">Sexo</InputLabel>
               <Select
                 labelId="gender-label"
@@ -104,10 +104,11 @@ function PatientForm({
                 <MenuItem value="M">Masculino</MenuItem>
                 <MenuItem value="F">Femenino</MenuItem>
               </Select>
+              {errors.gender && <FormHelperText>{errors.gender}</FormHelperText>}
             </FormControl>
           </Box>
           <Box sx={{ minWidth: 150 }}>
-            <FormControl fullWidth>
+            <FormControl error={errors.maritalStatus} fullWidth>
               <InputLabel id="maritalStatus-label">Estado civil</InputLabel>
               <Select
                 labelId="maritalStatus-label"
@@ -123,6 +124,7 @@ function PatientForm({
                 <MenuItem value="D">Divorciad{formData.gender === 'F' ? 'a' : 'o'}</MenuItem>
                 <MenuItem value="U">Unión libre</MenuItem>
               </Select>
+              {errors.maritalStatus && <FormHelperText>{errors.maritalStatus}</FormHelperText>}
             </FormControl>
           </Box>
         </div>

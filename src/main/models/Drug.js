@@ -1,5 +1,5 @@
 import { model, models, Schema } from 'mongoose'
-import { validateUniqueness } from '../utils/validator'
+import { validateUnique } from '../utils/validator'
 
 export const SCHEMA_FIELDS = [
   'tradeName',
@@ -17,7 +17,7 @@ const drugSchema = new Schema({
     unique: true,
     validate: {
       validator: async function (value) {
-        return await validateUniqueness(this, models.Drug, 'tradeName', value)
+        return await validateUnique(this, models.Drug, 'tradeName', value)
       },
       message: 'El nombre ya existe'
     }

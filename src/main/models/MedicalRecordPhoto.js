@@ -1,5 +1,5 @@
 import { model, models, Schema } from 'mongoose'
-import { validateUniqueness } from '../utils/validator'
+import { validateUnique } from '../utils/validator'
 
 export const SCHEMA_FIELDS = ['description', 'medicalRecordId']
 
@@ -11,7 +11,7 @@ const medicalRecordPhotoSchema = new Schema({
     unique: true,
     validate: {
       validator: async function (value) {
-        return await validateUniqueness(this, models.MedicalRecordPhoto, 'description', value)
+        return await validateUnique(this, models.MedicalRecordPhoto, 'description', value)
       },
       message: 'Ingrese una descripción única para la imagen'
     }

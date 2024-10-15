@@ -5,8 +5,9 @@ import {
 } from '@heroicons/react/24/outline'
 import { useView } from '../hooks/useView.js'
 import { MODULES } from '../utils/view.js'
-import IconButton from './Buttons/IconButton.jsx'
 import SectionsLayout from './SectionsLayout.jsx'
+import { IconButton } from '@mui/material'
+import MenuOutlinedIcon from '@mui/icons-material/MenuOutlined'
 
 export default function TopAppBar() {
   const { activeModule } = useView()
@@ -14,7 +15,9 @@ export default function TopAppBar() {
   return (
     <header className="flex h-16 w-screen flex-none flex-row items-center justify-start gap-5 px-5">
       <div className="flex w-[30%] flex-row items-center justify-start gap-2.5">
-        <IconButton icon={<Bars3Icon className="size-6" />}></IconButton>
+        <IconButton>
+          <MenuOutlinedIcon />
+        </IconButton>
         <h1 className="text-lg font-semibold">Clinico</h1>
       </div>
       <div className="flex flex-grow flex-row items-center justify-between">
