@@ -1,6 +1,27 @@
+import styled from '@emotion/styled'
+import { List, ListItemButton, ListItemText } from '@mui/material'
 import PropTypes from 'prop-types'
+import { useEffect, useState } from 'react'
 import SearchBar from './SearchBar'
-import { useState, useEffect } from 'react'
+
+const FilteredList = styled(List)(({ theme }) => ({
+  width: '100%',
+  padding: 0,
+  backgroundColor: theme.palette['antiflash-white'].main,
+  borderRadius: 15,
+  overflow: 'clip',
+  height: '100%',
+  '& .MuiButtonBase-root': {
+    height: '2rem',
+    paddingTop: 0,
+    paddingRight: 16,
+    paddingBottom: 0,
+    paddingLeft: 16
+  },
+  '& .MuiButtonBase-root.Mui-selected': {
+    backgroundColor: theme.palette['columbia-blue'].main
+  }
+}))
 
 FilterableDocumentList.propTypes = {
   title: PropTypes.string,
@@ -44,17 +65,18 @@ export default function FilterableDocumentList({
         value={searchValue}
         onInput={handleInput}
       ></SearchBar>
-      <DocumentList>
+      <FilteredList>
         {filteredDocuments?.length > 0 &&
           filteredDocuments.map((doc) => (
-            <DocumentListItem
+            <ListItemButton
               key={doc._id}
-              label={doc.label}
-              isActive={activeDocument?._id === doc._id}
               onClick={() => handleDocSelection(doc._id)}
-            ></DocumentListItem>
+              selected={activeDocument?._id === doc._id}
+            >
+              <ListItemText primary={doc.label}></ListItemText>
+            </ListItemButton>
           ))}
-      </DocumentList>
+      </FilteredList>
     </div>
   )
 }

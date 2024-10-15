@@ -1,6 +1,5 @@
-import { AdjustmentsHorizontalIcon } from '@heroicons/react/24/outline'
+import { InputBase, Paper, Stack, Typography } from '@mui/material'
 import PropTypes from 'prop-types'
-import IconButton from './Buttons/IconButton'
 
 DocumentListTitle.propTypes = {
   title: PropTypes.string.isRequired,
@@ -9,10 +8,24 @@ DocumentListTitle.propTypes = {
 
 function DocumentListTitle({ title, length }) {
   return (
-    <div className="flex h-8 w-full flex-row items-end justify-between px-4">
-      <h3 className="h-fit text-base font-semibold">{title}</h3>
-      <span className="h-fit text-base font-semibold">{length}</span>
-    </div>
+    <Stack
+      direction="row"
+      sx={{
+        height: '2rem',
+        width: '100%',
+        justifyContent: 'space-between',
+        alignItems: 'flex-end',
+        paddingLeft: '1rem',
+        paddingRight: '1rem'
+      }}
+    >
+      <Typography variant="subtitle1" component="h3">
+        {title}
+      </Typography>
+      <Typography variant="subtitle1" component="span">
+        {length}
+      </Typography>
+    </Stack>
   )
 }
 
@@ -25,18 +38,28 @@ SearchBar.propTypes = {
 
 export default function SearchBar({ title, length, value, onInput }) {
   return (
-    <>
+    <Stack
+      direction="column"
+      sx={{ width: '100%', justifyContent: 'space-between', alignItems: 'flex-end' }}
+      gap={1}
+    >
       <DocumentListTitle title={title} length={length}></DocumentListTitle>
-      <div className="flex h-10 w-full flex-row items-center justify-start gap-1 rounded-full bg-secondary-light py-1 pl-4 pr-1">
-        <input
-          className="grow bg-transparent outline-none"
-          placeholder="Buscar"
-          size="1"
-          value={value}
-          onChange={onInput}
-        ></input>
-        <IconButton icon={<AdjustmentsHorizontalIcon className="size-6" />} />
-      </div>
-    </>
+      <Paper
+        elevation={1}
+        sx={{
+          display: 'flex',
+          height: '2.5rem',
+          width: '100%',
+          justifyContent: 'start',
+          alignItems: 'center',
+          gap: '0.25rem',
+          borderRadius: '9999px',
+          backgroundColor: 'antiflash-white.main',
+          padding: '0.25rem 0.25rem 0.25rem 1rem'
+        }}
+      >
+        <InputBase sx={{ flex: 1 }} placeholder="Buscar" value={value} onChange={onInput} />
+      </Paper>
+    </Stack>
   )
 }

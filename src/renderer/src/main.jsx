@@ -17,6 +17,26 @@ const root = createRoot(rootElement)
 
 const theme = createTheme({
   cssVariables: true,
+  palette: {
+    primary: {
+      main: '#647994'
+    },
+    light: {
+      main: '#FAF9F3'
+    },
+    'alice-blue': {
+      main: '#D5DCE6'
+    },
+    'antiflash-white': {
+      main: '#EAEEF3'
+    },
+    'columbia-blue': {
+      main: '#BECEDD'
+    },
+    'berkeley-blue': {
+      main: '#193152'
+    }
+  },
   components: {
     MuiPopover: {
       defaultProps: {

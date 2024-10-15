@@ -130,7 +130,7 @@ function PatientForm({
           <DatePicker
             sx={{ minWidth: 250 }}
             label="Fecha de nacimiento"
-            value={dayjs(formData.birthdate)}
+            value={dayjs(formData.birthdate).isValid() ? dayjs(formData.birthdate) : null}
             onChange={onDate}
             disableFuture
           />

@@ -3,7 +3,6 @@ import duration from 'dayjs/plugin/duration'
 dayjs.extend(duration)
 
 export const calculateAge = (value) => {
-  console.log(value)
   if (!value || !value.isValid()) return ''
 
   const duration = dayjs.duration(dayjs().diff(value))

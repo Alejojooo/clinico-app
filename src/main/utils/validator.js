@@ -1,6 +1,6 @@
 import { Query } from 'mongoose'
 
-export async function validateUniqueness(thiz, model, field, value) {
+export async function validateUnique(thiz, model, field, value) {
   // Si no se encuentra una entidad con el mismo nombre, retornar true
   const entity = await model.findOne({ [field]: value }).select(`_id ${field}`)
   if (!entity) return true
