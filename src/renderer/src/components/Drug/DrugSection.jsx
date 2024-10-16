@@ -1,8 +1,8 @@
 import PropTypes from 'prop-types'
 import useDrug from '../../hooks/useDrug'
-import { TextField } from '../FormFields/TextField'
 import Header from '../Header'
 import SideView from '../SideView'
+import TextField from '@mui/material/TextField'
 
 export default function DrugSection() {
   const {
@@ -58,63 +58,86 @@ function DrugForm({ formData, errors, disabledButtons, onField, onNew, onUpdate,
           disabledButtons={disabledButtons}
         ></Header>
         <div className="flex w-full flex-row gap-5">
-          <div className="flex h-full grow flex-col gap-5">
+          <div className="flex h-full grow flex-col gap-3">
             <TextField
+              id="tradeName"
+              name="tradeName"
               label="Nombre comercial"
-              fieldId="tradeName"
-              width="w-full"
+              variant="outlined"
               value={formData.tradeName}
-              error={errors.tradeName}
               onChange={onField}
-            ></TextField>
+              error={errors.tradeName}
+              helperText={errors.tradeName}
+              fullWidth
+            />
             <TextField
+              id="genericName"
+              name="genericName"
               label="Nombre genérico"
-              fieldId="genericName"
-              width="w-full"
+              variant="outlined"
               value={formData.genericName}
               onChange={onField}
-            ></TextField>
+              error={errors.genericName}
+              helperText={errors.genericName}
+              fullWidth
+            />
           </div>
           <div>Código QR</div>
         </div>
-        <div className="flex w-full grow flex-row gap-5">
+        <div className="flex w-full flex-row gap-5">
           <div className="flex size-full flex-col gap-3">
             <TextField
-              label="Descripciones e indicaciones"
-              fieldId="description"
-              height="h-full"
-              width="w-full"
+              id="description"
+              name="description"
+              label="Descripcion e indicaciones"
+              variant="outlined"
               value={formData.description}
               onChange={onField}
+              error={errors.description}
+              helperText={errors.description}
               multiline
-            ></TextField>
+              rows={5}
+              fullWidth
+            />
             <TextField
+              id="contraindications"
+              name="contraindications"
               label="Contraindicaciones y efectos secundarios"
-              fieldId="contraindications"
-              height="h-full"
-              width="w-full"
+              variant="outlined"
               value={formData.contraindications}
               onChange={onField}
+              error={errors.contraindications}
+              helperText={errors.contraindications}
               multiline
-            ></TextField>
+              rows={5}
+              fullWidth
+            />
           </div>
           <TextField
+            id="presentations"
+            name="presentations"
             label="Presentaciones y dosis"
-            fieldId="presentations"
-            height=""
-            width="w-full"
+            variant="outlined"
             value={formData.presentations}
             onChange={onField}
+            error={errors.presentations}
+            helperText={errors.presentations}
             multiline
-          ></TextField>
+            rows={12}
+            fullWidth
+          />
         </div>
         <TextField
+          id="laboratory"
+          name="laboratory"
           label="Laboratorio"
-          fieldId="laboratory"
-          width="w-full"
+          variant="outlined"
           value={formData.laboratory}
           onChange={onField}
-        ></TextField>
+          error={errors.laboratory}
+          helperText={errors.laboratory}
+          fullWidth
+        />
       </form>
     </main>
   )

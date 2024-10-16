@@ -1,7 +1,7 @@
-import { EyeIcon, EyeSlashIcon, UserIcon } from '@heroicons/react/24/outline'
 import DeleteOutlinedIcon from '@mui/icons-material/DeleteOutlined'
 import FolderOutlinedIcon from '@mui/icons-material/FolderOutlined'
 import PhotoCameraOutlinedIcon from '@mui/icons-material/PhotoCameraOutlined'
+import PortraitOutlinedIcon from '@mui/icons-material/PortraitOutlined'
 import VisibilityOffOutlinedIcon from '@mui/icons-material/VisibilityOffOutlined'
 import VisibilityOutlinedIcon from '@mui/icons-material/VisibilityOutlined'
 import { IconButton } from '@mui/material'
@@ -21,12 +21,12 @@ export default function ImageField({ imageData, onImageChange }) {
     <div className="group relative flex size-60 items-center justify-center overflow-clip rounded-3xl bg-primary">
       {imageVisible ? (
         image ? (
-          <img src={image} alt="Fotografía del paciente" className="object-cover" />
+          <img src={image} alt="Fotografía del paciente" className="size-full object-contain" />
         ) : (
           <span className="text-center align-middle">No hay imagen disponible</span>
         )
       ) : (
-        <UserIcon></UserIcon>
+        <PortraitOutlinedIcon fontSize="large" />
       )}
       <div className="absolute inset-x-0 bottom-0 flex w-full flex-row justify-center gap-2 bg-secondary opacity-0 transition-opacity group-hover:opacity-100">
         <IconButton onClick={handleImageVisibility}>

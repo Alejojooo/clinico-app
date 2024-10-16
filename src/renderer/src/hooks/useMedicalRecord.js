@@ -46,6 +46,11 @@ export default function useMedicalRecord() {
     dispatch({ type: ACTIONS.FIELD_CHANGE, field: e.target })
   }
 
+  const handleDate = (value) => {
+    const event = { target: { name: 'date', value: value } }
+    handleField(event)
+  }
+
   const handleCheckbox = (e) => {
     const event = { target: { name: e.target.name, value: e.target.checked } }
     handleField(event)
@@ -141,6 +146,7 @@ export default function useMedicalRecord() {
     disabledButtons: getDisabledButtons(),
     calculateAge,
     handleField,
+    handleDate,
     handleCheckbox,
     handleNewMedicalRecord,
     handleUpdateMedicalRecord,

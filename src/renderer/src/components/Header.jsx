@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types'
 import CrudButtons from './Buttons/CrudButtons'
-import { Typography } from '@mui/material'
+import { Box, Typography } from '@mui/material'
 
 Header.propTypes = {
   title: PropTypes.string.isRequired,
@@ -12,7 +12,6 @@ export default function Header({ title, handlers, disabledButtons }) {
   return (
     <div className="flex w-full flex-col items-center justify-start gap-3.5">
       <div className="flex w-full flex-row items-end justify-between">
-        {/* <h2 className="text-xl">{title}</h2> */}
         <Typography variant="h6" component="h2">
           {title}
         </Typography>
@@ -23,7 +22,7 @@ export default function Header({ title, handlers, disabledButtons }) {
           disabledButtons={disabledButtons}
         ></CrudButtons>
       </div>
-      <div className="w-full border-t border-secondary"></div>
+      <Box sx={{ borderTop: '1px solid', width: '100%', borderColor: 'alice-blue.main' }}></Box>
     </div>
   )
 }

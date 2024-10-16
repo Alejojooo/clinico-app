@@ -20,7 +20,7 @@ export default function SideView({ documents, activeDocument, handleDocSelection
   const { activeModule } = useView()
 
   return (
-    <aside className="mt-2.5 flex w-[30%] flex-col items-center justify-start gap-3.5">
+    <aside className="mt-2.5 flex h-full w-[30%] flex-col items-center justify-start gap-3.5">
       <ModulesLayout></ModulesLayout>
       {(activeModule === MODULES.PATIENT || activeModule === MODULES.DRUG) && (
         <FilterableDocumentList

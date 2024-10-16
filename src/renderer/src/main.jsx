@@ -17,6 +17,9 @@ const root = createRoot(rootElement)
 
 const theme = createTheme({
   cssVariables: true,
+  typography: {
+    fontFamily: 'Inter, Arial, sans-serif'
+  },
   palette: {
     primary: {
       main: '#647994'

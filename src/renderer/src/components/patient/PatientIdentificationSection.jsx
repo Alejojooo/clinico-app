@@ -72,7 +72,7 @@ function PatientForm({
 }) {
   return (
     <main className="h-full grow">
-      <form className="flex h-full grow flex-col gap-3 rounded-2xl bg-white p-5">
+      <form className="flex h-full flex-col gap-3 rounded-2xl bg-white p-5">
         <Header
           title="Identificación del paciente"
           handlers={{ onNew, onUpdate, onDelete }}
@@ -130,14 +130,14 @@ function PatientForm({
         </div>
         <div className="flex w-full flex-row gap-5">
           <DatePicker
-            sx={{ minWidth: 250 }}
+            sx={{ flexShrink: 0, maxWidth: 250 }}
             label="Fecha de nacimiento"
             value={dayjs(formData.birthdate).isValid() ? dayjs(formData.birthdate) : null}
             onChange={onDate}
             disableFuture
           />
           <TextField
-            sx={{ minWidth: 120 }}
+            sx={{ flexShrink: 0, maxWidth: 120 }}
             id="age"
             name="age"
             label="Edad"
@@ -150,6 +150,7 @@ function PatientForm({
             }}
           />
           <TextField
+            sx={{ flexGrow: 1 }}
             id="id"
             name="id"
             label="ID"
@@ -158,7 +159,6 @@ function PatientForm({
             onChange={onField}
             error={errors.id}
             helperText={errors.id}
-            fullWidth
           />
         </div>
         <div className="flex w-full flex-row items-center justify-between gap-5">

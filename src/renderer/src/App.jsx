@@ -29,7 +29,7 @@ function App() {
       <ViewProvider>
         <EntityProvider>
           <TopAppBar></TopAppBar>
-          <div className="flex w-full flex-grow flex-row gap-5 px-5 pb-5">
+          <div className="flex w-full grow flex-row gap-5 px-5 pb-5">
             <Content></Content>
           </div>
         </EntityProvider>

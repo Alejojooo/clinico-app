@@ -1,7 +1,7 @@
 import { Patient, SCHEMA_FIELDS } from '../models/Patient'
 import { toUIDate } from '../utils/date'
 import { cleanData, parseErrors, serialize } from '../utils/form'
-import { deleteImage, getImage, imagesAreEqual, saveImage } from '../utils/image'
+import { deleteImage, getImage, saveImage } from '../utils/image'
 import { deleteMedicalRecord } from './medicalRecordService'
 
 export async function newPatient(event, formData) {
@@ -37,9 +37,9 @@ export async function updatePatient(event, id, formData) {
       if (field !== 'image') targetPatient[field] = patientData[field]
     }
     // Procesar la imagen
-    if (formData.image && !imagesAreEqual(formData.image, targetPatient.image)) {
+    if (formData.image) {
       targetPatient.image = await saveImage(formData.image)
-    } else if (targetPatient.image) {
+    } else {
       await deleteImage(targetPatient.image)
       targetPatient.image = null
     }

@@ -20,6 +20,11 @@ const FilteredList = styled(List)(({ theme }) => ({
   },
   '& .MuiButtonBase-root.Mui-selected': {
     backgroundColor: theme.palette['columbia-blue'].main
+  },
+  '& .MuiListItemText-root': {
+    whiteSpace: 'nowrap',
+    overflow: 'hidden',
+    textOverflow: 'ellipsis'
   }
 }))
 

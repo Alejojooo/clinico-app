@@ -1,18 +1,13 @@
-import {
-  ArrowLeftIcon,
-  CameraIcon,
-  FolderIcon,
-  DocumentArrowDownIcon,
-  XMarkIcon,
-  ArrowPathIcon,
-  ArrowsPointingOutIcon
-} from '@heroicons/react/24/outline'
-import SegmentedButton from '../Buttons/SegmentedButton'
-import FilterableDocumentList from '../FilterableDocumentList'
-import { SimpleTextField } from '../FormFields/TextField'
-import ActionButton from '../Buttons/ActionButton'
-import IconButton from '../Buttons/IconButton'
+import ArrowBackOutlinedIcon from '@mui/icons-material/ArrowBackOutlined'
+import AutorenewOutlinedIcon from '@mui/icons-material/AutorenewOutlined'
+import DeleteOutlinedIcon from '@mui/icons-material/DeleteOutlined'
+import FolderOutlinedIcon from '@mui/icons-material/FolderOutlined'
+import PhotoCameraOutlinedIcon from '@mui/icons-material/PhotoCameraOutlined'
+import SaveOutlinedIcon from '@mui/icons-material/SaveOutlined'
+import ZoomOutMapOutlinedIcon from '@mui/icons-material/ZoomOutMapOutlined'
+import { Button, ButtonGroup, IconButton, TextField, Typography } from '@mui/material'
 import useMedicalRecordPhoto from '../../hooks/useMedicalRecordPhoto'
+import FilterableDocumentList from '../FilterableDocumentList'
 
 export default function MedicalRecordPhotosSection() {
   const {
@@ -32,14 +27,13 @@ export default function MedicalRecordPhotosSection() {
   return (
     <main className="flex size-full flex-row gap-5 px-5 py-5">
       <div className="flex w-1/4 flex-col gap-5">
-        <button
-          type="button"
-          className="flex w-full flex-row items-center gap-2.5 border-b border-secondary pb-1"
+        <Button
+          startIcon={<ArrowBackOutlinedIcon />}
+          variant="text"
           onClick={handleMedicalRecordSection}
         >
-          <ArrowLeftIcon className="size-5" />
-          <span className="text-base">Volver al historial clínico</span>
-        </button>
+          Volver al historial clínico
+        </Button>
         <FilterableDocumentList
           activeDocument={activePhoto}
           documents={photos}
@@ -47,69 +41,90 @@ export default function MedicalRecordPhotosSection() {
           title="Imágenes"
         ></FilterableDocumentList>
         <div className="flex w-full flex-col gap-2.5">
-          <span className="text-sm font-semibold">Insertar desde</span>
+          <Typography variant="button" component="span">
+            Insertar desde
+          </Typography>
           <div className="flex flex-row">
-            <SegmentedButton
-              className="border-r"
-              icon={<FolderIcon className="size-4" />}
-              label="Archivo"
-              rounded="left"
-              onClick={handleOpenPhoto}
-              disabled={disabledButtons.includes('open')}
-            ></SegmentedButton>
-            <SegmentedButton
-              icon={<CameraIcon className="size-4" />}
-              label="Cámara"
-              rounded="right"
-              disabled={disabledButtons.includes('camera')}
-            ></SegmentedButton>
+            <ButtonGroup variant="outlined">
+              <Button
+                startIcon={<FolderOutlinedIcon />}
+                onClick={handleOpenPhoto}
+                disabled={disabledButtons.includes('new')}
+              >
+                Archivo
+              </Button>
+              <Button
+                startIcon={<PhotoCameraOutlinedIcon />}
+                disabled={disabledButtons.includes('camera')}
+              >
+                Cámara
+              </Button>
+            </ButtonGroup>
           </div>
         </div>
         <div className="flex w-full flex-col gap-2.5">
-          <span className="text-sm font-semibold">Acciones</span>
+          <Typography variant="button" component="span">
+            Acciones
+          </Typography>
           <div className="flex flex-row">
-            <SegmentedButton
-              className="border-r"
-              icon={<DocumentArrowDownIcon className="size-4" />}
-              label="Guardar"
-              rounded="left"
-              onClick={handleSavePhoto}
-              disabled={disabledButtons.includes('save')}
-            ></SegmentedButton>
-            <SegmentedButton
-              icon={<XMarkIcon className="size-4" />}
-              label="Eliminar"
-              rounded="right"
-              onClick={handleDeletePhoto}
-              disabled={disabledButtons.includes('delete')}
-            ></SegmentedButton>
+            <ButtonGroup
+              variant="outlined"
+              sx={{ width: '100%', '& .MuiButtonBase': { width: '100%' } }}
+            >
+              <Button
+                startIcon={<SaveOutlinedIcon />}
+                onClick={handleSavePhoto}
+                disabled={disabledButtons.includes('save')}
+              >
+                Guardar
+              </Button>
+              <Button
+                startIcon={<DeleteOutlinedIcon />}
+                onClick={handleDeletePhoto}
+                disabled={disabledButtons.includes('update')}
+              >
+                Eliminar
+              </Button>
+            </ButtonGroup>
           </div>
         </div>
       </div>
       <div className="flex h-full grow flex-col gap-2.5">
         <div className="flex w-full flex-row items-center gap-5">
-          <SimpleTextField
-            fieldId="description"
+          <TextField
+            id="description"
+            name="description"
             label="Descripción"
-            onChange={handleField}
+            variant="outlined"
             value={formData.description}
-            readOnly={formData.image ? false : true}
-          ></SimpleTextField>
+            onChange={handleField}
+            slotProps={{
+              input: {
+                readOnly: formData.image ? false : true
+              }
+            }}
+            size="small"
+            fullWidth
+          ></TextField>
           <div className="flex flex-row items-center gap-2.5">
-            <ActionButton
-              icon={<ArrowPathIcon className="size-4" />}
-              label="Actualizar"
+            <Button
+              variant="outlined"
+              startIcon={<AutorenewOutlinedIcon />}
               onClick={handleUpdatePhotoDescription}
               disabled={disabledButtons.includes('update')}
-            ></ActionButton>
+            >
+              Actualizar
+            </Button>
             <div className="flex size-10 items-center justify-center">
-              <IconButton icon={<ArrowsPointingOutIcon className="size-5" />} solid></IconButton>
+              <IconButton>
+                <ZoomOutMapOutlinedIcon />
+              </IconButton>
             </div>
           </div>
         </div>
-        <div className="flex size-full items-center justify-center overflow-clip rounded-2xl bg-white">
+        <div className="flex w-full grow items-center justify-center overflow-clip rounded-2xl bg-white">
           {formData.image ? (
-            <img className="object-cover" src={formData.image} />
+            <img className="size-full object-contain" src={formData.image} />
           ) : (
             <span>No hay imagen para mostrar</span>
           )}

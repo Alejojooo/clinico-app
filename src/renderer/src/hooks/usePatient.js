@@ -4,6 +4,7 @@ import { initialState, ACTIONS, patientReducer } from '../reducers/patient'
 import { clean } from '../utils/form'
 import useSnackbar from './useSnackbar'
 import useFormChanged from './useFormChanged'
+import dayjs from 'dayjs'
 
 export default function usePatient() {
   const context = useContext(PatientContext)
@@ -52,6 +53,8 @@ export default function usePatient() {
 
   const getCleanForm = () => {
     const newForm = clean(state.formData)
+    if (newForm.birthdate && newForm.birthdate instanceof dayjs)
+      newForm.birthdate = newForm.birthdate.format()
     delete newForm.age
     return newForm
   }

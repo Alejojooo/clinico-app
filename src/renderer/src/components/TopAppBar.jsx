@@ -1,13 +1,10 @@
-import {
-  ArrowPathIcon,
-  ArrowRightStartOnRectangleIcon,
-  Bars3Icon
-} from '@heroicons/react/24/outline'
+import CloudSyncOutlinedIcon from '@mui/icons-material/CloudSyncOutlined'
+import LogoutOutlinedIcon from '@mui/icons-material/LogoutOutlined'
+import MenuOutlinedIcon from '@mui/icons-material/MenuOutlined'
+import { IconButton } from '@mui/material'
 import { useView } from '../hooks/useView.js'
 import { MODULES } from '../utils/view.js'
 import SectionsLayout from './SectionsLayout.jsx'
-import { IconButton } from '@mui/material'
-import MenuOutlinedIcon from '@mui/icons-material/MenuOutlined'
 
 export default function TopAppBar() {
   const { activeModule } = useView()
@@ -25,8 +22,12 @@ export default function TopAppBar() {
           <SectionsLayout></SectionsLayout>
         )}
         <div className="flex flex-row gap-2.5">
-          <IconButton icon={<ArrowPathIcon className="size-6" />}></IconButton>
-          <IconButton icon={<ArrowRightStartOnRectangleIcon className="size-6" />}></IconButton>
+          <IconButton>
+            <CloudSyncOutlinedIcon />
+          </IconButton>
+          <IconButton>
+            <LogoutOutlinedIcon />
+          </IconButton>
         </div>
       </div>
     </header>

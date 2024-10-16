@@ -1,8 +1,10 @@
-import { DocumentTextIcon, Square3Stack3DIcon, UserCircleIcon } from '@heroicons/react/24/outline'
+import AccountCircleOutlinedIcon from '@mui/icons-material/AccountCircleOutlined'
+import AssessmentOutlinedIcon from '@mui/icons-material/AssessmentOutlined'
+import LayersOutlinedIcon from '@mui/icons-material/LayersOutlined'
+import { Button, ButtonGroup } from '@mui/material'
 import usePatient from '../hooks/usePatient'
 import { useView } from '../hooks/useView'
 import { MODULES, PATIENT_SECTIONS } from '../utils/view'
-import SegmentedButton from './Buttons/SegmentedButton'
 
 export default function SectionsLayout() {
   const { activeModule } = useView()
@@ -26,7 +28,28 @@ function PatientSectionsLayout() {
 
   return (
     <div className="flex flex-row">
-      <SegmentedButton
+      <ButtonGroup variant="contained">
+        <Button
+          startIcon={<AccountCircleOutlinedIcon />}
+          onClick={() => setActiveSection(PATIENT_SECTIONS.IDENTIFICATION)}
+        >
+          Identificación
+        </Button>
+        <Button
+          startIcon={<LayersOutlinedIcon />}
+          onClick={() => {
+            if (activePatient) setActiveSection(PATIENT_SECTIONS.MEDICAL_RECORDS)
+            else addSnackbar('Primero seleccione un paciente')
+          }}
+          disabled={!activePatient}
+        >
+          Historias
+        </Button>
+        <Button startIcon={<AssessmentOutlinedIcon />} disabled>
+          Reporte
+        </Button>
+      </ButtonGroup>
+      {/* <SegmentedButton
         className="border-r"
         label="Identificación"
         icon={<UserCircleIcon className="size-4" />}
@@ -54,7 +77,7 @@ function PatientSectionsLayout() {
         rounded="right"
         isActive={activeSection === PATIENT_SECTIONS.REPORT}
         onClick={() => setActiveSection(PATIENT_SECTIONS.REPORT)}
-      ></SegmentedButton>
+      ></SegmentedButton> */}
     </div>
   )
 }

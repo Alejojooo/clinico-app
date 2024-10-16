@@ -1,3 +1,4 @@
+import { Typography } from '@mui/material'
 import PropTypes from 'prop-types'
 
 SegmentedButton.propTypes = {
@@ -29,7 +30,10 @@ export default function SegmentedButton({
       disabled={disabled}
     >
       {icon}
-      <span className="text-sm font-semibold">{label}</span>
+      <Typography variant="button" component="span">
+        {label}
+      </Typography>
+      {/* <span className="text-sm font-normal">{label}</span> */}
     </button>
   )
 }

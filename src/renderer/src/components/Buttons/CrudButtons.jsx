@@ -1,8 +1,8 @@
+import AddOutlinedIcon from '@mui/icons-material/AddOutlined'
+import AutorenewOutlinedIcon from '@mui/icons-material/AutorenewOutlined'
+import DeleteOutlinedIcon from '@mui/icons-material/DeleteOutlined'
 import { Button, ButtonGroup } from '@mui/material'
 import PropTypes from 'prop-types'
-import AddRoundedIcon from '@mui/icons-material/AddRounded'
-import AutorenewRoundedIcon from '@mui/icons-material/AutorenewRounded'
-import DeleteRoundedIcon from '@mui/icons-material/DeleteRounded'
 
 CrudButtons.propTypes = {
   onNew: PropTypes.func,
@@ -15,21 +15,21 @@ export default function CrudButtons({ onNew, onUpdate, onDelete, disabledButtons
   return (
     <ButtonGroup variant="outlined">
       <Button
-        startIcon={<AddRoundedIcon />}
+        startIcon={<AddOutlinedIcon />}
         onClick={onNew}
         disabled={disabledButtons.includes('new')}
       >
         Nuevo
       </Button>
       <Button
-        startIcon={<AutorenewRoundedIcon />}
+        startIcon={<AutorenewOutlinedIcon />}
         onClick={onUpdate}
         disabled={disabledButtons.includes('update')}
       >
         Actualizar
       </Button>
       <Button
-        startIcon={<DeleteRoundedIcon />}
+        startIcon={<DeleteOutlinedIcon />}
         onClick={onDelete}
         disabled={disabledButtons.includes('delete')}
       >
