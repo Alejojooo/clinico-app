@@ -86,12 +86,12 @@ function PatientForm({
             variant="outlined"
             value={formData.name}
             onChange={onField}
-            error={errors.name}
+            error={errors.name ? true : false}
             helperText={errors.name}
             fullWidth
           />
           <Box sx={{ minWidth: 150 }}>
-            <FormControl error={errors.gender} fullWidth>
+            <FormControl error={errors.gender ? true : false} fullWidth>
               <InputLabel id="gender-label">Sexo</InputLabel>
               <Select
                 labelId="gender-label"
@@ -108,7 +108,7 @@ function PatientForm({
             </FormControl>
           </Box>
           <Box sx={{ minWidth: 150 }}>
-            <FormControl error={errors.maritalStatus} fullWidth>
+            <FormControl error={errors.maritalStatus ? true : false} fullWidth>
               <InputLabel id="maritalStatus-label">Estado civil</InputLabel>
               <Select
                 labelId="maritalStatus-label"

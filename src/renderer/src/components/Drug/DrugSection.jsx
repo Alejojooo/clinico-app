@@ -66,7 +66,7 @@ function DrugForm({ formData, errors, disabledButtons, onField, onNew, onUpdate,
               variant="outlined"
               value={formData.tradeName}
               onChange={onField}
-              error={errors.tradeName}
+              error={errors.tradeName ? true : false}
               helperText={errors.tradeName}
               fullWidth
             />
@@ -77,8 +77,6 @@ function DrugForm({ formData, errors, disabledButtons, onField, onNew, onUpdate,
               variant="outlined"
               value={formData.genericName}
               onChange={onField}
-              error={errors.genericName}
-              helperText={errors.genericName}
               fullWidth
             />
           </div>
@@ -93,8 +91,6 @@ function DrugForm({ formData, errors, disabledButtons, onField, onNew, onUpdate,
               variant="outlined"
               value={formData.description}
               onChange={onField}
-              error={errors.description}
-              helperText={errors.description}
               multiline
               rows={5}
               fullWidth
@@ -106,8 +102,6 @@ function DrugForm({ formData, errors, disabledButtons, onField, onNew, onUpdate,
               variant="outlined"
               value={formData.contraindications}
               onChange={onField}
-              error={errors.contraindications}
-              helperText={errors.contraindications}
               multiline
               rows={5}
               fullWidth
@@ -120,8 +114,6 @@ function DrugForm({ formData, errors, disabledButtons, onField, onNew, onUpdate,
             variant="outlined"
             value={formData.presentations}
             onChange={onField}
-            error={errors.presentations}
-            helperText={errors.presentations}
             multiline
             rows={12}
             fullWidth
@@ -134,8 +126,6 @@ function DrugForm({ formData, errors, disabledButtons, onField, onNew, onUpdate,
           variant="outlined"
           value={formData.laboratory}
           onChange={onField}
-          error={errors.laboratory}
-          helperText={errors.laboratory}
           fullWidth
         />
       </form>

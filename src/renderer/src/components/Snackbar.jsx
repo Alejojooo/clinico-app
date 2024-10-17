@@ -1,7 +1,8 @@
-import { InformationCircleIcon, XMarkIcon } from '@heroicons/react/24/outline'
+import ClearOutlinedIcon from '@mui/icons-material/ClearOutlined'
+import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined'
+import { IconButton } from '@mui/material'
 import PropTypes from 'prop-types'
-import IconButton from './Buttons/IconButton'
-import { useState, useEffect } from 'react'
+import { useEffect, useState } from 'react'
 
 // TODO: Arreglar la visualización de los snackbars al momento de aparecer/desaparecer
 
@@ -35,7 +36,7 @@ export function Snackbar({ message, persistent, onDismiss }) {
   const [visible, setVisible] = useState(true)
 
   useEffect(() => {
-    if (!persistent) setTimeout(handleDismiss, 3000)
+    if (!persistent) setTimeout(handleDismiss, 5000)
   }, [persistent])
 
   const handleDismiss = () => {
@@ -45,17 +46,27 @@ export function Snackbar({ message, persistent, onDismiss }) {
 
   return (
     <div
-      className={`flex max-w-[400px] flex-row gap-2.5 rounded-lg border bg-neutral px-4 py-3 text-primary shadow-lg transition-opacity duration-300 ${visible ? 'opacity-100' : 'opacity-0'}`}
+      className={`flex max-w-[400px] flex-row items-center gap-2.5 rounded-lg border bg-neutral px-4 py-3 text-primary shadow-lg transition-opacity duration-300 ${visible ? 'opacity-100' : 'opacity-0'}`}
     >
-      <InformationCircleIcon className="size-6" />
+      <InfoOutlinedIcon />
       <span className="block w-96 text-sm">{message}</span>
       {!persistent && (
+        // <IconButton
+        //   icon={<XMarkIcon className="size-6" />}
+        //   onClick={handleDismiss}
+        //   noPadding
+        //   alternative
+        // ></IconButton>
         <IconButton
-          icon={<XMarkIcon className="size-6" />}
           onClick={handleDismiss}
-          noPadding
-          alternative
-        ></IconButton>
+          sx={{
+            width: '16px',
+            height: '16px',
+            color: 'light.main'
+          }}
+        >
+          <ClearOutlinedIcon />
+        </IconButton>
       )}
     </div>
   )
