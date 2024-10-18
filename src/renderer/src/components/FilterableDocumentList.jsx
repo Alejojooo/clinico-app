@@ -1,41 +1,16 @@
-import styled from '@emotion/styled'
 import { List, ListItemButton, ListItemText } from '@mui/material'
 import PropTypes from 'prop-types'
 import { useEffect, useState } from 'react'
 import SearchBar from './SearchBar'
 
-const FilteredList = styled(List)(({ theme }) => ({
-  width: '100%',
-  padding: 0,
-  backgroundColor: theme.palette['antiflash-white'].main,
-  borderRadius: 15,
-  overflow: 'clip',
-  height: '100%',
-  '& .MuiButtonBase-root': {
-    height: '2rem',
-    paddingTop: 0,
-    paddingRight: 16,
-    paddingBottom: 0,
-    paddingLeft: 16
-  },
-  '& .MuiButtonBase-root.Mui-selected': {
-    backgroundColor: theme.palette['columbia-blue'].main
-  },
-  '& .MuiListItemText-root': {
-    whiteSpace: 'nowrap',
-    overflow: 'hidden',
-    textOverflow: 'ellipsis'
-  }
-}))
-
-FilterableDocumentList.propTypes = {
+SearchableDocumentList.propTypes = {
   title: PropTypes.string,
   documents: PropTypes.array,
   activeDocument: PropTypes.object,
   handleDocSelection: PropTypes.func
 }
 
-export default function FilterableDocumentList({
+export default function SearchableDocumentList({
   title,
   documents,
   activeDocument,
@@ -70,48 +45,110 @@ export default function FilterableDocumentList({
         value={searchValue}
         onInput={handleInput}
       ></SearchBar>
-      <FilteredList>
-        {filteredDocuments?.length > 0 &&
-          filteredDocuments.map((doc) => (
-            <ListItemButton
-              key={doc._id}
-              onClick={() => handleDocSelection(doc._id)}
-              selected={activeDocument?._id === doc._id}
-            >
-              <ListItemText primary={doc.label}></ListItemText>
-            </ListItemButton>
-          ))}
-      </FilteredList>
+      <DocumentList
+        documents={documents}
+        activeDocument={activeDocument}
+        handleDocSelection={handleDocSelection}
+      ></DocumentList>
     </div>
   )
 }
 
 DocumentList.propTypes = {
-  children: PropTypes.node
+  documents: PropTypes.array,
+  activeDocument: PropTypes.object,
+  handleDocSelection: PropTypes.func
 }
 
-function DocumentList({ children }) {
+export function DocumentList({ documents, activeDocument, handleDocSelection }) {
   return (
-    <div className="flex w-full flex-grow flex-col overflow-clip rounded-2xl bg-secondary-light">
-      {children}
-    </div>
-  )
-}
-
-DocumentListItem.propTypes = {
-  label: PropTypes.string.isRequired,
-  isActive: PropTypes.bool,
-  onClick: PropTypes.func
-}
-
-function DocumentListItem({ label, isActive, onClick }) {
-  return (
-    <button
-      type="button"
-      className={`flex h-7 w-full flex-row items-center justify-start px-4 hover:bg-secondary focus:bg-tertiary ${isActive ? 'bg-tertiary' : ''}`}
-      onClick={onClick}
+    <List
+      sx={{
+        width: '100%',
+        padding: 0,
+        backgroundColor: 'antiflash-white.main',
+        borderRadius: '4px',
+        overflow: 'clip',
+        height: '100%',
+        '& .MuiButtonBase-root': {
+          height: '2rem',
+          padding: '0 16px'
+        },
+        '& .MuiButtonBase-root.Mui-selected': {
+          backgroundColor: 'columbia-blue.main'
+        },
+        '& .MuiListItemText-root': {
+          width: '100%',
+          whiteSpace: 'nowrap',
+          overflow: 'hidden',
+          textOverflow: 'ellipsis'
+        }
+      }}
     >
-      {label}
-    </button>
+      {documents?.length > 0 &&
+        documents.map((doc) => (
+          <ListItemButton
+            key={doc._id}
+            onClick={() => handleDocSelection(doc._id)}
+            selected={activeDocument?._id === doc._id}
+          >
+            <ListItemText primary={doc.label}></ListItemText>
+          </ListItemButton>
+        ))}
+    </List>
   )
 }
+
+// export const FilteredList = styled(List)(({ theme }) => ({
+//   width: '100%',
+//   padding: 0,
+//   backgroundColor: theme.palette['antiflash-white'].main,
+//   borderRadius: 15,
+//   overflow: 'clip',
+//   height: '100%',
+//   '& .MuiButtonBase-root': {
+//     height: '2rem',
+//     paddingTop: 0,
+//     paddingRight: 16,
+//     paddingBottom: 0,
+//     paddingLeft: 16
+//   },
+//   '& .MuiButtonBase-root.Mui-selected': {
+//     backgroundColor: theme.palette['columbia-blue'].main
+//   },
+//   '& .MuiListItemText-root': {
+//     whiteSpace: 'nowrap',
+//     overflow: 'hidden',
+//     textOverflow: 'ellipsis'
+//   }
+// }))
+
+// DocumentList.propTypes = {
+//   children: PropTypes.node
+// }
+
+// function DocumentList({ children }) {
+//   return (
+//     <div className="flex w-full flex-grow flex-col overflow-clip rounded-2xl bg-secondary-light">
+//       {children}
+//     </div>
+//   )
+// }
+
+// DocumentListItem.propTypes = {
+//   label: PropTypes.string.isRequired,
+//   isActive: PropTypes.bool,
+//   onClick: PropTypes.func
+// }
+
+// function DocumentListItem({ label, isActive, onClick }) {
+//   return (
+//     <button
+//       type="button"
+//       className={`flex h-7 w-full flex-row items-center justify-start px-4 hover:bg-secondary focus:bg-tertiary ${isActive ? 'bg-tertiary' : ''}`}
+//       onClick={onClick}
+//     >
+//       {label}
+//     </button>
+//   )
+// }

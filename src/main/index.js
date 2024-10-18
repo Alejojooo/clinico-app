@@ -2,28 +2,35 @@ import { electronApp, is, optimizer } from '@electron-toolkit/utils'
 import { app, BrowserWindow, ipcMain, shell } from 'electron'
 import { join } from 'path'
 import icon from '../../resources/icon.png?asset'
-import { deleteDrug, getDrugById, getDrugs, newDrug, updateDrug } from './services/drugService.js'
 import {
-  deleteMedicalRecordPhoto,
-  getMedicalRecordPhotoById,
-  getMedicalRecordPhotos,
-  newMedicalRecordPhoto,
-  updateMedicalRecordPhotoDescription
-} from './services/medicalRecordPhotosService.js'
+  deleteAppointment,
+  getAppointmentById,
+  getAppointmentsByDate,
+  newAppointment,
+  updateAppointment
+} from './services/appointment.js'
+import { deleteDrug, getDrugById, getDrugs, newDrug, updateDrug } from './services/drug.js'
 import {
   deleteMedicalRecord,
   getMedicalRecordById,
   getMedicalRecords,
   newMedicalRecord,
   updateMedicalRecord
-} from './services/medicalRecordService.js'
+} from './services/medicalRecord.js'
+import {
+  deleteMedicalRecordPhoto,
+  getMedicalRecordPhotoById,
+  getMedicalRecordPhotos,
+  newMedicalRecordPhoto,
+  updateMedicalRecordPhotoDescription
+} from './services/medicalRecordPhotos.js'
 import {
   deletePatient,
   getPatientById,
   getPatients,
   newPatient,
   updatePatient
-} from './services/patientService.js'
+} from './services/patient.js'
 import { showConfirmDialog } from './utils/dialog.js'
 import { openImage } from './utils/image.js'
 import { setMainWindow } from './utils/windowManager.js'
@@ -123,6 +130,12 @@ ipcMain.handle('drug:getAll', getDrugs)
 ipcMain.handle('drug:getOne', getDrugById)
 ipcMain.handle('drug:update', updateDrug)
 ipcMain.handle('drug:delete', deleteDrug)
+
+ipcMain.handle('appointment:new', newAppointment)
+ipcMain.handle('appointment:getByDate', getAppointmentsByDate)
+ipcMain.handle('appointment:getOne', getAppointmentById)
+ipcMain.handle('appointment:update', updateAppointment)
+ipcMain.handle('appointment:delete', deleteAppointment)
 
 ipcMain.handle('dialog:showConfirmDialog', showConfirmDialog)
 

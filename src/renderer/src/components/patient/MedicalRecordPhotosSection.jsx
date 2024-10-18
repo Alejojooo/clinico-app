@@ -26,7 +26,7 @@ export default function MedicalRecordPhotosSection() {
 
   return (
     <main className="flex size-full flex-row gap-5 px-5 py-5">
-      <div className="flex w-1/4 flex-col gap-5">
+      <div className="flex w-1/4 max-w-[400px] flex-col gap-5">
         <Button
           startIcon={<ArrowBackOutlinedIcon />}
           variant="text"

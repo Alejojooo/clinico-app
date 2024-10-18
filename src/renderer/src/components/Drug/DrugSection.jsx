@@ -3,6 +3,7 @@ import useDrug from '../../hooks/useDrug'
 import Header from '../Header'
 import SideView from '../SideView'
 import TextField from '@mui/material/TextField'
+import FilterableDocumentList from '../FilterableDocumentList'
 
 export default function DrugSection() {
   const {
@@ -20,11 +21,14 @@ export default function DrugSection() {
 
   return (
     <>
-      <SideView
-        activeDocument={activeDrug}
-        documents={drugs}
-        handleDocSelection={handleDrugSelection}
-      ></SideView>
+      <SideView>
+        <FilterableDocumentList
+          title="Listado de pacientes"
+          documents={drugs}
+          activeDocument={activeDrug}
+          handleDocSelection={handleDrugSelection}
+        ></FilterableDocumentList>
+      </SideView>
       <DrugForm
         formData={formData}
         errors={errors}

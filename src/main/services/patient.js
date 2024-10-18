@@ -2,7 +2,7 @@ import { Patient, SCHEMA_FIELDS } from '../models/Patient'
 import { toUIDate } from '../utils/date'
 import { cleanData, parseErrors, serialize } from '../utils/form'
 import { deleteImage, getImage, saveImage } from '../utils/image'
-import { deleteMedicalRecord } from './medicalRecordService'
+import { deleteMedicalRecord } from './medicalRecord'
 
 export async function newPatient(event, formData) {
   try {

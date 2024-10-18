@@ -123,6 +123,7 @@ export default function MedicalRecordSection() {
                     slots={{ textField: SmallTextField }}
                     value={dayjs(formData.date).isValid() ? dayjs(formData.date) : null}
                     onChange={handleDate}
+                    disableFuture
                   />
                 </div>
                 <div className="flex w-full flex-row items-center justify-start gap-4">

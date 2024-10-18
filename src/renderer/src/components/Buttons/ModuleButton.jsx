@@ -1,4 +1,4 @@
-import { Typography } from '@mui/material'
+import { ButtonBase, Typography } from '@mui/material'
 import PropTypes from 'prop-types'
 
 ModuleButton.propTypes = {
@@ -10,14 +10,35 @@ ModuleButton.propTypes = {
 
 export default function ModuleButton({ name, icon, isActive = false, onClick }) {
   return (
-    <button
-      className={`flex h-14 flex-row items-center justify-start gap-3 rounded-full border-none py-4 pl-4 pr-6 transition-colors focus:bg-tertiary ${isActive ? 'bg-tertiary' : 'bg-transparent hover:bg-secondary-light'}`}
+    <ButtonBase
+      sx={{
+        display: 'flex',
+        height: '3.5rem',
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'flex-start',
+        gap: '0.75rem',
+        borderRadius: '9999px',
+        border: 'none',
+        paddingY: '1rem',
+        paddingLeft: '1rem',
+        paddingRight: '1.5rem',
+        transition: 'background-color 0.3s',
+        color: 'berkeley-blue.main',
+        backgroundColor: isActive ? 'columbia-blue.main' : 'transparent',
+        '&:hover': {
+          backgroundColor: !isActive ? 'antiflash-white.main' : null
+        },
+        '&:focus': {
+          backgroundColor: 'columbia-blue.main'
+        }
+      }}
       onClick={onClick}
     >
       {icon}
-      <Typography variant="subtitle1" component="h3">
+      <Typography variant="subtitle1" component="h3" sx={{ fontWeight: '500' }}>
         {name}
       </Typography>
-    </button>
+    </ButtonBase>
   )
 }

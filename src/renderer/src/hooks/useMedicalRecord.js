@@ -8,6 +8,7 @@ import useSnackbar from './useSnackbar'
 import useFormChanged from './useFormChanged'
 import { useView } from './useView'
 import { PATIENT_SECTIONS } from '../utils/view'
+import dayjs from 'dayjs'
 
 export default function useMedicalRecord() {
   const context = useContext(MedicalRecordContext)
@@ -58,7 +59,8 @@ export default function useMedicalRecord() {
 
   const getCleanForm = () => {
     const newForm = clean(state.formData)
-    if (!state.formData.date) newForm.date = new Date().toISOString()
+    if (!newForm.date) newForm.date = new Date().toISOString()
+    else if (newForm.date instanceof dayjs) newForm.date = newForm.date.format()
     return newForm
   }
 

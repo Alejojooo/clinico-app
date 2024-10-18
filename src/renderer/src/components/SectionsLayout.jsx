@@ -1,6 +1,6 @@
 import AccountCircleOutlinedIcon from '@mui/icons-material/AccountCircleOutlined'
 import AssessmentOutlinedIcon from '@mui/icons-material/AssessmentOutlined'
-import LayersOutlinedIcon from '@mui/icons-material/LayersOutlined'
+import LibraryBooksOutlinedIcon from '@mui/icons-material/LibraryBooksOutlined'
 import { Button, ButtonGroup } from '@mui/material'
 import usePatient from '../hooks/usePatient'
 import { useView } from '../hooks/useView'
@@ -13,7 +13,8 @@ export default function SectionsLayout() {
     case MODULES.PATIENT: {
       return <PatientSectionsLayout></PatientSectionsLayout>
     }
-    case MODULES.DRUG: {
+    case MODULES.DRUG:
+    case MODULES.AGENDA: {
       return <div></div>
     }
     default: {
@@ -24,7 +25,7 @@ export default function SectionsLayout() {
 
 function PatientSectionsLayout() {
   const { activePatient } = usePatient()
-  const { activeSection, setActiveSection, addSnackbar } = useView()
+  const { setActiveSection, addSnackbar } = useView()
 
   return (
     <div className="flex flex-row">
@@ -36,7 +37,7 @@ function PatientSectionsLayout() {
           Identificación
         </Button>
         <Button
-          startIcon={<LayersOutlinedIcon />}
+          startIcon={<LibraryBooksOutlinedIcon />}
           onClick={() => {
             if (activePatient) setActiveSection(PATIENT_SECTIONS.MEDICAL_RECORDS)
             else addSnackbar('Primero seleccione un paciente')
@@ -49,35 +50,6 @@ function PatientSectionsLayout() {
           Reporte
         </Button>
       </ButtonGroup>
-      {/* <SegmentedButton
-        className="border-r"
-        label="Identificación"
-        icon={<UserCircleIcon className="size-4" />}
-        rounded="left"
-        isActive={activeSection === PATIENT_SECTIONS.IDENTIFICATION}
-        onClick={() => setActiveSection(PATIENT_SECTIONS.IDENTIFICATION)}
-      ></SegmentedButton>
-      <SegmentedButton
-        className="border-r"
-        label="Historias"
-        icon={<Square3Stack3DIcon className="size-4" />}
-        isActive={
-          activeSection === PATIENT_SECTIONS.MEDICAL_RECORDS ||
-          activeSection === PATIENT_SECTIONS.MEDICAL_RECORDS_PHOTOS
-        }
-        onClick={() => {
-          if (activePatient) setActiveSection(PATIENT_SECTIONS.MEDICAL_RECORDS)
-          else addSnackbar('Primero seleccione un paciente')
-        }}
-        disabled={!activePatient}
-      ></SegmentedButton>
-      <SegmentedButton
-        label="Reporte"
-        icon={<DocumentTextIcon className="size-4" />}
-        rounded="right"
-        isActive={activeSection === PATIENT_SECTIONS.REPORT}
-        onClick={() => setActiveSection(PATIENT_SECTIONS.REPORT)}
-      ></SegmentedButton> */}
     </div>
   )
 }

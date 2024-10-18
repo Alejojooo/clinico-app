@@ -19,10 +19,10 @@ function DocumentListTitle({ title, length }) {
         paddingRight: '1rem'
       }}
     >
-      <Typography variant="subtitle1" component="h3">
+      <Typography variant="subtitle1" component="h3" sx={{ fontWeight: '500' }}>
         {title}
       </Typography>
-      <Typography variant="subtitle1" component="span">
+      <Typography variant="subtitle1" component="span" sx={{ fontWeight: '500' }}>
         {length}
       </Typography>
     </Stack>
@@ -53,7 +53,7 @@ export default function SearchBar({ title, length, value, onInput }) {
           justifyContent: 'start',
           alignItems: 'center',
           gap: '0.25rem',
-          borderRadius: '9999px',
+          // borderRadius: '15px',
           backgroundColor: 'antiflash-white.main',
           padding: '0.25rem 0.25rem 0.25rem 1rem'
         }}

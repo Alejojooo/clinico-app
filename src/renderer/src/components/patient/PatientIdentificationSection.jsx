@@ -8,6 +8,7 @@ import { calculateAge } from '../../utils/date'
 import ImageField from '../FormFields/ImageField'
 import Header from '../Header'
 import SideView from '../SideView'
+import FilterableDocumentList from '../FilterableDocumentList'
 
 export default function PatientIdentificationSection() {
   const {
@@ -27,11 +28,14 @@ export default function PatientIdentificationSection() {
 
   return (
     <>
-      <SideView
-        documents={patients}
-        activeDocument={activePatient}
-        handleDocSelection={handlePatientSelection}
-      ></SideView>
+      <SideView>
+        <FilterableDocumentList
+          title="Listado de pacientes"
+          documents={patients}
+          activeDocument={activePatient}
+          handleDocSelection={handlePatientSelection}
+        ></FilterableDocumentList>
+      </SideView>
       <PatientForm
         formData={formData}
         errors={errors}
