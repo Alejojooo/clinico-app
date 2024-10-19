@@ -1,11 +1,20 @@
 import styled from '@emotion/styled'
 import DescriptionOutlinedIcon from '@mui/icons-material/DescriptionOutlined'
 import PhotoCameraOutlinedIcon from '@mui/icons-material/PhotoCameraOutlined'
-import { Button, ButtonGroup, Checkbox, FormControlLabel, TextField } from '@mui/material'
+import {
+  Box,
+  Button,
+  ButtonGroup,
+  Checkbox,
+  FormControlLabel,
+  TextField,
+  Typography
+} from '@mui/material'
 import { DateTimePicker } from '@mui/x-date-pickers'
 import dayjs from 'dayjs'
 import useMedicalRecord from '../../hooks/useMedicalRecord'
 import FilterableDocumentList from '../FilterableDocumentList'
+import DataField from '../FormFields/DataField'
 import Header from '../Header'
 
 const SmallTextField = styled(TextField)({
@@ -30,6 +39,7 @@ export default function MedicalRecordSection() {
     formData,
     activePatient,
     activeMedicalRecord,
+    nextAppointment,
     medicalRecords,
     disabledButtons,
     calculateAge,
@@ -58,7 +68,13 @@ export default function MedicalRecordSection() {
         <div className="flex size-full flex-col items-start justify-start gap-2.5">
           <div className="flex w-full flex-row items-center gap-6">
             <div className="flex grow flex-col items-start justify-start gap-2.5">
-              <span className="w-full border-b border-secondary text-sm">Identificación</span>
+              <Typography
+                variant="subtitle2"
+                component="span"
+                sx={{ width: '100%', borderTop: '1px solid', borderColor: 'alice-blue.main' }}
+              >
+                Identificación
+              </Typography>
               <div className="flex w-full flex-col items-start justify-start gap-2.5">
                 <div className="size-full">
                   <TextField
@@ -115,21 +131,28 @@ export default function MedicalRecordSection() {
               </div>
             </div>
             <div className="flex flex-col items-start justify-start gap-2.5">
-              <span className="w-full border-t border-secondary text-sm">Historia Clínica</span>
-              <div className="flex w-full flex-col items-start justify-start gap-2.5">
-                <div className="size-full">
-                  <DateTimePicker
-                    label="Fecha y hora de elaboración"
-                    slots={{ textField: SmallTextField }}
-                    value={dayjs(formData.date).isValid() ? dayjs(formData.date) : null}
-                    onChange={handleDate}
-                    disableFuture
-                  />
-                </div>
-                <div className="flex w-full flex-row items-center justify-start gap-4">
-                  <DateTimePicker label="Próxima cita" slots={{ textField: SmallTextField }} />
-                </div>
-              </div>
+              <Typography
+                variant="subtitle2"
+                component="span"
+                sx={{ width: '100%', borderTop: '1px solid', borderColor: 'alice-blue.main' }}
+              >
+                Historia clínica
+              </Typography>
+              <Box sx={{ display: 'flex', flexDirection: 'column', gap: '0.625rem' }}>
+                <DateTimePicker
+                  label="Fecha y hora de elaboración"
+                  slots={{ textField: SmallTextField }}
+                  value={dayjs(formData.date).isValid() ? dayjs(formData.date) : null}
+                  onChange={handleDate}
+                  disableFuture
+                />
+                <TextField
+                  label="Próxima cita"
+                  size="small"
+                  value={nextAppointment?.date ?? 'Sin registro'}
+                  readOnly
+                />
+              </Box>
             </div>
           </div>
           <div className="flex size-full flex-row gap-6">
@@ -209,19 +232,13 @@ export default function MedicalRecordSection() {
                     }}
                   />
                 </div>
-                <TextField
+                <DataField label="Personal médico responsable">Alejo</DataField>
+                {/* <TextField
                   label="Personal médico responsable"
-                  variant="filled"
+                  variant="standard"
                   value="Alejo"
                   size="small"
-                />
-                {/* <SimpleTextField
-                  label="Personal médico responsable"
-                  labelWidth="w-64"
-                  value="Alejo"
-                  width="w-96"
-                  readOnly
-                ></SimpleTextField> */}
+                /> */}
               </div>
             </div>
           </div>

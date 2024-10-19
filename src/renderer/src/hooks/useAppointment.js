@@ -81,7 +81,6 @@ export default function useAppointment() {
 
   const handleAppointmentSelection = async (id) => {
     const appointment = await window.appointment.getAppointmentById(id)
-    console.log(appointment)
     setActiveAppointment(appointment)
   }
 

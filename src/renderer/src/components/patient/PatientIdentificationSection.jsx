@@ -5,16 +5,17 @@ import dayjs from 'dayjs'
 import PropTypes from 'prop-types'
 import usePatient from '../../hooks/usePatient'
 import { calculateAge } from '../../utils/date'
+import FilterableDocumentList from '../FilterableDocumentList'
 import ImageField from '../FormFields/ImageField'
 import Header from '../Header'
 import SideView from '../SideView'
-import FilterableDocumentList from '../FilterableDocumentList'
 
 export default function PatientIdentificationSection() {
   const {
     formData,
     errors,
     activePatient,
+    nextAppointment,
     patients,
     disabledButtons,
     handleField,
@@ -39,6 +40,7 @@ export default function PatientIdentificationSection() {
       <PatientForm
         formData={formData}
         errors={errors}
+        nextAppointment={nextAppointment}
         disabledButtons={disabledButtons}
         onField={handleField}
         onDate={handleDate}
@@ -54,6 +56,7 @@ export default function PatientIdentificationSection() {
 PatientForm.propTypes = {
   formData: PropTypes.object,
   errors: PropTypes.object,
+  nextAppointment: PropTypes.object,
   disabledButtons: PropTypes.array,
   onField: PropTypes.func,
   onDate: PropTypes.func,
@@ -66,6 +69,7 @@ PatientForm.propTypes = {
 function PatientForm({
   formData,
   errors,
+  nextAppointment,
   disabledButtons,
   onField,
   onDate,
@@ -223,6 +227,12 @@ function PatientForm({
             fullWidth
           />
         </div>
+        <TextField
+          label="Próxima cita"
+          sx={{ flexShrink: 0, maxWidth: 250 }}
+          value={nextAppointment?.date ?? 'Sin registro'}
+          readOnly
+        ></TextField>
       </form>
     </main>
   )

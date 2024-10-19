@@ -18,7 +18,7 @@ export default function useMedicalRecord() {
 
   const [medicalRecords, setMedicalRecords] = useState([])
   const [state, dispatch] = useReducer(medicalRecordReducer, initialState)
-  const { activePatient } = usePatient()
+  const { activePatient, nextAppointment } = usePatient()
   const { setActiveSection } = useView()
   const { activeMedicalRecord, setActiveMedicalRecord } = context
   const { showSnackbar, showPersistentSnackbar, clearPersistentSnackbar } = useSnackbar()
@@ -144,6 +144,7 @@ export default function useMedicalRecord() {
     formData: state.formData,
     activePatient,
     activeMedicalRecord,
+    nextAppointment,
     medicalRecords,
     disabledButtons: getDisabledButtons(),
     calculateAge,

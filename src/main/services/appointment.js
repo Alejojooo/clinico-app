@@ -47,6 +47,16 @@ export async function getAppointmentById(event, id) {
   return formData
 }
 
+export async function getNextPatientAppointment(event, patientId) {
+  const today = new Date()
+
+  const appointment = await Appointment.findOne({
+    patientId: patientId,
+    date: { $gte: today }
+  }).sort('-date')
+  return appointment ? toFormData(appointment) : null
+}
+
 export async function updateAppointment(event, id, formData) {
   try {
     const data = cleanData(formData, SCHEMA_FIELDS)

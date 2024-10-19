@@ -6,6 +6,7 @@ import {
   deleteAppointment,
   getAppointmentById,
   getAppointmentsByDate,
+  getNextPatientAppointment,
   newAppointment,
   updateAppointment
 } from './services/appointment.js'
@@ -133,6 +134,7 @@ ipcMain.handle('drug:delete', deleteDrug)
 
 ipcMain.handle('appointment:new', newAppointment)
 ipcMain.handle('appointment:getByDate', getAppointmentsByDate)
+ipcMain.handle('appointment:getNearest', getNextPatientAppointment)
 ipcMain.handle('appointment:getOne', getAppointmentById)
 ipcMain.handle('appointment:update', updateAppointment)
 ipcMain.handle('appointment:delete', deleteAppointment)
