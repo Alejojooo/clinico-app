@@ -1,11 +1,10 @@
-import { BookOpenIcon } from '@heroicons/react/24/outline'
+import ClassOutlinedIcon from '@mui/icons-material/ClassOutlined'
 import MedicationOutlinedIcon from '@mui/icons-material/MedicationOutlined'
 import PeopleAltOutlinedIcon from '@mui/icons-material/PeopleAltOutlined'
 import PropTypes from 'prop-types'
 import { useView } from '../hooks/useView'
 import { MODULES } from '../utils/view'
 import ModuleButton from './Buttons/ModuleButton'
-import ClassOutlinedIcon from '@mui/icons-material/ClassOutlined'
 
 SideView.propTypes = {
   children: PropTypes.node,

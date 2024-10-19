@@ -67,12 +67,12 @@ export function DocumentList({ documents, activeDocument, handleDocSelection }) 
         width: '100%',
         padding: 0,
         backgroundColor: 'antiflash-white.main',
-        borderRadius: '4px',
+        borderRadius: '0.25rem',
         overflow: 'clip',
         height: '100%',
         '& .MuiButtonBase-root': {
           height: '2rem',
-          padding: '0 16px'
+          padding: '0 1rem'
         },
         '& .MuiButtonBase-root.Mui-selected': {
           backgroundColor: 'columbia-blue.main'

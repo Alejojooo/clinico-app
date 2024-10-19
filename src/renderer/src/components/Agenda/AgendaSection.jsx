@@ -8,9 +8,8 @@ import PropTypes from 'prop-types'
 import useAppointment from '../../hooks/useAppointment'
 import { DocumentList } from '../FilterableDocumentList'
 import SideView from '../SideView'
+import DataField from '../FormFields/DataField'
 
-// TODO: Que no cambie de tamaño la lista de citas
-// TODO: Agregar labels de información cuando se selecciona una cita
 // TODO: Agregar alertas de cuántas citas son para hoy
 // TODO: Funcionalidad de ver paciente
 
@@ -38,7 +37,7 @@ export default function AgendaSection() {
           sx={{
             width: '100%',
             // backgroundColor: 'alice-blue.main',
-            // borderRadius: '4px',
+            // borderRadius: '0.25rem',
             '& .MuiDateCalendar-root': {
               width: '100%'
             },
@@ -57,7 +56,7 @@ export default function AgendaSection() {
           flexDirection: 'row',
           flexGrow: 1,
           backgroundColor: 'white',
-          borderRadius: '15px'
+          borderRadius: '1rem'
         }}
         component="main"
       >
@@ -67,7 +66,7 @@ export default function AgendaSection() {
           onSelection={handleAppointmentSelection}
           onDelete={handleDeleteAppointment}
         ></AppointmentList>
-        <Box sx={{ ...flexColumn, width: '50%', gap: '40px' }}>
+        <Box sx={{ ...flexColumn, width: '50%', gap: '2.5rem' }}>
           <AppointmentForm
             formData={formData}
             errors={errors}
@@ -90,8 +89,8 @@ const flexColumn = {
   width: '100%',
   display: 'flex',
   flexDirection: 'column',
-  gap: '10px',
-  padding: '20px'
+  gap: '0.625rem',
+  padding: '1.25rem'
 }
 
 AppointmentList.propTypes = {
@@ -107,7 +106,15 @@ function AppointmentList({ appointments, activeAppointment, onSelection, onDelet
       <Typography variant="subtitle1" component="h4" sx={{ fontWeight: '600' }}>
         Listado de citas para este día
       </Typography>
-      <ButtonGroup variant="outlined">
+      <ButtonGroup
+        sx={{
+          width: '100%',
+          '& .MuiButtonBase-root': {
+            width: '100%'
+          }
+        }}
+        variant="outlined"
+      >
         <Button startIcon={<EventBusyOutlinedIcon />} onClick={onDelete}>
           Eliminar
         </Button>
@@ -134,7 +141,7 @@ AppointmentForm.propTypes = {
 
 function AppointmentForm({ formData, errors, patients, onField, onSelect, onDate, onNew }) {
   return (
-    <Box component="form" sx={{ ...flexColumn, gap: '20px', padding: 0 }}>
+    <Box component="form" sx={{ ...flexColumn, gap: '0.625rem', padding: 0 }}>
       <Typography variant="subtitle1" component="h4" sx={{ fontWeight: '600' }}>
         Agendar cita
       </Typography>
@@ -196,35 +203,14 @@ AppointmentInfo.propTypes = {
 
 function AppointmentInfo({ activeAppointment }) {
   return (
-    <Box sx={{ ...flexColumn, gap: '20px', padding: 0 }}>
+    <Box sx={{ ...flexColumn, gap: '1.25rem', padding: 0 }}>
       <Typography variant="subtitle1" component="h4" sx={{ fontWeight: '600' }}>
         Información de cita
       </Typography>
       <Box sx={{ ...flexColumn, padding: 0 }}>
-        <Box sx={{ ...flexColumn, gap: 0, padding: 0 }}>
-          <Typography variant="subtitle2" component="span" sx={{ fontWeight: '600' }}>
-            Cita para
-          </Typography>
-          <Typography variant="body1" component="span">
-            {activeAppointment.patientName}
-          </Typography>
-        </Box>
-        <Box sx={{ ...flexColumn, gap: 0, padding: 0 }}>
-          <Typography variant="subtitle2" component="span" sx={{ fontWeight: '600' }}>
-            Fecha y hora
-          </Typography>
-          <Typography variant="body1" component="span">
-            {activeAppointment.date}
-          </Typography>
-        </Box>
-        <Box sx={{ ...flexColumn, gap: 0, padding: 0 }}>
-          <Typography variant="subtitle2" component="span" sx={{ fontWeight: '600' }}>
-            Motivo de consulta
-          </Typography>
-          <Typography variant="body1" component="span">
-            {activeAppointment.reason}
-          </Typography>
-        </Box>
+        <DataField label="Cita para">{activeAppointment.patientName}</DataField>
+        <DataField label="Fecha y hora">{activeAppointment.date}</DataField>
+        <DataField label="Motivo de consulta">{activeAppointment.reason}</DataField>
       </Box>
     </Box>
   )

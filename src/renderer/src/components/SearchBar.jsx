@@ -53,7 +53,7 @@ export default function SearchBar({ title, length, value, onInput }) {
           justifyContent: 'start',
           alignItems: 'center',
           gap: '0.25rem',
-          // borderRadius: '15px',
+          // borderRadius: '1rem',
           backgroundColor: 'antiflash-white.main',
           padding: '0.25rem 0.25rem 0.25rem 1rem'
         }}

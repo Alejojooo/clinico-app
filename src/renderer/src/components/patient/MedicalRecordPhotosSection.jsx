@@ -9,6 +9,8 @@ import { Button, ButtonGroup, IconButton, TextField, Typography } from '@mui/mat
 import useMedicalRecordPhoto from '../../hooks/useMedicalRecordPhoto'
 import FilterableDocumentList from '../FilterableDocumentList'
 
+// TODO: Agregarle funcionalidad al botón de agrandar imagen
+
 export default function MedicalRecordPhotosSection() {
   const {
     formData,
@@ -28,6 +30,7 @@ export default function MedicalRecordPhotosSection() {
     <main className="flex size-full flex-row gap-5 px-5 py-5">
       <div className="flex w-1/4 max-w-[400px] flex-col gap-5">
         <Button
+          sx={{ justifyContent: 'start' }}
           startIcon={<ArrowBackOutlinedIcon />}
           variant="text"
           onClick={handleMedicalRecordSection}
@@ -45,7 +48,15 @@ export default function MedicalRecordPhotosSection() {
             Insertar desde
           </Typography>
           <div className="flex flex-row">
-            <ButtonGroup variant="outlined">
+            <ButtonGroup
+              sx={{
+                width: '100%',
+                '& .MuiButtonBase-root': {
+                  width: '100%'
+                }
+              }}
+              variant="outlined"
+            >
               <Button
                 startIcon={<FolderOutlinedIcon />}
                 onClick={handleOpenPhoto}
@@ -69,7 +80,12 @@ export default function MedicalRecordPhotosSection() {
           <div className="flex flex-row">
             <ButtonGroup
               variant="outlined"
-              sx={{ width: '100%', '& .MuiButtonBase': { width: '100%' } }}
+              sx={{
+                width: '100%',
+                '& .MuiButtonBase-root': {
+                  width: '100%'
+                }
+              }}
             >
               <Button
                 startIcon={<SaveOutlinedIcon />}
