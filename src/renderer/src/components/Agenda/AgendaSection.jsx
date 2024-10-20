@@ -6,10 +6,10 @@ import { DateCalendar, DateTimePicker } from '@mui/x-date-pickers'
 import dayjs from 'dayjs'
 import PropTypes from 'prop-types'
 import useAppointment from '../../hooks/useAppointment'
-import { DocumentList } from '../SearchableDocumentList'
 import DataField from '../FormFields/DataField'
-import SideView from '../SideView'
 import Header from '../Header'
+import { DocumentList } from '../SearchableDocumentList'
+import SideView from '../SideView'
 
 // TODO: Agregar alertas de cuántas citas son para hoy
 // TODO: Funcionalidad de ver paciente
@@ -61,7 +61,7 @@ export default function AgendaSection() {
           }}
         >
           <Header title="Agenda"></Header>
-          <Stack direction="row" spacing="1.25rem" sx={{ flexGrow: 1 }}>
+          <Stack direction="row" spacing="1.25rem" sx={{ flexGrow: 0, width: 1, height: 1 }}>
             <AppointmentList
               appointments={appointments}
               activeAppointment={activeAppointment}
@@ -88,7 +88,9 @@ export default function AgendaSection() {
 }
 
 const columnStyles = {
-  width: 0.5
+  flexGrow: 1,
+  flexShrink: 1,
+  height: 1
 }
 
 AppointmentList.propTypes = {

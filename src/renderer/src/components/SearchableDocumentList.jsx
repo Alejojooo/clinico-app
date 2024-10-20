@@ -72,6 +72,7 @@ export function DocumentList({ documents, activeDocument, handleDocSelection }) 
           width: 1
         },
         '& .MuiTypography-root': {
+          width: 1,
           whiteSpace: 'nowrap',
           overflow: 'hidden',
           textOverflow: 'ellipsis'

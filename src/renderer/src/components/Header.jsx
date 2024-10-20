@@ -14,9 +14,7 @@ export default function Header({ children, title, disableDivider = false }) {
         direction="row"
         sx={{ width: 1, height: '2.5rem', justifyContent: 'space-between', alignItems: 'end' }}
       >
-        <Typography variant="h6" component="h2" sx={{ lineHeight: 1 }}>
-          {title}
-        </Typography>
+        <Typography variant="h6">{title}</Typography>
         {children}
       </Stack>
       {!disableDivider && (
