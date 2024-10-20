@@ -61,14 +61,18 @@ export default function AgendaSection() {
           }}
         >
           <Header title="Agenda"></Header>
-          <Stack direction="row" spacing="1.25rem" sx={{ flexGrow: 0, width: 1, height: 1 }}>
+          <Box spacing="1.25rem" sx={{ width: 1, height: 1 }}>
             <AppointmentList
               appointments={appointments}
               activeAppointment={activeAppointment}
               onSelection={handleAppointmentSelection}
               onDelete={handleDeleteAppointment}
             />
-            <Stack direction="column" spacing="2.5rem" sx={columnStyles}>
+            <Stack
+              direction="column"
+              spacing="2.5rem"
+              sx={{ ...columnStyles, paddingLeft: '0.625rem' }}
+            >
               <AppointmentForm
                 formData={formData}
                 errors={errors}
@@ -80,7 +84,7 @@ export default function AgendaSection() {
               />
               {activeAppointment && <AppointmentInfo activeAppointment={activeAppointment} />}
             </Stack>
-          </Stack>
+          </Box>
         </Stack>
       </Box>
     </>
@@ -88,8 +92,8 @@ export default function AgendaSection() {
 }
 
 const columnStyles = {
-  flexGrow: 1,
-  flexShrink: 1,
+  display: 'inline-flex',
+  width: 0.5,
   height: 1
 }
 
@@ -102,7 +106,7 @@ AppointmentList.propTypes = {
 
 function AppointmentList({ appointments, activeAppointment, onSelection, onDelete }) {
   return (
-    <Stack direction="column" spacing="0.625rem" sx={columnStyles}>
+    <Stack direction="column" spacing="0.625rem" sx={{ ...columnStyles, paddingRight: '0.625rem' }}>
       <Typography variant="h4">Listado de citas para este día</Typography>
       <ButtonGroup
         sx={{
