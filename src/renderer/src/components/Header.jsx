@@ -1,34 +1,34 @@
-import { Box, Typography } from '@mui/material'
+import { Box, Stack, Typography } from '@mui/material'
 import PropTypes from 'prop-types'
-import { useView } from '../hooks/useView'
-import { PATIENT_SECTIONS } from '../utils/view'
-import CrudButtons from './Buttons/CrudButtons'
 
 Header.propTypes = {
-  title: PropTypes.string.isRequired,
-  handlers: PropTypes.object,
-  disabledButtons: PropTypes.array
+  children: PropTypes.node,
+  title: PropTypes.string,
+  disableDivider: PropTypes.bool
 }
 
-export default function Header({ title, handlers, disabledButtons }) {
-  const { activeSection } = useView()
-
+export default function Header({ children, title, disableDivider = false }) {
   return (
-    <div className="flex w-full flex-col items-center justify-start gap-3.5">
-      <div className="flex w-full flex-row items-end justify-between">
-        <Typography variant="h6" component="h2">
+    <Stack component="header" direction="column" sx={{ width: 1, alignItems: 'center' }}>
+      <Stack
+        direction="row"
+        sx={{ width: 1, height: '2.5rem', justifyContent: 'space-between', alignItems: 'end' }}
+      >
+        <Typography variant="h6" component="h2" sx={{ lineHeight: 1 }}>
           {title}
         </Typography>
-        <CrudButtons
-          onNew={handlers?.onNew}
-          onUpdate={handlers?.onUpdate}
-          onDelete={handlers?.onDelete}
-          disabledButtons={disabledButtons}
-        ></CrudButtons>
-      </div>
-      {activeSection !== PATIENT_SECTIONS.MEDICAL_RECORDS && (
-        <Box sx={{ borderTop: '1px solid', width: '100%', borderColor: 'alice-blue.main' }}></Box>
+        {children}
+      </Stack>
+      {!disableDivider && (
+        <Box
+          sx={{
+            marginTop: '0.75rem',
+            borderTop: '1px solid',
+            width: 1,
+            borderColor: 'outline.main'
+          }}
+        ></Box>
       )}
-    </div>
+    </Stack>
   )
 }

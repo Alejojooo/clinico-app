@@ -1,14 +1,15 @@
 import EventAvailableOutlinedIcon from '@mui/icons-material/EventAvailableOutlined'
 import EventBusyOutlinedIcon from '@mui/icons-material/EventBusyOutlined'
 import PersonOutlinedIcon from '@mui/icons-material/PersonOutlined'
-import { Autocomplete, Box, Button, ButtonGroup, TextField, Typography } from '@mui/material'
+import { Autocomplete, Box, Button, ButtonGroup, Stack, TextField, Typography } from '@mui/material'
 import { DateCalendar, DateTimePicker } from '@mui/x-date-pickers'
 import dayjs from 'dayjs'
 import PropTypes from 'prop-types'
 import useAppointment from '../../hooks/useAppointment'
-import { DocumentList } from '../FilterableDocumentList'
-import SideView from '../SideView'
+import { DocumentList } from '../SearchableDocumentList'
 import DataField from '../FormFields/DataField'
+import SideView from '../SideView'
+import Header from '../Header'
 
 // TODO: Agregar alertas de cuántas citas son para hoy
 // TODO: Funcionalidad de ver paciente
@@ -35,62 +36,59 @@ export default function AgendaSection() {
       <SideView>
         <Box
           sx={{
-            width: '100%',
-            // backgroundColor: 'alice-blue.main',
-            // borderRadius: '0.25rem',
+            width: 1,
             '& .MuiDateCalendar-root': {
-              width: '100%'
+              width: 1
             },
             '& .MuiDateCalendar-root .MuiPickersFadeTransitionGroup-root': {
-              width: '100%'
+              width: 1
             }
           }}
         >
           <DateCalendar value={selectedDate} onChange={handleDateSelection} />
         </Box>
       </SideView>
-      <Box
-        sx={{
-          height: '100%',
-          display: 'flex',
-          flexDirection: 'row',
-          flexGrow: 1,
-          backgroundColor: 'white',
-          borderRadius: '1rem'
-        }}
-        component="main"
-      >
-        <AppointmentList
-          appointments={appointments}
-          activeAppointment={activeAppointment}
-          onSelection={handleAppointmentSelection}
-          onDelete={handleDeleteAppointment}
-        ></AppointmentList>
-        <Box sx={{ ...flexColumn, width: '50%', gap: '2.5rem' }}>
-          <AppointmentForm
-            formData={formData}
-            errors={errors}
-            patients={patients}
-            onField={handleField}
-            onSelect={handleSelect}
-            onDate={handleDate}
-            onNew={handleNewAppointment}
-          ></AppointmentForm>
-          {activeAppointment && (
-            <AppointmentInfo activeAppointment={activeAppointment}></AppointmentInfo>
-          )}
-        </Box>
+      <Box component="main" sx={{ flexGrow: 1, height: 1 }}>
+        <Stack
+          direction="column"
+          spacing="1.25rem"
+          sx={{
+            width: 1,
+            height: 1,
+            padding: '1.25rem',
+            backgroundColor: 'white',
+            borderRadius: '1rem'
+          }}
+        >
+          <Header title="Agenda"></Header>
+          <Stack direction="row" spacing="1.25rem" sx={{ flexGrow: 1 }}>
+            <AppointmentList
+              appointments={appointments}
+              activeAppointment={activeAppointment}
+              onSelection={handleAppointmentSelection}
+              onDelete={handleDeleteAppointment}
+            />
+            <Stack direction="column" spacing="2.5rem" sx={columnStyles}>
+              <AppointmentForm
+                formData={formData}
+                errors={errors}
+                patients={patients}
+                onField={handleField}
+                onSelect={handleSelect}
+                onDate={handleDate}
+                onNew={handleNewAppointment}
+              />
+              {activeAppointment && <AppointmentInfo activeAppointment={activeAppointment} />}
+            </Stack>
+          </Stack>
+        </Stack>
       </Box>
     </>
   )
 }
 
-const flexColumn = {
-  width: '100%',
-  display: 'flex',
-  flexDirection: 'column',
-  gap: '0.625rem',
-  padding: '1.25rem'
+const columnStyles = {
+  width: 0.5
 }
 
 AppointmentList.propTypes = {
@@ -102,15 +100,13 @@ AppointmentList.propTypes = {
 
 function AppointmentList({ appointments, activeAppointment, onSelection, onDelete }) {
   return (
-    <Box sx={{ ...flexColumn, width: '50%', height: '100%' }}>
-      <Typography variant="subtitle1" component="h4" sx={{ fontWeight: '600' }}>
-        Listado de citas para este día
-      </Typography>
+    <Stack direction="column" spacing="0.625rem" sx={columnStyles}>
+      <Typography variant="h4">Listado de citas para este día</Typography>
       <ButtonGroup
         sx={{
-          width: '100%',
+          width: 1,
           '& .MuiButtonBase-root': {
-            width: '100%'
+            width: 1
           }
         }}
         variant="outlined"
@@ -125,7 +121,7 @@ function AppointmentList({ appointments, activeAppointment, onSelection, onDelet
         activeDocument={activeAppointment}
         handleDocSelection={onSelection}
       ></DocumentList>
-    </Box>
+    </Stack>
   )
 }
 
@@ -141,10 +137,8 @@ AppointmentForm.propTypes = {
 
 function AppointmentForm({ formData, errors, patients, onField, onSelect, onDate, onNew }) {
   return (
-    <Box component="form" sx={{ ...flexColumn, gap: '0.625rem', padding: 0 }}>
-      <Typography variant="subtitle1" component="h4" sx={{ fontWeight: '600' }}>
-        Agendar cita
-      </Typography>
+    <Stack component="form" direction="column" spacing="0.625rem">
+      <Typography variant="h4">Agendar cita</Typography>
       <Autocomplete
         id="patient"
         name="patient"
@@ -193,7 +187,7 @@ function AppointmentForm({ formData, errors, patients, onField, onSelect, onDate
       >
         Agendar cita
       </Button>
-    </Box>
+    </Stack>
   )
 }
 
@@ -203,15 +197,13 @@ AppointmentInfo.propTypes = {
 
 function AppointmentInfo({ activeAppointment }) {
   return (
-    <Box sx={{ ...flexColumn, gap: '1.25rem', padding: 0 }}>
-      <Typography variant="subtitle1" component="h4" sx={{ fontWeight: '600' }}>
-        Información de cita
-      </Typography>
-      <Box sx={{ ...flexColumn, padding: 0 }}>
+    <Stack direction="column" spacing="1.25rem">
+      <Typography variant="h4">Información de cita</Typography>
+      <Stack direction="column" spacing="0.625rem">
         <DataField label="Cita para">{activeAppointment.patientName}</DataField>
         <DataField label="Fecha y hora">{activeAppointment.date}</DataField>
         <DataField label="Motivo de consulta">{activeAppointment.reason}</DataField>
-      </Box>
-    </Box>
+      </Stack>
+    </Stack>
   )
 }

@@ -1,4 +1,4 @@
-import { Box, Typography } from '@mui/material'
+import { Stack, Typography } from '@mui/material'
 import PropTypes from 'prop-types'
 
 DataField.propTypes = {
@@ -8,21 +8,14 @@ DataField.propTypes = {
 
 export default function DataField({ children, label }) {
   return (
-    <Box
-      sx={{
-        // width: '100%',
-        display: 'flex',
-        flexDirection: 'column',
-        gap: 0,
-        padding: 0
-      }}
+    <Stack
+      direction="column"
+      sx={{ paddingRight: '0.75rem', borderRight: 1, borderColor: 'outline.main' }}
     >
-      <Typography variant="subtitle2" component="span" sx={{ fontWeight: '600' }}>
-        {label}
-      </Typography>
+      <Typography variant="label">{label}</Typography>
       <Typography variant="body1" component="span">
         {children}
       </Typography>
-    </Box>
+    </Stack>
   )
 }

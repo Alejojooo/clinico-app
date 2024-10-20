@@ -5,9 +5,10 @@ import FolderOutlinedIcon from '@mui/icons-material/FolderOutlined'
 import PhotoCameraOutlinedIcon from '@mui/icons-material/PhotoCameraOutlined'
 import SaveOutlinedIcon from '@mui/icons-material/SaveOutlined'
 import ZoomOutMapOutlinedIcon from '@mui/icons-material/ZoomOutMapOutlined'
-import { Button, ButtonGroup, IconButton, TextField, Typography } from '@mui/material'
+import { Button, ButtonGroup, IconButton, Stack, TextField, Typography } from '@mui/material'
 import useMedicalRecordPhoto from '../../hooks/useMedicalRecordPhoto'
-import FilterableDocumentList from '../FilterableDocumentList'
+import Image from '../Base/Image'
+import FilterableDocumentList from '../SearchableDocumentList'
 
 // TODO: Agregarle funcionalidad al botón de agrandar imagen
 
@@ -27,8 +28,13 @@ export default function MedicalRecordPhotosSection() {
   } = useMedicalRecordPhoto()
 
   return (
-    <main className="flex size-full flex-row gap-5 px-5 py-5">
-      <div className="flex w-1/4 max-w-[400px] flex-col gap-5">
+    <Stack
+      component="main"
+      direction="row"
+      spacing="1.25rem"
+      sx={{ width: 1, height: 1, padding: '1.25rem' }}
+    >
+      <Stack direction="column" spacing="1.25rem" sx={{ width: 1 / 4, maxWidth: '25rem' }}>
         <Button
           sx={{ justifyContent: 'start' }}
           startIcon={<ArrowBackOutlinedIcon />}
@@ -43,16 +49,16 @@ export default function MedicalRecordPhotosSection() {
           handleDocSelection={handlePhotoSelection}
           title="Imágenes"
         ></FilterableDocumentList>
-        <div className="flex w-full flex-col gap-2.5">
+        <Stack direction="column" spacing="0.625rem" sx={{ width: 1 }}>
           <Typography variant="button" component="span">
             Insertar desde
           </Typography>
-          <div className="flex flex-row">
+          <Stack direction="row">
             <ButtonGroup
               sx={{
-                width: '100%',
+                width: 1,
                 '& .MuiButtonBase-root': {
-                  width: '100%'
+                  width: 1
                 }
               }}
               variant="outlined"
@@ -71,19 +77,17 @@ export default function MedicalRecordPhotosSection() {
                 Cámara
               </Button>
             </ButtonGroup>
-          </div>
-        </div>
-        <div className="flex w-full flex-col gap-2.5">
-          <Typography variant="button" component="span">
-            Acciones
-          </Typography>
-          <div className="flex flex-row">
+          </Stack>
+        </Stack>
+        <Stack direction="column" spacing="0.625rem" sx={{ width: 1 }}>
+          <Typography variant="button">Acciones</Typography>
+          <Stack direction="row">
             <ButtonGroup
               variant="outlined"
               sx={{
-                width: '100%',
+                width: 1,
                 '& .MuiButtonBase-root': {
-                  width: '100%'
+                  width: 1
                 }
               }}
             >
@@ -102,11 +106,11 @@ export default function MedicalRecordPhotosSection() {
                 Eliminar
               </Button>
             </ButtonGroup>
-          </div>
-        </div>
-      </div>
-      <div className="flex h-full grow flex-col gap-2.5">
-        <div className="flex w-full flex-row items-center gap-5">
+          </Stack>
+        </Stack>
+      </Stack>
+      <Stack direction="column" spacing="0.625rem" sx={{ flexGrow: 1, height: 1 }}>
+        <Stack direction="row" spacing="1.25rem" sx={{ width: 1, alignItems: 'center' }}>
           <TextField
             id="description"
             name="description"
@@ -122,7 +126,7 @@ export default function MedicalRecordPhotosSection() {
             size="small"
             fullWidth
           ></TextField>
-          <div className="flex flex-row items-center gap-2.5">
+          <Stack direction="row" spacing="0.625rem" sx={{ alignItems: 'center' }}>
             <Button
               variant="outlined"
               startIcon={<AutorenewOutlinedIcon />}
@@ -131,21 +135,40 @@ export default function MedicalRecordPhotosSection() {
             >
               Actualizar
             </Button>
-            <div className="flex size-10 items-center justify-center">
+            <Stack
+              direction="row"
+              sx={{
+                width: '2.5rem',
+                height: '2.5rem',
+                justifyContent: 'center',
+                alignItems: 'center'
+              }}
+            >
               <IconButton>
                 <ZoomOutMapOutlinedIcon />
               </IconButton>
-            </div>
-          </div>
-        </div>
-        <div className="flex w-full grow items-center justify-center overflow-clip rounded-2xl bg-white">
+            </Stack>
+          </Stack>
+        </Stack>
+        <Stack
+          direction="row"
+          sx={{
+            width: 1,
+            flexGrow: 1,
+            justifyContent: 'center',
+            alignItems: 'center',
+            backgroundColor: 'white',
+            borderRadius: '1rem',
+            overflow: 'clip'
+          }}
+        >
           {formData.image ? (
-            <img className="size-full object-contain" src={formData.image} />
+            <Image src={formData.image} />
           ) : (
             <span>No hay imagen para mostrar</span>
           )}
-        </div>
-      </div>
-    </main>
+        </Stack>
+      </Stack>
+    </Stack>
   )
 }

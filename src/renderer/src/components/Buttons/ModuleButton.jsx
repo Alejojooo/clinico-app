@@ -16,7 +16,7 @@ export default function ModuleButton({ name, icon, isActive = false, onClick }) 
         height: '3.5rem',
         flexDirection: 'row',
         alignItems: 'center',
-        justifyContent: 'flex-start',
+        justifyContent: 'start',
         gap: '0.75rem',
         borderRadius: '9999px',
         border: 'none',
@@ -24,21 +24,19 @@ export default function ModuleButton({ name, icon, isActive = false, onClick }) 
         paddingLeft: '1rem',
         paddingRight: '1.5rem',
         transition: 'background-color 0.3s',
-        color: 'berkeley-blue.main',
-        backgroundColor: isActive ? 'columbia-blue.main' : 'transparent',
+        color: 'accent.main',
+        backgroundColor: isActive ? 'secondary.main' : 'transparent',
         '&:hover': {
-          backgroundColor: !isActive ? 'antiflash-white.main' : null
+          backgroundColor: !isActive ? 'surface.main' : null
         },
         '&:focus': {
-          backgroundColor: 'columbia-blue.main'
+          backgroundColor: 'secondary.main'
         }
       }}
       onClick={onClick}
     >
       {icon}
-      <Typography variant="subtitle1" component="h3" sx={{ fontWeight: '500' }}>
-        {name}
-      </Typography>
+      <Typography variant="h3">{name}</Typography>
     </ButtonBase>
   )
 }

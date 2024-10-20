@@ -1,29 +1,54 @@
 import CloudSyncOutlinedIcon from '@mui/icons-material/CloudSyncOutlined'
 import LogoutOutlinedIcon from '@mui/icons-material/LogoutOutlined'
 import MenuOutlinedIcon from '@mui/icons-material/MenuOutlined'
-import { IconButton } from '@mui/material'
+import { IconButton, Stack, Typography } from '@mui/material'
 import SectionsLayout from './SectionsLayout.jsx'
 
 export default function TopAppBar() {
   return (
-    <header className="flex h-16 w-screen flex-none flex-row items-center justify-start gap-5 px-5">
-      <div className="flex w-[30%] flex-row items-center justify-start gap-2.5">
+    <Stack
+      component="header"
+      direction="row"
+      spacing="1.25rem"
+      sx={{
+        width: '100vw',
+        height: '4rem',
+        flex: 'none',
+        alignItems: 'center',
+        padding: '0 1.25rem'
+      }}
+    >
+      <Stack
+        direction="row"
+        spacing="0.625rem"
+        sx={{
+          width: '30%',
+          alignItems: 'center'
+        }}
+      >
         <IconButton>
           <MenuOutlinedIcon />
         </IconButton>
-        <h1 className="text-lg font-semibold">Clinico</h1>
-      </div>
-      <div className="flex flex-grow flex-row items-center justify-between">
+        <Typography variant="h1">Clínico</Typography>
+      </Stack>
+      <Stack
+        direction="row"
+        sx={{
+          flexGrow: 1,
+          justifyContent: 'space-between',
+          alignItems: 'center'
+        }}
+      >
         <SectionsLayout></SectionsLayout>
-        <div className="flex flex-row gap-2.5">
+        <Stack direction="row" spacing="0.625rem">
           <IconButton>
             <CloudSyncOutlinedIcon />
           </IconButton>
           <IconButton>
             <LogoutOutlinedIcon />
           </IconButton>
-        </div>
-      </div>
-    </header>
+        </Stack>
+      </Stack>
+    </Stack>
   )
 }

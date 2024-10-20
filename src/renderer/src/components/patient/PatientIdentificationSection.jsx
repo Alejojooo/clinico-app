@@ -1,11 +1,20 @@
-import { Box, FormControl, FormHelperText, InputLabel, MenuItem, Select } from '@mui/material'
+import {
+  Box,
+  FormControl,
+  FormHelperText,
+  InputLabel,
+  MenuItem,
+  Select,
+  Stack
+} from '@mui/material'
 import TextField from '@mui/material/TextField'
 import { DatePicker } from '@mui/x-date-pickers'
 import dayjs from 'dayjs'
 import PropTypes from 'prop-types'
 import usePatient from '../../hooks/usePatient'
 import { calculateAge } from '../../utils/date'
-import FilterableDocumentList from '../FilterableDocumentList'
+import CrudButtons from '../Buttons/CrudButtons'
+import SearchableDocumentList from '../SearchableDocumentList'
 import ImageField from '../FormFields/ImageField'
 import Header from '../Header'
 import SideView from '../SideView'
@@ -30,12 +39,12 @@ export default function PatientIdentificationSection() {
   return (
     <>
       <SideView>
-        <FilterableDocumentList
+        <SearchableDocumentList
           title="Listado de pacientes"
           documents={patients}
           activeDocument={activePatient}
           handleDocSelection={handlePatientSelection}
-        ></FilterableDocumentList>
+        ></SearchableDocumentList>
       </SideView>
       <PatientForm
         formData={formData}
@@ -79,14 +88,22 @@ function PatientForm({
   onDelete
 }) {
   return (
-    <main className="h-full grow">
-      <form className="flex h-full flex-col gap-3 rounded-2xl bg-white p-5">
-        <Header
-          title="Identificación del paciente"
-          handlers={{ onNew, onUpdate, onDelete }}
-          disabledButtons={disabledButtons}
-        ></Header>
-        <div className="flex w-full flex-row gap-5">
+    <Box component="main" sx={{ height: 1, flexGrow: 1 }}>
+      <Stack
+        component="form"
+        direction="column"
+        spacing="0.75rem"
+        sx={{ height: 1, borderRadius: '1rem', backgroundColor: 'white', padding: '1.25rem' }}
+      >
+        <Header title="Identificación del paciente">
+          <CrudButtons
+            onNew={onNew}
+            onUpdate={onUpdate}
+            onDelete={onDelete}
+            disabledButtons={disabledButtons}
+          />
+        </Header>
+        <Stack direction="row" spacing="1.25rem" sx={{ width: 1 }}>
           <TextField
             id="name"
             name="name"
@@ -135,8 +152,8 @@ function PatientForm({
               {errors.maritalStatus && <FormHelperText>{errors.maritalStatus}</FormHelperText>}
             </FormControl>
           </Box>
-        </div>
-        <div className="flex w-full flex-row gap-5">
+        </Stack>
+        <Stack direction="row" spacing="1.25rem" sx={{ width: 1 }}>
           <DatePicker
             sx={{ flexShrink: 0, maxWidth: 250 }}
             label="Fecha de nacimiento"
@@ -151,11 +168,7 @@ function PatientForm({
             label="Edad"
             variant="outlined"
             value={calculateAge(dayjs(formData.birthdate))}
-            slotProps={{
-              input: {
-                readOnly: true
-              }
-            }}
+            slotProps={{ input: { readOnly: true } }}
           />
           <TextField
             sx={{ flexGrow: 1 }}
@@ -168,9 +181,13 @@ function PatientForm({
             error={errors.id}
             helperText={errors.id}
           />
-        </div>
-        <div className="flex w-full flex-row items-center justify-between gap-5">
-          <div className="flex flex-grow flex-col gap-3">
+        </Stack>
+        <Stack
+          direction="row"
+          spacing="1.25rem"
+          sx={{ width: 1, justifyContent: 'space-between', alignItems: 'center' }}
+        >
+          <Stack direction="column" spacing="0.75rem" sx={{ flexGrow: 1 }}>
             <TextField
               id="insurance"
               name="insurance"
@@ -200,10 +217,10 @@ function PatientForm({
               rows={3}
               fullWidth
             />
-          </div>
+          </Stack>
           <ImageField imageData={formData.image} onImageChange={onImage}></ImageField>
-        </div>
-        <div className="flex w-full flex-row gap-5">
+        </Stack>
+        <Stack direction="row" spacing="1.25rem" sx={{ width: 1 }}>
           <TextField
             id="phone"
             name="phone"
@@ -226,14 +243,14 @@ function PatientForm({
             rows={3}
             fullWidth
           />
-        </div>
+        </Stack>
         <TextField
           label="Próxima cita"
           sx={{ flexShrink: 0, maxWidth: 250 }}
           value={nextAppointment?.date ?? 'Sin registro'}
           readOnly
         ></TextField>
-      </form>
-    </main>
+      </Stack>
+    </Box>
   )
 }

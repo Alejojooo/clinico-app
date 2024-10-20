@@ -1,9 +1,11 @@
+import TextField from '@mui/material/TextField'
+import { Box, Stack } from '@mui/system'
 import PropTypes from 'prop-types'
 import useDrug from '../../hooks/useDrug'
+import CrudButtons from '../Buttons/CrudButtons'
 import Header from '../Header'
+import FilterableDocumentList from '../SearchableDocumentList'
 import SideView from '../SideView'
-import TextField from '@mui/material/TextField'
-import FilterableDocumentList from '../FilterableDocumentList'
 
 export default function DrugSection() {
   const {
@@ -54,15 +56,29 @@ DrugForm.propTypes = {
 
 function DrugForm({ formData, errors, disabledButtons, onField, onNew, onUpdate, onDelete }) {
   return (
-    <main className="h-full grow">
-      <form className="flex size-full flex-col gap-3 rounded-2xl bg-white p-5">
-        <Header
-          title="Fármacos"
-          handlers={{ onNew, onUpdate, onDelete }}
-          disabledButtons={disabledButtons}
-        ></Header>
-        <div className="flex w-full flex-row gap-5">
-          <div className="flex h-full grow flex-col gap-3">
+    <Box component="main" sx={{ flexGrow: 1, height: 1 }}>
+      <Stack
+        component="form"
+        direction="column"
+        spacing="0.75rem"
+        sx={{
+          width: 1,
+          height: 1,
+          padding: '1.25rem',
+          backgroundColor: 'white',
+          borderRadius: '1rem'
+        }}
+      >
+        <Header title="Fármacos">
+          <CrudButtons
+            onNew={onNew}
+            onUpdate={onUpdate}
+            onDelete={onDelete}
+            disabledButtons={disabledButtons}
+          />
+        </Header>
+        <Stack direction="row" spacing="1.25rem" sx={{ width: 1 }}>
+          <Stack direction="column" spacing="0.75rem" sx={{ flexGrow: 1, height: 1 }}>
             <TextField
               id="tradeName"
               name="tradeName"
@@ -83,11 +99,11 @@ function DrugForm({ formData, errors, disabledButtons, onField, onNew, onUpdate,
               onChange={onField}
               fullWidth
             />
-          </div>
-          <div>Código QR</div>
-        </div>
-        <div className="flex w-full flex-row gap-5">
-          <div className="flex size-full flex-col gap-3">
+          </Stack>
+          <Box>Código QR</Box>
+        </Stack>
+        <Stack direction="row" spacing="1.25rem" sx={{ width: 1 }}>
+          <Stack direction="column" spacing="0.75rem" sx={{ width: 1, height: 1 }}>
             <TextField
               id="description"
               name="description"
@@ -110,7 +126,7 @@ function DrugForm({ formData, errors, disabledButtons, onField, onNew, onUpdate,
               rows={5}
               fullWidth
             />
-          </div>
+          </Stack>
           <TextField
             id="presentations"
             name="presentations"
@@ -122,7 +138,7 @@ function DrugForm({ formData, errors, disabledButtons, onField, onNew, onUpdate,
             rows={12}
             fullWidth
           />
-        </div>
+        </Stack>
         <TextField
           id="laboratory"
           name="laboratory"
@@ -132,7 +148,7 @@ function DrugForm({ formData, errors, disabledButtons, onField, onNew, onUpdate,
           onChange={onField}
           fullWidth
         />
-      </form>
-    </main>
+      </Stack>
+    </Box>
   )
 }

@@ -1,7 +1,7 @@
 import AccountCircleOutlinedIcon from '@mui/icons-material/AccountCircleOutlined'
 import AssessmentOutlinedIcon from '@mui/icons-material/AssessmentOutlined'
 import LibraryBooksOutlinedIcon from '@mui/icons-material/LibraryBooksOutlined'
-import { Button, ButtonGroup } from '@mui/material'
+import { Button, ButtonGroup, Stack } from '@mui/material'
 import usePatient from '../hooks/usePatient'
 import { useView } from '../hooks/useView'
 import { MODULES, PATIENT_SECTIONS } from '../utils/view'
@@ -28,7 +28,7 @@ function PatientSectionsLayout() {
   const { setActiveSection, addSnackbar } = useView()
 
   return (
-    <div className="flex flex-row">
+    <Stack direction="row">
       <ButtonGroup variant="contained">
         <Button
           startIcon={<AccountCircleOutlinedIcon />}
@@ -50,6 +50,6 @@ function PatientSectionsLayout() {
           Reporte
         </Button>
       </ButtonGroup>
-    </div>
+    </Stack>
   )
 }

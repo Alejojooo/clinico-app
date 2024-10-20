@@ -7,13 +7,15 @@ import {
   ButtonGroup,
   Checkbox,
   FormControlLabel,
+  Stack,
   TextField,
   Typography
 } from '@mui/material'
 import { DateTimePicker } from '@mui/x-date-pickers'
 import dayjs from 'dayjs'
 import useMedicalRecord from '../../hooks/useMedicalRecord'
-import FilterableDocumentList from '../FilterableDocumentList'
+import CrudButtons from '../Buttons/CrudButtons'
+import FilterableDocumentList from '../SearchableDocumentList'
 import DataField from '../FormFields/DataField'
 import Header from '../Header'
 
@@ -54,54 +56,73 @@ export default function MedicalRecordSection() {
   } = useMedicalRecord()
 
   return (
-    <main className="size-full">
-      <form className="flex size-full flex-col items-start justify-start gap-5 rounded-2xl bg-white px-5 py-5">
-        <Header
-          title="Historia clínica"
-          handlers={{
-            onNew: handleNewMedicalRecord,
-            onUpdate: handleUpdateMedicalRecord,
-            onDelete: handleDeleteMedicalRecord
-          }}
-          disabledButtons={disabledButtons}
-        ></Header>
-        <div className="flex size-full flex-col items-start justify-start gap-2.5">
-          <div className="flex w-full flex-row items-center gap-6">
-            <div className="flex grow flex-col items-start justify-start gap-2.5">
+    <Box component="main" sx={{ width: 1, height: 1 }}>
+      <Stack
+        component="form"
+        direction="column"
+        spacing="1.25rem"
+        sx={{
+          width: 1,
+          height: 1,
+          justifyContent: 'start',
+          alignItems: 'center',
+          borderRadius: '1rem',
+          backgroundColor: 'white',
+          padding: '1.25rem'
+        }}
+      >
+        <Header title="Historia clínica" disableDivider>
+          <CrudButtons
+            onNew={handleNewMedicalRecord}
+            onUpdate={handleUpdateMedicalRecord}
+            onDelete={handleDeleteMedicalRecord}
+            disabledButtons={disabledButtons}
+          ></CrudButtons>
+        </Header>
+        <Stack
+          direction="column"
+          spacing="0.625rem"
+          sx={{ width: 1, height: 1, justifyContent: 'start', alignItems: 'start' }}
+        >
+          <Stack direction="row" spacing="1.5rem" sx={{ width: 1, alignItems: 'center' }}>
+            <Stack
+              direction="column"
+              spacing="0.625rem"
+              sx={{ flexGrow: 1, justifyContent: 'start', alignItems: 'center' }}
+            >
               <Typography
-                variant="subtitle2"
-                component="span"
-                sx={{ width: '100%', borderTop: '1px solid', borderColor: 'alice-blue.main' }}
+                variant="label"
+                sx={{ width: 1, borderTop: '1px solid', borderColor: 'outline.main' }}
               >
                 Identificación
               </Typography>
-              <div className="flex w-full flex-col items-start justify-start gap-2.5">
-                <div className="size-full">
+              <Stack
+                direction="column"
+                spacing="0.625rem"
+                sx={{ width: 1, justifyContent: 'start', alignItems: 'start' }}
+              >
+                <Box sx={{ width: 1, heigth: 1 }}>
                   <TextField
                     label="Nombre"
                     variant="outlined"
                     value={activePatient.name}
                     size="small"
                     fullWidth
-                    slotProps={{
-                      input: {
-                        readOnly: true
-                      }
-                    }}
+                    slotProps={{ input: { readOnly: true } }}
                   />
-                </div>
-                <div className="flex w-full flex-row items-center justify-start gap-4">
+                </Box>
+                <Stack
+                  direction="row"
+                  spacing="1rem"
+                  sx={{ width: 1, justifyContent: 'start', alignItems: 'center' }}
+                >
                   <TextField
                     sx={{ width: '5rem' }}
                     label="Sexo"
                     variant="outlined"
                     value={activePatient.gender}
                     size="small"
-                    slotProps={{
-                      input: {
-                        readOnly: true
-                      }
-                    }}
+                    slotProps={{ input: { readOnly: true } }}
                   />
                   <TextField
                     sx={{ width: '6rem' }}
@@ -109,11 +130,7 @@ export default function MedicalRecordSection() {
                     variant="outlined"
                     value={calculateAge(dayjs(activePatient.birthdate))}
                     size="small"
-                    slotProps={{
-                      input: {
-                        readOnly: true
-                      }
-                    }}
+                    slotProps={{ input: { readOnly: true } }}
                   />
                   <TextField
                     sx={{ flex: 1 }}
@@ -121,24 +138,20 @@ export default function MedicalRecordSection() {
                     variant="outlined"
                     value={activePatient.id}
                     size="small"
-                    slotProps={{
-                      input: {
-                        readOnly: true
-                      }
-                    }}
+                    slotProps={{ input: { readOnly: true } }}
                   />
-                </div>
-              </div>
-            </div>
-            <div className="flex flex-col items-start justify-start gap-2.5">
+                </Stack>
+              </Stack>
+            </Stack>
+            <Stack direction="column" spacing="0.625rem">
               <Typography
-                variant="subtitle2"
+                variant="label"
                 component="span"
-                sx={{ width: '100%', borderTop: '1px solid', borderColor: 'alice-blue.main' }}
+                sx={{ width: 1, borderTop: '1px solid', borderColor: 'outline.main' }}
               >
                 Historia clínica
               </Typography>
-              <Box sx={{ display: 'flex', flexDirection: 'column', gap: '0.625rem' }}>
+              <Stack direction="column" spacing="0.625rem">
                 <DateTimePicker
                   label="Fecha y hora de elaboración"
                   slots={{ textField: SmallTextField }}
@@ -152,19 +165,19 @@ export default function MedicalRecordSection() {
                   value={nextAppointment?.date ?? 'Sin registro'}
                   readOnly
                 />
-              </Box>
-            </div>
-          </div>
-          <div className="flex size-full flex-row gap-6">
-            <aside className="flex w-56 flex-col">
+              </Stack>
+            </Stack>
+          </Stack>
+          <Stack direction="row" spacing="1.5rem" sx={{ width: 1, height: 1 }}>
+            <Stack component="aside" direction="column" sx={{ width: '14rem' }}>
               <FilterableDocumentList
                 title="Historial"
                 documents={medicalRecords}
                 activeDocument={activeMedicalRecord}
                 handleDocSelection={handleMedicalRecordSelection}
               ></FilterableDocumentList>
-            </aside>
-            <div className="flex h-full grow flex-col gap-5">
+            </Stack>
+            <Stack direction="column" spacing="1.25rem" sx={{ flexGrow: 1, height: 1 }}>
               <TextField
                 id="record"
                 name="record"
@@ -198,8 +211,12 @@ export default function MedicalRecordSection() {
                 rows={3}
                 fullWidth
               />
-              <div className="flex flex-row items-center justify-between">
-                <div className="flex flex-row items-center justify-start gap-5">
+              <Stack direction="row" sx={{ justifyContent: 'space-between', alignItems: 'center' }}>
+                <Stack
+                  direction="row"
+                  spacing="1.25rem"
+                  sx={{ justifyContent: 'start', alignItems: 'center' }}
+                >
                   <ButtonGroup variant="outlined">
                     <Button
                       startIcon={<DescriptionOutlinedIcon />}
@@ -231,19 +248,13 @@ export default function MedicalRecordSection() {
                       '& .MuiTypography-root': { fontSize: '0.875rem', lineHeight: '1.25rem' }
                     }}
                   />
-                </div>
+                </Stack>
                 <DataField label="Personal médico responsable">Alejo</DataField>
-                {/* <TextField
-                  label="Personal médico responsable"
-                  variant="standard"
-                  value="Alejo"
-                  size="small"
-                /> */}
-              </div>
-            </div>
-          </div>
-        </div>
-      </form>
-    </main>
+              </Stack>
+            </Stack>
+          </Stack>
+        </Stack>
+      </Stack>
+    </Box>
   )
 }

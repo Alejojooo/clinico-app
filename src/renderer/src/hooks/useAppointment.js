@@ -2,6 +2,7 @@ import dayjs from 'dayjs'
 import { useState, useEffect, useReducer } from 'react'
 import { ACTIONS, appointmentReducer, initialState } from '../reducers/appointment'
 import { clean } from '../utils/form'
+import useSnackbar from './useSnackbar'
 
 export default function useAppointment() {
   const [selectedDate, setSelectedDate] = useState(dayjs())
@@ -9,10 +10,7 @@ export default function useAppointment() {
   const [patients, setPatients] = useState([])
   const [state, dispatch] = useReducer(appointmentReducer, initialState)
   const [activeAppointment, setActiveAppointment] = useState(null)
-
-  // useEffect(() => {
-  //   dispatch({ type: ACTIONS.SET_APPOINTMENT, appointment: activeAppointment })
-  // }, [activeAppointment])
+  const { showSnackbar } = useSnackbar()
 
   useEffect(() => {
     getAppointments()
@@ -38,7 +36,7 @@ export default function useAppointment() {
   }
 
   const handleSelect = (_, value) => {
-    const event = { target: { name: 'patientId', value: value._id } }
+    const event = { target: { name: 'patientId', value: value?._id ?? null } }
     handleField(event)
   }
 
@@ -50,6 +48,7 @@ export default function useAppointment() {
   const handleDateSelection = (value) => {
     setSelectedDate(value)
     setActiveAppointment(null)
+    dispatch({ type: ACTIONS.SET_ERRORS, errors: {} })
   }
 
   const getCleanForm = () => {
@@ -62,12 +61,19 @@ export default function useAppointment() {
     const { outcome, payload } = await window.appointment.newAppointment(getCleanForm())
     if (outcome === 'success') {
       await getAppointments()
+      showSnackbar('Se agendó una nueva cita')
     } else {
       dispatch({ type: ACTIONS.SET_ERRORS, errors: payload })
+      showSnackbar('Ocurrió un error al agendar una nueva cita')
     }
   }
 
   const handleDeleteAppointment = async () => {
+    if (!activeAppointment) {
+      showSnackbar('Primero seleccione una cita')
+      return
+    }
+
     const option = await window.dialog.showConfirmDialog(
       'Eliminar cita',
       '¿Está seguro de eliminar esta cita?'
