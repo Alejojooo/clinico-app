@@ -1,4 +1,4 @@
-import { Stack } from '@mui/material'
+import { Box, Stack } from '@mui/material'
 import PropTypes from 'prop-types'
 import AgendaModule from './components/Agenda/AgendaModule'
 import DrugModule from './components/Drug/DrugModule'
@@ -24,13 +24,9 @@ export default function App() {
       <ViewProvider>
         <EntityProvider>
           <TopAppBar></TopAppBar>
-          <Stack
-            direction="row"
-            spacing="1.25rem"
-            sx={{ width: 1, flexGrow: 1, padding: '0 1.25rem 1.25rem' }}
-          >
+          <Box sx={{ width: 1, flexGrow: 1, padding: '0 1.25rem 1.25rem' }}>
             <Content></Content>
-          </Stack>
+          </Box>
         </EntityProvider>
       </ViewProvider>
     </Stack>

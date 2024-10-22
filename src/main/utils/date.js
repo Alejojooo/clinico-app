@@ -1,6 +1,7 @@
 import dayjs from 'dayjs'
 
 const PRETTY_FORMAT = 'DD/MM/YYYY HH:mm'
+const FILENAME_FORMAT = 'YYYY-MM-DD HH_mm'
 const TIME_FORMAT = 'HH:mm'
 
 export function toUIDate(date) {
@@ -12,6 +13,7 @@ export function formatDate(date, opts) {
   if (!datetime.isValid()) return ''
   if (opts?.pretty) return datetime.format(PRETTY_FORMAT)
   else if (opts?.onlyTime) return datetime.format(TIME_FORMAT)
+  else if (opts?.filename) return datetime.format(FILENAME_FORMAT)
   else return datetime.format()
 }
 

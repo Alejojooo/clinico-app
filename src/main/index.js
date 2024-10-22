@@ -10,6 +10,7 @@ import {
   newAppointment,
   updateAppointment
 } from './services/appointment.js'
+import { exportPrescriptionToDocx, printDocument } from './services/docs.js'
 import { deleteDrug, getDrugById, getDrugs, newDrug, updateDrug } from './services/drug.js'
 import {
   deleteMedicalRecord,
@@ -142,3 +143,6 @@ ipcMain.handle('appointment:delete', deleteAppointment)
 ipcMain.handle('dialog:showConfirmDialog', showConfirmDialog)
 
 ipcMain.handle('image:openImage', openImage)
+
+ipcMain.handle('doc:docxExport', exportPrescriptionToDocx)
+ipcMain.handle('doc:print', printDocument)

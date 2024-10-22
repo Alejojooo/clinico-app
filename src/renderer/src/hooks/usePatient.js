@@ -13,9 +13,8 @@ export default function usePatient() {
   }
 
   const [patients, setPatients] = useState([])
-  const [appointment, setAppointment] = useState(null)
   const [state, dispatch] = useReducer(patientReducer, initialState)
-  const { activePatient, setActivePatient } = context
+  const { activePatient, setActivePatient, nextAppointment } = context
   const { showSnackbar, showPersistentSnackbar, clearPersistentSnackbar } = useSnackbar()
   const { hasChanged, setOriginalData } = useFormChanged(state.formData)
 
@@ -23,10 +22,6 @@ export default function usePatient() {
 
   useEffect(() => {
     dispatch({ type: ACTIONS.SET_PATIENT, patient: activePatient })
-    if (activePatient)
-      window.appointment.getNextPatientAppointment(activePatient._id).then((appointment) => {
-        setAppointment(appointment)
-      })
   }, [activePatient])
 
   useEffect(() => {
@@ -140,7 +135,7 @@ export default function usePatient() {
     formData: state.formData,
     errors: state.errors,
     activePatient,
-    nextAppointment: appointment,
+    nextAppointment,
     patients,
     disabledButtons: getDisabledButtons(),
     handleField,

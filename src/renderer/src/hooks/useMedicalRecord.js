@@ -135,6 +135,10 @@ export default function useMedicalRecord() {
     setActiveSection(PATIENT_SECTIONS.MEDICAL_RECORDS_PHOTOS)
   }
 
+  const handlePrescriptionSection = () => {
+    setActiveSection(PATIENT_SECTIONS.PRESCRIPTION)
+  }
+
   const getDisabledButtons = () => {
     if (!activeMedicalRecord) return ['update', 'delete', 'photos', 'prescription']
     else return
@@ -155,6 +159,7 @@ export default function useMedicalRecord() {
     handleUpdateMedicalRecord,
     handleDeleteMedicalRecord,
     handleMedicalRecordSelection,
-    handlePhotoSection
+    handlePhotoSection,
+    handlePrescriptionSection
   }
 }

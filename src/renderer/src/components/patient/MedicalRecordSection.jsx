@@ -1,4 +1,3 @@
-import styled from '@emotion/styled'
 import DescriptionOutlinedIcon from '@mui/icons-material/DescriptionOutlined'
 import PhotoCameraOutlinedIcon from '@mui/icons-material/PhotoCameraOutlined'
 import {
@@ -14,27 +13,11 @@ import {
 import { DateTimePicker } from '@mui/x-date-pickers'
 import dayjs from 'dayjs'
 import useMedicalRecord from '../../hooks/useMedicalRecord'
+import SmallTextField from '../Base/SmallTextField'
 import CrudButtons from '../Buttons/CrudButtons'
-import FilterableDocumentList from '../SearchableDocumentList'
 import DataField from '../FormFields/DataField'
 import Header from '../Header'
-
-const SmallTextField = styled(TextField)({
-  '& .MuiInputBase-root': {
-    height: '2.5rem', // Ajuste de altura para el tamaño pequeño
-    fontSize: '1rem' // Tamaño del texto más pequeño
-  },
-  '& .MuiInputBase-input': {
-    padding: '8.5px 14px' // Ajuste del padding para que coincida con size="small"
-  },
-  '& .MuiInputLabel-root': {
-    fontSize: '1rem', // Tamaño del label más pequeño
-    transform: 'translate(14px, 8px) scale(1)' // Ajuste de la posición inicial del label
-  },
-  '& .MuiInputLabel-shrink': {
-    transform: 'translate(14px, -8px) scale(0.75)' // Ajuste de la posición del label al encoger
-  }
-})
+import FilterableDocumentList from '../SearchableDocumentList'
 
 export default function MedicalRecordSection() {
   const {
@@ -52,7 +35,8 @@ export default function MedicalRecordSection() {
     handleUpdateMedicalRecord,
     handleDeleteMedicalRecord,
     handleMedicalRecordSelection,
-    handlePhotoSection
+    handlePhotoSection,
+    handlePrescriptionSection
   } = useMedicalRecord()
 
   return (
@@ -221,6 +205,7 @@ export default function MedicalRecordSection() {
                     <Button
                       startIcon={<DescriptionOutlinedIcon />}
                       disabled={disabledButtons?.includes('prescription')}
+                      onClick={handlePrescriptionSection}
                     >
                       Receta
                     </Button>

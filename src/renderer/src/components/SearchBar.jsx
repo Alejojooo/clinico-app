@@ -3,12 +3,21 @@ import PropTypes from 'prop-types'
 
 SearchBar.propTypes = {
   title: PropTypes.string.isRequired,
-  length: PropTypes.number.isRequired,
+  length: PropTypes.number,
   value: PropTypes.string,
-  onInput: PropTypes.func
+  onInput: PropTypes.func,
+  noDocumentCount: PropTypes.bool,
+  noPadding: PropTypes.bool
 }
 
-export default function SearchBar({ title, length, value, onInput }) {
+export default function SearchBar({
+  title,
+  length,
+  value,
+  onInput,
+  noDocumentCount = false,
+  noPadding = false
+}) {
   return (
     <Stack
       direction="column"
@@ -20,13 +29,13 @@ export default function SearchBar({ title, length, value, onInput }) {
         sx={{
           justifyContent: 'space-between',
           alignItems: 'flex-end',
-          height: '2rem',
+          height: noDocumentCount ? 'auto' : '2rem',
           width: 1,
-          padding: '0 1rem'
+          padding: noPadding ? 0 : '0 0.625rem'
         }}
       >
         <Typography variant="h3">{title}</Typography>
-        <Typography variant="h3">{length}</Typography>
+        {!noDocumentCount && <Typography variant="h3">{length}</Typography>}
       </Stack>
       <Paper
         elevation={1}

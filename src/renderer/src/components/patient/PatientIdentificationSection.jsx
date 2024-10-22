@@ -37,7 +37,7 @@ export default function PatientIdentificationSection() {
   } = usePatient()
 
   return (
-    <>
+    <Stack direction="row" spacing="1.25rem" sx={{ width: 1, height: 1 }}>
       <SideView>
         <SearchableDocumentList
           title="Listado de pacientes"
@@ -58,7 +58,7 @@ export default function PatientIdentificationSection() {
         onUpdate={handleUpdatePatient}
         onDelete={handleDeletePatient}
       ></PatientForm>
-    </>
+    </Stack>
   )
 }
 

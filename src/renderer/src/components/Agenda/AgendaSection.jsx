@@ -5,7 +5,7 @@ import { Autocomplete, Box, Button, ButtonGroup, Stack, TextField, Typography } 
 import { DateCalendar, DateTimePicker } from '@mui/x-date-pickers'
 import dayjs from 'dayjs'
 import PropTypes from 'prop-types'
-import useAppointment from '../../hooks/useAppointment'
+import useAgenda from '../../hooks/useAgenda'
 import DataField from '../FormFields/DataField'
 import Header from '../Header'
 import { DocumentList } from '../SearchableDocumentList'
@@ -29,10 +29,10 @@ export default function AgendaSection() {
     handleNewAppointment,
     handleDeleteAppointment,
     handleAppointmentSelection
-  } = useAppointment()
+  } = useAgenda()
 
   return (
-    <>
+    <Stack direction="row" spacing="1.25rem" sx={{ width: 1, height: 1 }}>
       <SideView>
         <Box
           sx={{
@@ -87,7 +87,7 @@ export default function AgendaSection() {
           </Box>
         </Stack>
       </Box>
-    </>
+    </Stack>
   )
 }
 

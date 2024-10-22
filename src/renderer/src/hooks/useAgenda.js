@@ -4,7 +4,7 @@ import { ACTIONS, appointmentReducer, initialState } from '../reducers/appointme
 import { clean } from '../utils/form'
 import useSnackbar from './useSnackbar'
 
-export default function useAppointment() {
+export default function useAgenda() {
   const [selectedDate, setSelectedDate] = useState(dayjs())
   const [appointments, setAppointments] = useState([])
   const [patients, setPatients] = useState([])

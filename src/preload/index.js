@@ -1,5 +1,5 @@
-import { contextBridge, ipcRenderer } from 'electron'
 import { electronAPI } from '@electron-toolkit/preload'
+import { contextBridge, ipcRenderer } from 'electron'
 import { OPTIONS } from '../main/utils/dialog'
 
 // Custom APIs for renderer
@@ -57,6 +57,11 @@ const image = {
   openImage: () => ipcRenderer.invoke('image:openImage')
 }
 
+const doc = {
+  exportPrescriptionToDocx: (fields) => ipcRenderer.invoke('doc:docxExport', fields),
+  printDocument: (fields) => ipcRenderer.invoke('doc:print', fields)
+}
+
 // Use `contextBridge` APIs to expose Electron APIs to
 // renderer only if context isolation is enabled, otherwise
 // just add to the DOM global.
@@ -70,6 +75,7 @@ if (process.contextIsolated) {
     contextBridge.exposeInMainWorld('appointment', appointment)
     contextBridge.exposeInMainWorld('dialog', dialog)
     contextBridge.exposeInMainWorld('image', image)
+    contextBridge.exposeInMainWorld('doc', doc)
   } catch (error) {
     console.error(error)
   }
@@ -82,4 +88,5 @@ if (process.contextIsolated) {
   window.appointment = appointment
   window.dialog = dialog
   window.image = image
+  window.doc = doc
 }

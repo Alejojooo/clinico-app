@@ -110,7 +110,12 @@ export default function MedicalRecordPhotosSection() {
         </Stack>
       </Stack>
       <Stack direction="column" spacing="0.625rem" sx={{ flexGrow: 1, height: 1 }}>
-        <Stack direction="row" spacing="1.25rem" sx={{ width: 1, alignItems: 'center' }}>
+        <Stack
+          component="form"
+          direction="row"
+          spacing="1.25rem"
+          sx={{ width: 1, alignItems: 'center' }}
+        >
           <TextField
             id="description"
             name="description"

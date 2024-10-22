@@ -7,14 +7,18 @@ SearchableDocumentList.propTypes = {
   title: PropTypes.string,
   documents: PropTypes.array,
   activeDocument: PropTypes.object,
-  handleDocSelection: PropTypes.func
+  handleDocSelection: PropTypes.func,
+  noDocumentCount: PropTypes.bool,
+  noPadding: PropTypes.bool
 }
 
 export default function SearchableDocumentList({
   title,
   documents,
   activeDocument,
-  handleDocSelection
+  handleDocSelection,
+  noDocumentCount,
+  noPadding
 }) {
   const { searchValue, filteredDocuments, handleInput } = useSearch(documents)
 
@@ -34,6 +38,8 @@ export default function SearchableDocumentList({
         length={filteredDocuments.length}
         value={searchValue}
         onInput={handleInput}
+        noDocumentCount={noDocumentCount}
+        noPadding={noPadding}
       />
       <DocumentList
         documents={filteredDocuments}
@@ -62,6 +68,7 @@ export function DocumentList({ documents, activeDocument, handleDocSelection }) 
         overflow: 'hidden',
         '& .MuiListItem-root': {},
         '& .MuiButtonBase-root': {
+          display: 'block',
           height: '2rem',
           padding: '0 1rem'
         },

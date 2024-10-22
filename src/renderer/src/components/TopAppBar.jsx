@@ -1,6 +1,5 @@
 import CloudSyncOutlinedIcon from '@mui/icons-material/CloudSyncOutlined'
 import LogoutOutlinedIcon from '@mui/icons-material/LogoutOutlined'
-import MenuOutlinedIcon from '@mui/icons-material/MenuOutlined'
 import { IconButton, Stack, Typography } from '@mui/material'
 import SectionsLayout from './SectionsLayout.jsx'
 
@@ -23,12 +22,13 @@ export default function TopAppBar() {
         spacing="0.625rem"
         sx={{
           width: '30%',
-          alignItems: 'center'
+          alignItems: 'center',
+          paddingLeft: '1rem'
         }}
       >
-        <IconButton>
+        {/* <IconButton>
           <MenuOutlinedIcon />
-        </IconButton>
+        </IconButton> */}
         <Typography variant="h1">Clínico</Typography>
       </Stack>
       <Stack

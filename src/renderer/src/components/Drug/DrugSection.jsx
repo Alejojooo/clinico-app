@@ -22,7 +22,7 @@ export default function DrugSection() {
   } = useDrug()
 
   return (
-    <>
+    <Stack direction="row" spacing="1.25rem" sx={{ width: 1, height: 1 }}>
       <SideView>
         <FilterableDocumentList
           title="Listado de pacientes"
@@ -40,7 +40,7 @@ export default function DrugSection() {
         onUpdate={handleUpdateDrug}
         onDelete={handleDeleteDrug}
       ></DrugForm>
-    </>
+    </Stack>
   )
 }
 
