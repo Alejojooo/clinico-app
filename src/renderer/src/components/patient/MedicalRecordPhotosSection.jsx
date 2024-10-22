@@ -2,10 +2,8 @@ import ArrowBackOutlinedIcon from '@mui/icons-material/ArrowBackOutlined'
 import AutorenewOutlinedIcon from '@mui/icons-material/AutorenewOutlined'
 import DeleteOutlinedIcon from '@mui/icons-material/DeleteOutlined'
 import FolderOutlinedIcon from '@mui/icons-material/FolderOutlined'
-import PhotoCameraOutlinedIcon from '@mui/icons-material/PhotoCameraOutlined'
 import SaveOutlinedIcon from '@mui/icons-material/SaveOutlined'
-import ZoomOutMapOutlinedIcon from '@mui/icons-material/ZoomOutMapOutlined'
-import { Button, ButtonGroup, IconButton, Stack, TextField, Typography } from '@mui/material'
+import { Button, ButtonGroup, Stack, TextField, Typography } from '@mui/material'
 import useMedicalRecordPhoto from '../../hooks/useMedicalRecordPhoto'
 import Image from '../Base/Image'
 import FilterableDocumentList from '../SearchableDocumentList'
@@ -70,12 +68,13 @@ export default function MedicalRecordPhotosSection() {
               >
                 Archivo
               </Button>
-              <Button
-                startIcon={<PhotoCameraOutlinedIcon />}
-                disabled={disabledButtons.includes('camera')}
+              {/* <Button
+                startIcon={<ContentPasteOutlinedIcon />}
+                onClick={handlePastePhoto}
+                disabled={disabledButtons.includes('clipboard')}
               >
-                Cámara
-              </Button>
+                Pegar
+              </Button> */}
             </ButtonGroup>
           </Stack>
         </Stack>
@@ -149,9 +148,9 @@ export default function MedicalRecordPhotosSection() {
                 alignItems: 'center'
               }}
             >
-              <IconButton>
+              {/* <IconButton>
                 <ZoomOutMapOutlinedIcon />
-              </IconButton>
+              </IconButton> */}
             </Stack>
           </Stack>
         </Stack>

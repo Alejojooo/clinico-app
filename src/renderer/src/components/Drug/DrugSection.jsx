@@ -100,7 +100,6 @@ function DrugForm({ formData, errors, disabledButtons, onField, onNew, onUpdate,
               fullWidth
             />
           </Stack>
-          <Box>Código QR</Box>
         </Stack>
         <Stack direction="row" spacing="1.25rem" sx={{ width: 1 }}>
           <Stack direction="column" spacing="0.75rem" sx={{ width: 1, height: 1 }}>

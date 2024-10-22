@@ -58,6 +58,18 @@ export default function useMedicalRecordPhoto() {
     }
   }
 
+  const handlePastePhoto = async () => {
+    const image = await window.image.readImageInClipboard()
+    if (!image.isEmpty()) {
+      const imageBase64 = image.toDataURL()
+      setActivePhoto(null)
+      setFormData({ ...initialFormData, image: imageBase64 })
+      showPersistentSnackbar('Se va a guardar una nueva fotografía')
+    } else {
+      showSnackbar('No hay imagen en el portapapeles')
+    }
+  }
+
   const handleUpdatePhotoDescription = async () => {
     if (!activePhoto) {
       showSnackbar('Primero seleccione o suba una fotografía')
@@ -127,9 +139,9 @@ export default function useMedicalRecordPhoto() {
   const getDisabledButtons = () => {
     if (!activePhoto) {
       return formData.image
-        ? ['delete', 'update', 'maximize', 'camera']
-        : ['save', 'delete', 'update', 'maximize', 'camera']
-    } else return ['camera']
+        ? ['delete', 'update', 'maximize']
+        : ['save', 'delete', 'update', 'maximize']
+    } else return []
   }
 
   return {
@@ -139,6 +151,7 @@ export default function useMedicalRecordPhoto() {
     disabledButtons: getDisabledButtons(),
     handleField,
     handleOpenPhoto,
+    handlePastePhoto,
     handleUpdatePhotoDescription,
     handleSavePhoto,
     handleDeletePhoto,

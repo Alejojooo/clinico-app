@@ -15,7 +15,7 @@
   - ✅ Pasarle el paciente activo
   - ✅ Rellenar los campos con los del paciente activo
   - ✅ Fotos
-  - Receta
+  - ✅ Receta
 - ✅ Corregir validaciones en updates
 - ✅ Deshabilitar los otros botones del CRUD acorde a la acción que se está haciendo
   - ✅ Deshabilitar también el botón de Historia Clínica (TopAppBar)
@@ -25,10 +25,10 @@
 - ✅ Copiar lo realizado para el módulo de historias clínicas.
 - ✅ Optimizar la carga de imágenes para imágenes idénticas.
 - ✅ Vista de medicamentos
+- Evitar que la lista de documentos cambie de tamaño al tener muchos documentos
 - Agregar función de búsqueda de registros
   - ✅ Función simple de filtro
-- Evitar que la lista de documentos cambie de tamaño al tener muchos documentos
-- Reconfigurar el guardado de imágenes (algunas imágenes se guardan/visualizan demasiado grandes)
+- ✅ Reconfigurar el guardado de imágenes (algunas imágenes se guardan/visualizan demasiado grandes)
 - Agregar fotos desde cámara
 - Agregar botones de desplazamiento en la lista de entidades (⏮️◀️ ▶️⏭)
 - Añadir hints

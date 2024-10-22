@@ -6,19 +6,22 @@ import { openImageDialog } from './dialog'
 import { ObjectId } from 'mongodb'
 
 export async function openImage() {
-  const imagePath = await openImageDialog()
-  if (!imagePath) return null
-  return convertToBase64(imagePath)
-}
-
-async function convertToBase64(imagePath) {
   try {
+    const imagePath = await openImageDialog()
+    if (!imagePath) return null
     const imageBuffer = readFileSync(imagePath)
     const base64Image = await sharp(imageBuffer).jpeg({ quality: 80 }).toBuffer()
     return `data:image/jpeg;base64,${base64Image.toString('base64')}`
-  } catch (err) {
+  } catch (error) {
     return null
   }
+}
+
+export async function convertImage(base64Image) {
+  const base64Data = base64Image.replace(/^data:image\/jpeg;base64,/, '')
+  const imgBuffer = Buffer.from(base64Data, 'base64')
+  const image = await sharp(imgBuffer).resize({ width: 800 }).jpeg({ quality: 80 }).toBuffer()
+  return `data:image/jpeg;base64,${image.toString('base64')}`
 }
 
 export async function getImage(imageId) {

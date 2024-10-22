@@ -1,5 +1,5 @@
 import { electronAPI } from '@electron-toolkit/preload'
-import { contextBridge, ipcRenderer } from 'electron'
+import { clipboard, contextBridge, ipcRenderer } from 'electron'
 import { OPTIONS } from '../main/utils/dialog'
 
 // Custom APIs for renderer
@@ -54,7 +54,9 @@ const dialog = {
 }
 
 const image = {
-  openImage: () => ipcRenderer.invoke('image:openImage')
+  openImage: () => ipcRenderer.invoke('image:openImage'),
+  readImageInClipboard: () => clipboard.readImage(),
+  convertImage: (base64Image) => ipcRenderer.invoke('image:convertImage', base64Image)
 }
 
 const doc = {

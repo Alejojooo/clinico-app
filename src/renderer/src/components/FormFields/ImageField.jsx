@@ -1,6 +1,5 @@
 import DeleteOutlinedIcon from '@mui/icons-material/DeleteOutlined'
 import FolderOutlinedIcon from '@mui/icons-material/FolderOutlined'
-import PhotoCameraOutlinedIcon from '@mui/icons-material/PhotoCameraOutlined'
 import PortraitOutlinedIcon from '@mui/icons-material/PortraitOutlined'
 import VisibilityOffOutlinedIcon from '@mui/icons-material/VisibilityOffOutlined'
 import VisibilityOutlinedIcon from '@mui/icons-material/VisibilityOutlined'
@@ -57,12 +56,12 @@ export default function ImageField({ imageData, onImageChange }) {
         <IconButton onClick={handleImageVisibility}>
           {imageVisible ? <VisibilityOutlinedIcon /> : <VisibilityOffOutlinedIcon />}
         </IconButton>
-        <IconButton>
-          <PhotoCameraOutlinedIcon />
-        </IconButton>
         <IconButton onClick={handleOpenImage}>
           <FolderOutlinedIcon />
         </IconButton>
+        {/* <IconButton onClick={handlePasteImage}>
+          <ContentPasteOutlinedIcon />
+        </IconButton> */}
         <IconButton onClick={handleDeleteImage}>
           <DeleteOutlinedIcon />
         </IconButton>

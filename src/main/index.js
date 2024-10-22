@@ -34,7 +34,7 @@ import {
   updatePatient
 } from './services/patient.js'
 import { showConfirmDialog } from './utils/dialog.js'
-import { openImage } from './utils/image.js'
+import { convertImage, openImage } from './utils/image.js'
 import { setMainWindow } from './utils/windowManager.js'
 
 function createWindow() {
@@ -143,6 +143,7 @@ ipcMain.handle('appointment:delete', deleteAppointment)
 ipcMain.handle('dialog:showConfirmDialog', showConfirmDialog)
 
 ipcMain.handle('image:openImage', openImage)
+ipcMain.handle('image:convertImage', convertImage)
 
 ipcMain.handle('doc:docxExport', exportPrescriptionToDocx)
 ipcMain.handle('doc:print', printDocument)
