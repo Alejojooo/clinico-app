@@ -129,7 +129,7 @@ export default function PrescritionSection() {
   const options = [
     { label: 'Imprimir', func: handlePrint, icon: <PrintOutlinedIcon /> },
     {
-      label: 'Exportar como Docx',
+      label: 'Exportar Archivo',
       func: handleDocxExport,
       icon: <DescriptionOutlinedIcon />
     }
