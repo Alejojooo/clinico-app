@@ -9,7 +9,11 @@ Header.propTypes = {
 
 export default function Header({ children, title, disableDivider = false }) {
   return (
-    <Stack component="header" direction="column" sx={{ width: 1, alignItems: 'center' }}>
+    <Stack
+      component="header"
+      direction="column"
+      sx={{ width: 1, minWidth: '37.5rem', alignItems: 'center' }}
+    >
       <Stack
         direction="row"
         sx={{ width: 1, height: '2.5rem', justifyContent: 'space-between', alignItems: 'end' }}

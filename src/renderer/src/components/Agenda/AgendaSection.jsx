@@ -10,6 +10,7 @@ import DataField from '../FormFields/DataField'
 import Header from '../Header'
 import { DocumentList } from '../SearchableDocumentList'
 import SideView from '../SideView'
+import InfoBox from '../Base/InfoBox'
 
 // TODO: Agregar alertas de cuántas citas son para hoy
 // TODO: Funcionalidad de ver paciente
@@ -203,13 +204,10 @@ AppointmentInfo.propTypes = {
 
 function AppointmentInfo({ activeAppointment }) {
   return (
-    <Stack direction="column" spacing="1.25rem">
-      <Typography variant="h4">Información de cita</Typography>
-      <Stack direction="column" spacing="0.625rem">
-        <DataField label="Cita para">{activeAppointment.patientName}</DataField>
-        <DataField label="Fecha y hora">{activeAppointment.date}</DataField>
-        <DataField label="Motivo de consulta">{activeAppointment.reason}</DataField>
-      </Stack>
-    </Stack>
+    <InfoBox>
+      <DataField label="Cita para">{activeAppointment.patientName}</DataField>
+      <DataField label="Fecha y hora">{activeAppointment.date}</DataField>
+      <DataField label="Motivo de consulta">{activeAppointment.reason}</DataField>
+    </InfoBox>
   )
 }

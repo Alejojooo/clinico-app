@@ -13,7 +13,7 @@ export default function useLogout() {
     )
     if (option === window.dialog.OK_OPTION) {
       setActiveUser(null)
-      changeModule(MODULES.ADMIN)
+      changeModule(MODULES.SESSION)
     }
   }
 

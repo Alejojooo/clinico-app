@@ -9,7 +9,8 @@ SearchableDocumentList.propTypes = {
   activeDocument: PropTypes.object,
   handleDocSelection: PropTypes.func,
   noDocumentCount: PropTypes.bool,
-  noPadding: PropTypes.bool
+  noPadding: PropTypes.bool,
+  sx: PropTypes.object
 }
 
 export default function SearchableDocumentList({
@@ -18,7 +19,8 @@ export default function SearchableDocumentList({
   activeDocument,
   handleDocSelection,
   noDocumentCount,
-  noPadding
+  noPadding,
+  sx
 }) {
   const { searchValue, filteredDocuments, handleInput } = useSearch(documents)
 
@@ -30,7 +32,8 @@ export default function SearchableDocumentList({
         flexGrow: 1,
         width: 1,
         justifyContent: 'start',
-        alignItems: 'center'
+        alignItems: 'center',
+        ...sx
       }}
     >
       <SearchBar

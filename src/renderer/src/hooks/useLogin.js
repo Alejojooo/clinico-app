@@ -33,7 +33,7 @@ export default function useLogin() {
     if (outcome === 'success') {
       setActiveUser(payload)
       if (payload.role === 'A') {
-        setActiveSection(MODULES.ADMIN)
+        changeModule(MODULES.ADMIN)
       } else {
         changeModule(MODULES.PATIENT)
       }

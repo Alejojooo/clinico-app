@@ -10,7 +10,7 @@ export const BaseSurface = styled(Stack)(({ theme }) => ({
 }))
 
 export const BaseContainer = styled(Stack)(({ theme }) => ({
-  justifyContent: 'center',
+  justifyContent: 'start',
   alignItems: 'center',
   padding: '2rem',
   backgroundColor: theme.palette.light.main,
