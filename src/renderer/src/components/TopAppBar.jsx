@@ -1,9 +1,12 @@
 import CloudSyncOutlinedIcon from '@mui/icons-material/CloudSyncOutlined'
 import LogoutOutlinedIcon from '@mui/icons-material/LogoutOutlined'
 import { IconButton, Stack, Typography } from '@mui/material'
+import useLogout from '../hooks/useLogout.js'
 import SectionsLayout from './SectionsLayout.jsx'
 
 export default function TopAppBar() {
+  const { handleLogout } = useLogout()
+
   return (
     <Stack
       component="header"
@@ -26,9 +29,6 @@ export default function TopAppBar() {
           paddingLeft: '1rem'
         }}
       >
-        {/* <IconButton>
-          <MenuOutlinedIcon />
-        </IconButton> */}
         <Typography variant="h1">Clínico</Typography>
       </Stack>
       <Stack
@@ -44,7 +44,7 @@ export default function TopAppBar() {
           <IconButton>
             <CloudSyncOutlinedIcon />
           </IconButton>
-          <IconButton>
+          <IconButton onClick={handleLogout}>
             <LogoutOutlinedIcon />
           </IconButton>
         </Stack>

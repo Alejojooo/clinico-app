@@ -1,10 +1,10 @@
-import { useView } from './useView'
-import useMedicalRecord from './useMedicalRecord'
-import { useState, useEffect, useRef } from 'react'
-import useSnackbar from './useSnackbar'
-import useFormChanged from './useFormChanged'
+import { useEffect, useRef, useState } from 'react'
 import { clean } from '../utils/form'
 import { PATIENT_SECTIONS } from '../utils/view'
+import useFormChanged from './useFormChanged'
+import useMedicalRecord from './useMedicalRecord'
+import useSnackbar from './useSnackbar'
+import useView from './useView'
 
 const initialFormData = {
   image: '',

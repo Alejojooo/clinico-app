@@ -1,10 +1,13 @@
-import { createTheme, CssBaseline, StyledEngineProvider, ThemeProvider } from '@mui/material'
+import { Box, createTheme, CssBaseline, StyledEngineProvider, ThemeProvider } from '@mui/material'
 import { LocalizationProvider } from '@mui/x-date-pickers'
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
 import 'dayjs/locale/es'
 import React from 'react'
 import { createRoot } from 'react-dom/client'
 import App from './App'
+import { ViewProvider } from './context/view'
+import { SnackbarProvider } from './context/snackbar'
+import { UserProvider } from './context/user'
 
 const rootElement = document.getElementById('root')
 const root = createRoot(rootElement)
@@ -12,6 +15,11 @@ const root = createRoot(rootElement)
 const theme = createTheme({
   cssVariables: true,
   typography: {
+    title: {
+      fontSize: '2rem',
+      lineHeight: '2.5rem',
+      fontWeight: 700
+    },
     h1: {
       fontSize: '1.125rem',
       lineHeight: '1.75rem',
@@ -51,6 +59,7 @@ const theme = createTheme({
     MuiTypography: {
       defaultProps: {
         variantMapping: {
+          title: 'h1',
           label: 'span'
         }
       }
@@ -74,7 +83,15 @@ root.render(
       <ThemeProvider theme={theme}>
         <CssBaseline />
         <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale="es">
-          <App />
+          <Box direction="column" sx={{ position: 'relative', height: '100vh', width: '100vw' }}>
+            <ViewProvider>
+              <UserProvider>
+                <SnackbarProvider>
+                  <App />
+                </SnackbarProvider>
+              </UserProvider>
+            </ViewProvider>
+          </Box>
         </LocalizationProvider>
       </ThemeProvider>
     </StyledEngineProvider>

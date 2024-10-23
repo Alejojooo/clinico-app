@@ -1,7 +1,7 @@
 import { useContext } from 'react'
 import { ViewContext } from '../context/view'
 
-export const useView = () => {
+export default function useView() {
   const context = useContext(ViewContext)
 
   if (context === undefined) {

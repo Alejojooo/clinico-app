@@ -1,14 +1,14 @@
-import { useContext, useEffect, useReducer, useState, useRef } from 'react'
+import dayjs from 'dayjs'
+import { useContext, useEffect, useReducer, useRef, useState } from 'react'
 import { MedicalRecordContext } from '../context/medicalRecord'
 import { ACTIONS, initialState, medicalRecordReducer } from '../reducers/medicalRecord'
 import { calculateAge } from '../utils/date'
 import { clean } from '../utils/form'
+import { PATIENT_SECTIONS } from '../utils/view'
+import useFormChanged from './useFormChanged'
 import usePatient from './usePatient'
 import useSnackbar from './useSnackbar'
-import useFormChanged from './useFormChanged'
-import { useView } from './useView'
-import { PATIENT_SECTIONS } from '../utils/view'
-import dayjs from 'dayjs'
+import useView from './useView'
 
 export default function useMedicalRecord() {
   const context = useContext(MedicalRecordContext)

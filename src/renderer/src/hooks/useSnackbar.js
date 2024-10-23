@@ -1,26 +1,12 @@
-import { useRef } from 'react'
-import { useView } from './useView'
+import { useContext } from 'react'
+import { SnackbarContext } from '../context/snackbar'
 
 export default function useSnackbar() {
-  const { addSnackbar, removeSnackbar } = useView()
-  const snackbarId = useRef(null)
+  const context = useContext(SnackbarContext)
 
-  const showSnackbar = (message, clearPersistent = false) => {
-    if (clearPersistent) clearPersistentSnackbar()
-    addSnackbar(message)
+  if (context === undefined) {
+    throw new Error('useSnackbar must be used within a SnackbarProvider')
   }
 
-  const showPersistentSnackbar = (message) => {
-    if (snackbarId.current) clearPersistentSnackbar()
-    snackbarId.current = addSnackbar(message, true)
-  }
-
-  const clearPersistentSnackbar = () => {
-    if (snackbarId.current) {
-      removeSnackbar(snackbarId.current, 1)
-      snackbarId.current = null
-    }
-  }
-
-  return { showSnackbar, showPersistentSnackbar, clearPersistentSnackbar }
+  return context
 }

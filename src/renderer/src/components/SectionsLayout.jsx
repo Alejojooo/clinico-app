@@ -3,7 +3,8 @@ import AssessmentOutlinedIcon from '@mui/icons-material/AssessmentOutlined'
 import LibraryBooksOutlinedIcon from '@mui/icons-material/LibraryBooksOutlined'
 import { Button, ButtonGroup, Stack } from '@mui/material'
 import usePatient from '../hooks/usePatient'
-import { useView } from '../hooks/useView'
+import useSnackbar from '../hooks/useSnackbar'
+import useView from '../hooks/useView'
 import { MODULES, PATIENT_SECTIONS } from '../utils/view'
 
 export default function SectionsLayout() {
@@ -25,7 +26,8 @@ export default function SectionsLayout() {
 
 function PatientSectionsLayout() {
   const { activePatient } = usePatient()
-  const { setActiveSection, addSnackbar } = useView()
+  const { setActiveSection } = useView()
+  const { showSnackbar } = useSnackbar()
 
   return (
     <Stack direction="row">
@@ -40,7 +42,7 @@ function PatientSectionsLayout() {
           startIcon={<LibraryBooksOutlinedIcon />}
           onClick={() => {
             if (activePatient) setActiveSection(PATIENT_SECTIONS.MEDICAL_RECORDS)
-            else addSnackbar('Primero seleccione un paciente')
+            else showSnackbar('Primero seleccione un paciente')
           }}
           disabled={!activePatient}
         >

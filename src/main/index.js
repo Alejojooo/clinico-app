@@ -36,6 +36,16 @@ import {
 import { showConfirmDialog } from './utils/dialog.js'
 import { convertImage, openImage } from './utils/image.js'
 import { setMainWindow } from './utils/windowManager.js'
+import {
+  createDefaultAdmin,
+  deleteUser,
+  getUserById,
+  getUsers,
+  login,
+  newUser,
+  updatePassword,
+  updateUser
+} from './services/user.js'
 
 function createWindow() {
   // Create the browser window.
@@ -109,6 +119,14 @@ app.on('window-all-closed', () => {
 // code. You can also put them in separate files and require them here.
 import('./utils/database.js')
 
+ipcMain.handle('user:new', newUser)
+ipcMain.handle('user:getAll', getUsers)
+ipcMain.handle('user:getOne', getUserById)
+ipcMain.handle('user:update', updateUser)
+ipcMain.handle('user:updatePassword', updatePassword)
+ipcMain.handle('user:delete', deleteUser)
+ipcMain.handle('user:login', login)
+
 ipcMain.handle('patient:new', newPatient)
 ipcMain.handle('patient:getAll', getPatients)
 ipcMain.handle('patient:getOne', getPatientById)
@@ -147,3 +165,5 @@ ipcMain.handle('image:convertImage', convertImage)
 
 ipcMain.handle('doc:docxExport', exportPrescriptionToDocx)
 ipcMain.handle('doc:print', printDocument)
+
+createDefaultAdmin()

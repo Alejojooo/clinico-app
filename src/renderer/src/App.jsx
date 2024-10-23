@@ -1,30 +1,36 @@
 import { Box, Stack } from '@mui/material'
 import PropTypes from 'prop-types'
+import { Fragment } from 'react'
+import AdminModule from './components/Admin/AdminModule'
 import AgendaModule from './components/Agenda/AgendaModule'
 import DrugModule from './components/Drug/DrugModule'
 import PatientModule from './components/Patient/PatientModule'
+import SessionModule from './components/Session/SessionModule'
 import TopAppBar from './components/TopAppBar'
 import { PatientProvider } from './context/patient'
-import { ViewProvider } from './context/view'
-import { useView } from './hooks/useView'
+import useView from './hooks/useView'
 import { MODULES } from './utils/view'
 
 export default function App() {
-  return (
-    <Box direction="column" sx={{ position: 'relative', height: '100vh', width: '100vw' }}>
-      <ViewProvider>
-        <EntityProvider>
-          <Stack
-            direction="column"
-            sx={{ height: 1, width: 1, backgroundColor: 'light.main', color: 'accent.main' }}
-          >
-            <TopAppBar></TopAppBar>
-            <Content></Content>
-          </Stack>
-        </EntityProvider>
-      </ViewProvider>
-    </Box>
-  )
+  const { activeModule } = useView()
+
+  if (activeModule === MODULES.ADMIN) {
+    return <AdminModule />
+  } else if (activeModule === MODULES.SESSION) {
+    return <SessionModule />
+  } else {
+    return (
+      <EntityProvider>
+        <Stack
+          direction="column"
+          sx={{ height: 1, width: 1, backgroundColor: 'light.main', color: 'accent.main' }}
+        >
+          <TopAppBar />
+          <Content />
+        </Stack>
+      </EntityProvider>
+    )
+  }
 }
 
 EntityProvider.propTypes = {
@@ -34,13 +40,10 @@ EntityProvider.propTypes = {
 function EntityProvider({ children }) {
   const { activeModule } = useView()
 
-  switch (activeModule) {
-    case MODULES.PATIENT: {
-      return <PatientProvider>{children}</PatientProvider>
-    }
-    default: {
-      return <>{children}</>
-    }
+  if (activeModule === MODULES.PATIENT) {
+    return <PatientProvider>{children}</PatientProvider>
+  } else {
+    return <Fragment>{children}</Fragment>
   }
 }
 
@@ -49,15 +52,15 @@ function Content() {
   let module
   switch (activeModule) {
     case MODULES.PATIENT: {
-      module = <PatientModule></PatientModule>
+      module = <PatientModule />
       break
     }
     case MODULES.DRUG: {
-      module = <DrugModule></DrugModule>
+      module = <DrugModule />
       break
     }
     case MODULES.AGENDA: {
-      module = <AgendaModule></AgendaModule>
+      module = <AgendaModule />
       break
     }
   }

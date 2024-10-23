@@ -1,11 +1,11 @@
 import ClassOutlinedIcon from '@mui/icons-material/ClassOutlined'
 import MedicationOutlinedIcon from '@mui/icons-material/MedicationOutlined'
 import PeopleAltOutlinedIcon from '@mui/icons-material/PeopleAltOutlined'
+import { Stack } from '@mui/material'
 import PropTypes from 'prop-types'
-import { useView } from '../hooks/useView'
+import useView from '../hooks/useView'
 import { MODULES } from '../utils/view'
 import ModuleButton from './Buttons/ModuleButton'
-import { Stack } from '@mui/material'
 
 SideView.propTypes = {
   children: PropTypes.node,

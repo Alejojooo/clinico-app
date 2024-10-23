@@ -3,6 +3,16 @@ import { clipboard, contextBridge, ipcRenderer } from 'electron'
 import { OPTIONS } from '../main/utils/dialog'
 
 // Custom APIs for renderer
+const user = {
+  newUser: (user) => ipcRenderer.invoke('user:new', user),
+  getUsers: () => ipcRenderer.invoke('user:getAll'),
+  getUserById: (id) => ipcRenderer.invoke('user:getOne', id),
+  updateUser: (id, user) => ipcRenderer.invoke('user:update', id, user),
+  updatePassword: (id, passwords) => ipcRenderer.invoke('user:update', id, passwords),
+  deleteUser: (id) => ipcRenderer.invoke('user:delete', id),
+  login: (username, password) => ipcRenderer.invoke('user:login', username, password)
+}
+
 const patient = {
   newPatient: (patient) => ipcRenderer.invoke('patient:new', patient),
   getPatients: () => ipcRenderer.invoke('patient:getAll'),
@@ -70,6 +80,7 @@ const doc = {
 if (process.contextIsolated) {
   try {
     contextBridge.exposeInMainWorld('electron', electronAPI)
+    contextBridge.exposeInMainWorld('user', user)
     contextBridge.exposeInMainWorld('patient', patient)
     contextBridge.exposeInMainWorld('medicalRecord', medicalRecord)
     contextBridge.exposeInMainWorld('medicalRecordPhoto', medicalRecordPhoto)
@@ -83,6 +94,7 @@ if (process.contextIsolated) {
   }
 } else {
   window.electron = electronAPI
+  window.user = user
   window.patient = patient
   window.medicalRecord = medicalRecord
   window.medicalRecordPhoto = medicalRecordPhoto

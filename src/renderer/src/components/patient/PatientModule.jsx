@@ -1,9 +1,9 @@
 import { MedicalRecordProvider } from '../../context/medicalRecord'
-import { useView } from '../../hooks/useView'
+import useView from '../../hooks/useView'
 import { PATIENT_SECTIONS } from '../../utils/view'
-import PatientIdentificationSection from './PatientIdentificationSection'
-import MedicalRecordSection from './MedicalRecordSection'
 import MedicalRecordPhotosSection from './MedicalRecordPhotosSection'
+import MedicalRecordSection from './MedicalRecordSection'
+import PatientIdentificationSection from './PatientIdentificationSection'
 import PrescritionSection from './PrescriptionSection'
 
 export default function PatientModule() {
