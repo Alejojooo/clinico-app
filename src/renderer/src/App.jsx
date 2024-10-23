@@ -11,25 +11,19 @@ import { MODULES } from './utils/view'
 
 export default function App() {
   return (
-    <Stack
-      direction="column"
-      sx={{
-        position: 'relative',
-        height: '100vh',
-        width: '100vw',
-        backgroundColor: 'light.main',
-        color: 'accent.main'
-      }}
-    >
+    <Box direction="column" sx={{ position: 'relative', height: '100vh', width: '100vw' }}>
       <ViewProvider>
         <EntityProvider>
-          <TopAppBar></TopAppBar>
-          <Box sx={{ width: 1, flexGrow: 1, padding: '0 1.25rem 1.25rem' }}>
+          <Stack
+            direction="column"
+            sx={{ height: 1, width: 1, backgroundColor: 'light.main', color: 'accent.main' }}
+          >
+            <TopAppBar></TopAppBar>
             <Content></Content>
-          </Box>
+          </Stack>
         </EntityProvider>
       </ViewProvider>
-    </Stack>
+    </Box>
   )
 }
 
@@ -52,16 +46,20 @@ function EntityProvider({ children }) {
 
 function Content() {
   const { activeModule } = useView()
-
+  let module
   switch (activeModule) {
     case MODULES.PATIENT: {
-      return <PatientModule></PatientModule>
+      module = <PatientModule></PatientModule>
+      break
     }
     case MODULES.DRUG: {
-      return <DrugModule></DrugModule>
+      module = <DrugModule></DrugModule>
+      break
     }
     case MODULES.AGENDA: {
-      return <AgendaModule></AgendaModule>
+      module = <AgendaModule></AgendaModule>
+      break
     }
   }
+  return <Box sx={{ width: 1, flexGrow: 1, padding: '0 1.25rem 1.25rem' }}>{module}</Box>
 }
