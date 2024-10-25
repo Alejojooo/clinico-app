@@ -62,9 +62,10 @@ export async function deleteMedicalRecord(event, id, responsibleMedicalStaff) {
   await MedicalRecordPhoto.deleteMany({ medicalRecordId: id })
   await Patient.updateOne({ medicalRecords: id }, { $pull: { medicalRecords: id } })
 
-  const patientId = await MedicalRecord.findById(id)
+  const patient = await MedicalRecord.findById(id).select('_id').exec()
+  console.log(patient._id)
   await MedicalRecord.updateMany(
-    { patientId: patientId },
+    { patientId: patient._id },
     { responsibleMedicalStaff: responsibleMedicalStaff }
   )
   await MedicalRecord.findByIdAndDelete(id)

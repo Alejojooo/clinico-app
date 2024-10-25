@@ -59,9 +59,7 @@ export async function newUser(event, formData) {
 
   // Validación de los demás campos
   try {
-    console.log('empieza')
     await User.validate(userData, ['username', 'name', 'role'])
-    console.log('finaliza')
   } catch (err) {
     errors = { ...errors, ...err.errors }
   }

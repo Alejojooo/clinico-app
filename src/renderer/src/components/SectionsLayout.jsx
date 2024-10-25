@@ -1,13 +1,12 @@
 import AccountCircleOutlinedIcon from '@mui/icons-material/AccountCircleOutlined'
-import AssessmentOutlinedIcon from '@mui/icons-material/AssessmentOutlined'
 import LibraryBooksOutlinedIcon from '@mui/icons-material/LibraryBooksOutlined'
 import { Button, ButtonGroup, Stack } from '@mui/material'
 import usePatient from '../hooks/usePatient'
 import useSnackbar from '../hooks/useSnackbar'
 import useUser from '../hooks/useUser'
 import useView from '../hooks/useView'
-import { MODULES, PATIENT_SECTIONS } from '../utils/view'
 import { ROLES } from '../utils/admin'
+import { MODULES, PATIENT_SECTIONS } from '../utils/view'
 
 export default function SectionsLayout() {
   const { activeModule } = useView()
@@ -49,9 +48,9 @@ function PatientSectionsLayout() {
         >
           Historias
         </Button>
-        <Button startIcon={<AssessmentOutlinedIcon />} disabled>
+        {/* <Button startIcon={<AssessmentOutlinedIcon />} disabled>
           Reporte
-        </Button>
+        </Button> */}
       </ButtonGroup>
     </Stack>
   )

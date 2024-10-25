@@ -32,7 +32,6 @@ export default function useLogin() {
     const { username, password } = formData
     const { outcome, payload } = await window.user.login(username, password)
     setLoading(false)
-    console.log(outcome, payload)
     if (outcome === 'success') {
       setCurrentUser(payload)
       if (payload.role === 'A') {

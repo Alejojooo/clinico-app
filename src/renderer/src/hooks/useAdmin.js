@@ -1,6 +1,7 @@
 import { useEffect, useReducer, useState } from 'react'
 import useSnackbar from './useSnackbar'
 import { ACTIONS, adminReducer, initialState } from '../reducers/admin'
+import useUser from './useUser'
 
 export const VIEWS = {
   CREATE: 'CREATE',
@@ -21,6 +22,7 @@ export default function useAdmin() {
   const [activeUser, setActiveUser] = useState(null)
   const [users, setUsers] = useState([])
   const [userState, dispatch] = useReducer(adminReducer, initialState)
+  const { currentUser } = useUser()
   const { showSnackbar } = useSnackbar()
 
   useEffect(() => {
@@ -87,7 +89,6 @@ export default function useAdmin() {
       activeUser._id,
       userState.formData
     )
-    console.log(outcome, payload)
     if (outcome === 'success') {
       handleListView()
       showSnackbar('Se actualizó la contraseña con éxito')
@@ -97,6 +98,11 @@ export default function useAdmin() {
   }
 
   const handleDelete = async () => {
+    if (currentUser._id === activeUser._id) {
+      showSnackbar('No puede eliminar el usuario activo')
+      return
+    }
+
     const option = await window.dialog.showConfirmDialog(
       'Eliminar usuario',
       '¿Está seguro de eliminar este usuario?'
