@@ -4,22 +4,23 @@ import LibraryBooksOutlinedIcon from '@mui/icons-material/LibraryBooksOutlined'
 import { Button, ButtonGroup, Stack } from '@mui/material'
 import usePatient from '../hooks/usePatient'
 import useSnackbar from '../hooks/useSnackbar'
+import useUser from '../hooks/useUser'
 import useView from '../hooks/useView'
 import { MODULES, PATIENT_SECTIONS } from '../utils/view'
+import { ROLES } from '../utils/admin'
 
 export default function SectionsLayout() {
   const { activeModule } = useView()
+  const { currentUser } = useUser()
+
+  if (currentUser.role !== ROLES.C) return <div></div>
 
   switch (activeModule) {
     case MODULES.PATIENT: {
-      return <PatientSectionsLayout></PatientSectionsLayout>
-    }
-    case MODULES.DRUG:
-    case MODULES.AGENDA: {
-      return <div></div>
+      return <PatientSectionsLayout />
     }
     default: {
-      throw new Error('There is no section layout for ' + activeModule)
+      return <div></div>
     }
   }
 }

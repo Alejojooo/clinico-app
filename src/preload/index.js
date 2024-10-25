@@ -8,7 +8,7 @@ const user = {
   getUsers: () => ipcRenderer.invoke('user:getAll'),
   getUserById: (id) => ipcRenderer.invoke('user:getOne', id),
   updateUser: (id, user) => ipcRenderer.invoke('user:update', id, user),
-  updatePassword: (id, passwords) => ipcRenderer.invoke('user:update', id, passwords),
+  updatePassword: (id, passwords) => ipcRenderer.invoke('user:updatePassword', id, passwords),
   deleteUser: (id) => ipcRenderer.invoke('user:delete', id),
   login: (username, password) => ipcRenderer.invoke('user:login', username, password)
 }
@@ -27,7 +27,8 @@ const medicalRecord = {
   getMedicalRecordById: (id) => ipcRenderer.invoke('medicalRecord:getOne', id),
   updateMedicalRecord: (id, medicalRecord) =>
     ipcRenderer.invoke('medicalRecord:update', id, medicalRecord),
-  deleteMedicalRecord: (id) => ipcRenderer.invoke('medicalRecord:delete', id)
+  deleteMedicalRecord: (id, responsibleMedicalStaff) =>
+    ipcRenderer.invoke('medicalRecord:delete', id, responsibleMedicalStaff)
 }
 
 const medicalRecordPhoto = {

@@ -234,7 +234,9 @@ export default function MedicalRecordSection() {
                     }}
                   />
                 </Stack>
-                <DataField label="Personal médico responsable">Alejo</DataField>
+                <DataField label="Personal médico responsable">
+                  {formData.responsibleMedicalStaff}
+                </DataField>
               </Stack>
             </Stack>
           </Stack>

@@ -11,10 +11,11 @@ import MenuList from '@mui/material/MenuList'
 import PropTypes from 'prop-types'
 
 SplitButton.propTypes = {
-  options: PropTypes.array
+  options: PropTypes.array,
+  disabled: PropTypes.bool
 }
 
-export default function SplitButton({ options }) {
+export default function SplitButton({ options, disabled = false }) {
   const [open, setOpen] = React.useState(false)
   const anchorRef = React.useRef(null)
   const [selectedIndex, setSelectedIndex] = React.useState(0)
@@ -40,7 +41,7 @@ export default function SplitButton({ options }) {
 
   return (
     <React.Fragment>
-      <ButtonGroup variant="outlined" ref={anchorRef} aria-label="Button group with a nested menu">
+      <ButtonGroup variant="outlined" ref={anchorRef} disabled={disabled}>
         <Button onClick={handleClick} startIcon={options[selectedIndex].icon}>
           {options[selectedIndex].label}
         </Button>

@@ -10,7 +10,7 @@ InfoBox.propTypes = {
 export default function InfoBox({ title, children, sx }) {
   return (
     <Stack direction="column" spacing="1.25rem" sx={sx}>
-      <Typography variant="h4">{title}</Typography>
+      {title && <Typography variant="h3">{title}</Typography>}
       <Stack direction="column" spacing="0.625rem">
         {children}
       </Stack>

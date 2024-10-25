@@ -15,47 +15,68 @@ export async function createDefaultAdmin() {
   }
 }
 
+class LoginError extends Error {
+  constructor(error) {
+    super(error.message)
+    this.name = error.name
+  }
+}
+
 export async function login(event, username, password) {
   try {
-    if (!username) throw new Error('Ingrese un nombre de usuario')
-    if (!password) throw new Error('Ingrese una contraseña')
-
+    if (!username)
+      throw new LoginError({ name: 'username', message: 'Ingrese un nombre de usuario' })
     const user = await User.findOne({ username })
     if (!user) {
-      throw new Error('Usuario no encontrado')
+      throw new LoginError({ name: 'username', message: 'Usuario no encontrado' })
     }
 
+    if (!password) throw new LoginError({ name: 'password', message: 'Ingrese una contraseña' })
     const isMatch = await verifyPassword(password, user.password)
     if (!isMatch) {
-      throw new Error('Contraseña incorrecta')
+      throw new LoginError({ name: 'password', message: 'Contraseña incorrecta' })
     }
 
     const formData = toFormData(user)
     delete formData.password
     return { outcome: 'success', payload: formData }
   } catch (error) {
-    return { outcome: 'failure', payload: error.message }
+    return { outcome: 'failure', payload: { [error.name]: error.message } }
   }
 }
 
 export async function newUser(event, formData) {
-  try {
-    const userData = cleanData(formData, SCHEMA_FIELDS)
-    if (validatePassword(userData.password)) {
-      userData.password = await hashPassword(userData.password)
-    }
+  let errors = {}
+  const userData = cleanData(formData, SCHEMA_FIELDS)
 
-    const newUser = await User.create(userData)
-    delete newUser.password
-    return { outcome: 'success', payload: toFormData(newUser) }
+  // Validación de contraseña
+  try {
+    validatePassword(formData.password, formData.confirmPassword)
+    userData.password = await hashPassword(formData.password)
   } catch (err) {
-    return { outcome: 'failure', payload: getErrors(err) }
+    errors.password = { message: err.message }
+  }
+
+  // Validación de los demás campos
+  try {
+    console.log('empieza')
+    await User.validate(userData, ['username', 'name', 'role'])
+    console.log('finaliza')
+  } catch (err) {
+    errors = { ...errors, ...err.errors }
+  }
+
+  if (Object.keys(errors) <= 0) {
+    const newUser = await User.create(userData)
+    return { outcome: 'success', payload: toFormData(newUser) }
+  } else {
+    return { outcome: 'failure', payload: parseErrors(errors) }
   }
 }
 
 export async function getUsers() {
-  const users = await User.find({}).select('_id username').sort('username')
-  return serialize(users.map((user) => ({ _id: user._id, label: user.name })))
+  const users = await User.find({}).sort('username')
+  return serialize(users.map((user) => ({ _id: user._id, label: user.username })))
 }
 
 export async function getUserById(event, id) {
@@ -68,32 +89,28 @@ export async function updateUser(event, id, formData) {
   try {
     const userData = cleanData(formData, SCHEMA_FIELDS)
     const targetUser = await User.findById(id)
-
     for (const field in userData) {
       targetUser[field] = userData[field]
     }
-
     await targetUser.save()
-    return { outcome: 'success', payload: {} }
+    return { outcome: 'success', payload: toFormData(targetUser) }
   } catch (err) {
-    return { outcome: 'failure', payload: getErrors(err) }
+    return { outcome: 'failure', payload: parseErrors(err) }
   }
 }
 
 export async function updatePassword(event, id, formData) {
   try {
-    const { newPassword, confirmPassword } = formData
-    if (newPassword !== confirmPassword) {
-      throw new Error('Las contraseñas no coinciden')
-    }
-    validatePassword(newPassword)
+    const { password, confirmPassword } = formData
+    validatePassword(password, confirmPassword)
 
     const targetUser = await User.findById(id)
-    targetUser.password = hashPassword(newPassword)
-    targetUser.save()
+    targetUser.password = await hashPassword(password)
+    await targetUser.save()
+
     return { outcome: 'success', payload: {} }
   } catch (err) {
-    return { outcome: 'failure', payload: getErrors(err) }
+    return { outcome: 'failure', payload: { password: err.message } }
   }
 }
 
@@ -112,7 +129,9 @@ async function hashPassword(password) {
   return hashedPassword
 }
 
-function validatePassword(password) {
+function validatePassword(password, confirmPassword) {
+  if (!password) throw new Error('La contraseña es requerida')
+  if (password !== confirmPassword) throw new Error('Las contraseñas no coinciden')
   if (password.length < 8) throw new Error('La contraseña debe tener al menos 8 caracteres')
   else if (!/[A-Z]/.test(password))
     throw new Error('La contraseña debe contener al menos una letra mayúscula')
@@ -120,11 +139,8 @@ function validatePassword(password) {
   else return true
 }
 
-function getErrors(err) {
-  const isValidateException = Boolean(err.errors)
-  return isValidateException ? parseErrors(err.errors) : { password: err.message }
-}
-
 function toFormData(user) {
-  return serialize(user)
+  const formData = serialize(user)
+  delete formData.password
+  return formData
 }

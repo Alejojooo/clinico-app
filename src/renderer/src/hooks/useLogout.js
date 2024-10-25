@@ -3,7 +3,7 @@ import useUser from './useUser'
 import useView from './useView'
 
 export default function useLogout() {
-  const { setActiveUser } = useUser()
+  const { setCurrentUser } = useUser()
   const { changeModule } = useView()
 
   const handleLogout = async () => {
@@ -12,7 +12,7 @@ export default function useLogout() {
       '¿Está seguro de cerrar sesión?'
     )
     if (option === window.dialog.OK_OPTION) {
-      setActiveUser(null)
+      setCurrentUser(null)
       changeModule(MODULES.SESSION)
     }
   }

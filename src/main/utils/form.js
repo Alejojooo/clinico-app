@@ -1,8 +1,8 @@
 export function cleanData(formData, requiredFields, opts = {}) {
   const newData = { ...formData }
   for (const field in formData) {
-    const hasRequiredField = requiredFields.includes(field)
-    if (!hasRequiredField) delete newData[field]
+    const requiredField = requiredFields.includes(field)
+    if (!requiredField) delete newData[field]
     if (!newData[field] && opts?.deleteBlankValues) delete newData[field]
   }
   return newData

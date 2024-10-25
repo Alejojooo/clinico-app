@@ -39,7 +39,7 @@ export default function TopAppBar() {
           alignItems: 'center'
         }}
       >
-        <SectionsLayout></SectionsLayout>
+        <SectionsLayout />
         <Stack direction="row" spacing="0.625rem">
           <IconButton>
             <CloudSyncOutlinedIcon />

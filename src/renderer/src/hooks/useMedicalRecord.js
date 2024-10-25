@@ -9,6 +9,7 @@ import useFormChanged from './useFormChanged'
 import usePatient from './usePatient'
 import useSnackbar from './useSnackbar'
 import useView from './useView'
+import useUser from './useUser'
 
 export default function useMedicalRecord() {
   const context = useContext(MedicalRecordContext)
@@ -20,6 +21,7 @@ export default function useMedicalRecord() {
   const [state, dispatch] = useReducer(medicalRecordReducer, initialState)
   const { activePatient, nextAppointment } = usePatient()
   const { setActiveSection } = useView()
+  const { currentUser } = useUser()
   const { activeMedicalRecord, setActiveMedicalRecord } = context
   const { showSnackbar, showPersistentSnackbar, clearPersistentSnackbar } = useSnackbar()
   const { hasChanged, setOriginalData } = useFormChanged(state.formData)
@@ -59,8 +61,14 @@ export default function useMedicalRecord() {
 
   const getCleanForm = () => {
     const newForm = clean(state.formData)
-    if (!newForm.date) newForm.date = new Date().toISOString()
-    else if (newForm.date instanceof dayjs) newForm.date = newForm.date.format()
+    if (!newForm.date) {
+      newForm.date = new Date().toISOString()
+    } else if (newForm.date instanceof dayjs) {
+      newForm.date = newForm.date.format()
+    }
+    newForm.patientId = activePatient._id
+    newForm.responsibleMedicalStaff = currentUser.name
+
     return newForm
   }
 
@@ -72,7 +80,7 @@ export default function useMedicalRecord() {
       return
     }
 
-    const newFormData = { ...getCleanForm(), patientId: activePatient._id }
+    const newFormData = getCleanForm()
     const { outcome, payload } = await window.medicalRecord.newMedicalRecord(newFormData)
     if (outcome === 'success') {
       setActiveMedicalRecord(payload)
@@ -94,12 +102,13 @@ export default function useMedicalRecord() {
       return
     }
 
-    const newFormData = { ...getCleanForm(), patientId: activePatient._id }
-    const { outcome } = await window.medicalRecord.updateMedicalRecord(
+    const newFormData = getCleanForm()
+    const { outcome, payload } = await window.medicalRecord.updateMedicalRecord(
       activeMedicalRecord._id,
       newFormData
     )
     if (outcome === 'success') {
+      setActiveMedicalRecord(payload)
       showSnackbar('Se actualizó la historia clínica', true)
       await getMedicalRecords()
     }
@@ -117,7 +126,7 @@ export default function useMedicalRecord() {
     )
     if (option === window.dialog.OK_OPTION) {
       setActiveMedicalRecord(null)
-      await window.medicalRecord.deleteMedicalRecord(activeMedicalRecord._id)
+      await window.medicalRecord.deleteMedicalRecord(activeMedicalRecord._id, currentUser.name)
       showSnackbar('Se eliminó la historia clínica')
       getMedicalRecords()
     }

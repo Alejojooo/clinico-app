@@ -1,7 +1,7 @@
 import { model, models, Schema } from 'mongoose'
 import { validateUnique } from '../utils/validator'
 
-export const SCHEMA_FIELDS = ['username', 'name', 'password', 'role']
+export const SCHEMA_FIELDS = ['username', 'name', 'role']
 
 const userSchema = new Schema({
   username: {
@@ -23,12 +23,6 @@ const userSchema = new Schema({
         },
         message: 'El nombre de usuario solo puede contener letras y números.'
       }
-      // {
-      //   validator: function (value) {
-      //     return value !== 'admin'
-      //   },
-      //   message: 'No puedes usar "admin" como nombre de usuario.'
-      // }
     ]
   },
   name: {

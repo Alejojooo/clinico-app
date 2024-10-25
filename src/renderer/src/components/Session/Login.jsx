@@ -4,7 +4,7 @@ import useLogin from '../../hooks/useLogin'
 import { BaseSurface, BaseContainer } from '../Base/Base'
 
 export default function Login() {
-  const { formData, loading, handleField, handleKeyPress, handleLogin } = useLogin()
+  const { formData, errors, loading, handleField, handleKeyPress, handleLogin } = useLogin()
 
   return (
     <BaseSurface direction="column">
@@ -12,6 +12,7 @@ export default function Login() {
         direction="column"
         spacing="2.25rem"
         sx={{
+          justifyContent: 'center',
           width: '28.75rem',
           minWidth: '28.75rem',
           minHeight: '30rem'
@@ -23,6 +24,7 @@ export default function Login() {
         <Stack
           direction="column"
           spacing="1.5rem"
+          onKeyDown={handleKeyPress}
           sx={{ width: 1, '& .MuiFormControl-root .MuiFormLabel-root': { fontWeight: 500 } }}
         >
           <FormControl>
@@ -31,12 +33,12 @@ export default function Login() {
               id="username"
               name="username"
               variant="outlined"
-              // placeholder="clinico123"
               margin="dense"
               size="small"
               value={formData.username}
               onChange={handleField}
-              onKeyDown={handleKeyPress}
+              error={Boolean(errors.username)}
+              helperText={errors.username}
               fullWidth
             />
           </FormControl>
@@ -47,12 +49,12 @@ export default function Login() {
               name="password"
               type="password"
               variant="outlined"
-              // placeholder="••••••••••"
               margin="dense"
               size="small"
               value={formData.password}
               onChange={handleField}
-              onKeyDown={handleKeyPress}
+              error={Boolean(errors.password)}
+              helperText={errors.password}
               fullWidth
             />
           </FormControl>

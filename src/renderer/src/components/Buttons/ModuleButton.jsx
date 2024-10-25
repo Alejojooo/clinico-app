@@ -28,9 +28,6 @@ export default function ModuleButton({ name, icon, isActive = false, onClick }) 
         backgroundColor: isActive ? 'secondary.main' : 'transparent',
         '&:hover': {
           backgroundColor: !isActive ? 'surface.main' : null
-        },
-        '&:focus': {
-          backgroundColor: 'secondary.main'
         }
       }}
       onClick={onClick}

@@ -1,6 +1,5 @@
 import { useState } from 'react'
 import { MODULES } from '../utils/view'
-import useSnackbar from './useSnackbar'
 import useUser from './useUser'
 import useView from './useView'
 
@@ -9,16 +8,19 @@ const initialFormData = {
   password: ''
 }
 
+const initialErrors = {}
+
 export default function useLogin() {
-  const { changeModule, setActiveSection } = useView()
-  const { showSnackbar } = useSnackbar()
-  const { setActiveUser } = useUser()
+  const { changeModule } = useView()
+  const { setCurrentUser } = useUser()
   const [formData, setFormData] = useState(initialFormData)
+  const [errors, setErrors] = useState(initialErrors)
   const [loading, setLoading] = useState(false)
 
   const handleField = (e) => {
     const { name, value } = e.target
     setFormData({ ...formData, [name]: value })
+    setErrors({ ...errors, [name]: null })
   }
 
   const handleKeyPress = (e) => {
@@ -30,17 +32,18 @@ export default function useLogin() {
     const { username, password } = formData
     const { outcome, payload } = await window.user.login(username, password)
     setLoading(false)
+    console.log(outcome, payload)
     if (outcome === 'success') {
-      setActiveUser(payload)
+      setCurrentUser(payload)
       if (payload.role === 'A') {
         changeModule(MODULES.ADMIN)
       } else {
         changeModule(MODULES.PATIENT)
       }
     } else {
-      showSnackbar(payload)
+      setErrors(payload)
     }
   }
 
-  return { formData, loading, handleField, handleKeyPress, handleLogin }
+  return { formData, errors, loading, handleField, handleKeyPress, handleLogin }
 }

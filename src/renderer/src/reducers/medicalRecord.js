@@ -5,7 +5,8 @@ export const initialState = {
     firstTime: false,
     record: '',
     diagnosis: '',
-    treatment: ''
+    treatment: '',
+    responsibleMedicalStaff: ''
   }
 }
 

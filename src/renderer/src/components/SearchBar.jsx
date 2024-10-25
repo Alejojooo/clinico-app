@@ -2,7 +2,7 @@ import { InputBase, Paper, Stack, Typography } from '@mui/material'
 import PropTypes from 'prop-types'
 
 SearchBar.propTypes = {
-  title: PropTypes.string.isRequired,
+  title: PropTypes.string,
   length: PropTypes.number,
   value: PropTypes.string,
   onInput: PropTypes.func,
@@ -24,19 +24,21 @@ export default function SearchBar({
       spacing="0.5rem"
       sx={{ justifyContent: 'space-between', alignItems: 'flex-end', width: 1 }}
     >
-      <Stack
-        direction="row"
-        sx={{
-          justifyContent: 'space-between',
-          alignItems: 'flex-end',
-          height: noDocumentCount ? 'auto' : '2rem',
-          width: 1,
-          padding: noPadding ? 0 : '0 0.625rem'
-        }}
-      >
-        <Typography variant="h3">{title}</Typography>
-        {!noDocumentCount && <Typography variant="h3">{length}</Typography>}
-      </Stack>
+      {title && (
+        <Stack
+          direction="row"
+          sx={{
+            justifyContent: 'space-between',
+            alignItems: 'flex-end',
+            height: noDocumentCount ? 'auto' : '2rem',
+            width: 1,
+            padding: noPadding ? 0 : '0 0.625rem'
+          }}
+        >
+          <Typography variant="h3">{title}</Typography>
+          {!noDocumentCount && <Typography variant="h3">{length}</Typography>}
+        </Stack>
+      )}
       <Paper
         elevation={1}
         sx={{

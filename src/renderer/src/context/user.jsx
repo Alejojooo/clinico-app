@@ -8,9 +8,9 @@ UserProvider.propTypes = {
 }
 
 export function UserProvider({ children }) {
-  const [activeUser, setActiveUser] = useState(null)
+  const [currentUser, setCurrentUser] = useState(null)
 
   return (
-    <UserContext.Provider value={{ activeUser, setActiveUser }}>{children}</UserContext.Provider>
+    <UserContext.Provider value={{ currentUser, setCurrentUser }}>{children}</UserContext.Provider>
   )
 }
