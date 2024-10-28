@@ -400,7 +400,7 @@ function ListView({ activeUser, users, onUserSelection }) {
         activeDocument={activeUser}
         documents={users}
         handleDocSelection={onUserSelection}
-        sx={{ maxWidth: '12.5rem' }}
+        sx={{ maxWidth: '12.5rem', height: '25rem' }}
       />
       <Stack
         direction="column"

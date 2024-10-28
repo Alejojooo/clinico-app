@@ -64,6 +64,7 @@ export function DocumentList({ documents, activeDocument, handleDocSelection }) 
   return (
     <List
       sx={{
+        position: 'static',
         width: 1,
         height: 1,
         padding: 0,
