@@ -291,21 +291,23 @@ function DrugList({
       spacing="1.25rem"
       sx={{ alignItems: 'center', width: '20rem', height: 1 }}
     >
-      <SearchableDocumentList
-        title="Fármacos"
-        documents={drugs}
-        activeDocument={activeDrug}
-        handleDocSelection={onDrugSelection}
-        noDocumentCount
-        noPadding
-      />
-      <Stack direction="column" spacing="0.625rem" sx={{ flexGrow: 1, width: 1 }}>
-        <Typography variant="h3">Presentaciones</Typography>
-        <DocumentList
-          documents={presentations}
-          activeDocument={activePresentation}
-          handleDocSelection={onPresentationSelection}
+      <Stack direction="column" spacing="1.25rem" sx={{ flexGrow: 1, width: 1 }}>
+        <SearchableDocumentList
+          title="Fármacos"
+          documents={drugs}
+          activeDocument={activeDrug}
+          handleDocSelection={onDrugSelection}
+          noDocumentCount
+          noPadding
         />
+        <Stack direction="column" spacing="0.625rem" sx={{ height: 0.4, width: 1 }}>
+          <Typography variant="h3">Presentaciones</Typography>
+          <DocumentList
+            documents={presentations}
+            activeDocument={activePresentation}
+            handleDocSelection={onPresentationSelection}
+          />
+        </Stack>
       </Stack>
       <Button sx={{ width: 'fit-content' }} variant="contained" onClick={onInsertDrug}>
         Insertar medicamento

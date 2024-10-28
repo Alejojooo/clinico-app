@@ -31,6 +31,7 @@ export default function SearchableDocumentList({
       sx={{
         flexGrow: 1,
         width: 1,
+        height: '1px',
         justifyContent: 'start',
         alignItems: 'center',
         ...sx
@@ -68,7 +69,7 @@ export function DocumentList({ documents, activeDocument, handleDocSelection }) 
         padding: 0,
         backgroundColor: 'surface.main',
         borderRadius: '0.25rem',
-        overflow: 'hidden',
+        overflowY: 'scroll',
         '& .MuiListItem-root': {},
         '& .MuiButtonBase-root': {
           display: 'block',

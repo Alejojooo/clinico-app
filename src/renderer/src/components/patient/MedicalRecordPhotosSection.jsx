@@ -157,6 +157,7 @@ export default function MedicalRecordPhotosSection() {
         <Stack
           direction="row"
           sx={{
+            height: '1px',
             width: 1,
             flexGrow: 1,
             justifyContent: 'center',

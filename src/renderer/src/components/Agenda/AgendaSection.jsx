@@ -14,6 +14,7 @@ import InfoBox from '../Base/InfoBox'
 
 // TODO: Agregar alertas de cuántas citas son para hoy
 // TODO: Funcionalidad de ver paciente
+// ! Siempre agregar width y height (aún sea solo 1px)
 
 export default function AgendaSection() {
   const {
@@ -123,11 +124,22 @@ function AppointmentList({ appointments, activeAppointment, onSelection, onDelet
         </Button>
         <Button startIcon={<PersonOutlinedIcon />}>Ver Paciente</Button>
       </ButtonGroup>
-      <DocumentList
-        documents={appointments}
-        activeDocument={activeAppointment}
-        handleDocSelection={onSelection}
-      ></DocumentList>
+      <Stack
+        direction="column"
+        sx={{
+          flexGrow: 1,
+          width: 1,
+          height: '1px',
+          justifyContent: 'start',
+          alignItems: 'center'
+        }}
+      >
+        <DocumentList
+          documents={appointments}
+          activeDocument={activeAppointment}
+          handleDocSelection={onSelection}
+        ></DocumentList>
+      </Stack>
     </Stack>
   )
 }

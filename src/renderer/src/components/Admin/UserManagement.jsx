@@ -162,7 +162,7 @@ function CreateView({ formData, errors, onField, onSave, onCancel }) {
             value={formData.username}
             onChange={onField}
             error={Boolean(errors.username)}
-            helperText={errors.username}
+            helperText={errors.username ?? 'Será utilizado para iniciar sesión'}
             fullWidth
           />
           <TextField
@@ -173,7 +173,9 @@ function CreateView({ formData, errors, onField, onSave, onCancel }) {
             value={formData.name}
             onChange={onField}
             error={Boolean(errors.name)}
-            helperText={errors.name}
+            helperText={
+              errors.name ?? 'Este nombre aparecerá en los registros de historias clínicas'
+            }
             fullWidth
           />
           <Box sx={{ minWidth: 150 }}>
@@ -194,7 +196,9 @@ function CreateView({ formData, errors, onField, onSave, onCancel }) {
                 <MenuItem value="C">Completo</MenuItem>
                 <MenuItem value="P">Parcial</MenuItem>
               </Select>
-              {errors.role && <FormHelperText>{errors.role}</FormHelperText>}
+              <FormHelperText>
+                {errors.role ?? 'Parcial no tiene acceso a historias clínicas'}
+              </FormHelperText>
             </FormControl>
           </Box>
           <TextField
