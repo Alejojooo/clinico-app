@@ -50,6 +50,8 @@ const drug = {
 
 const appointment = {
   newAppointment: (appointment) => ipcRenderer.invoke('appointment:new', appointment),
+  getDaysWithAppointments: (date) =>
+    ipcRenderer.invoke('appointment:getDaysWithAppointments', date),
   getAppointmentsByDate: (date) => ipcRenderer.invoke('appointment:getByDate', date),
   getNextPatientAppointment: (patientId) => ipcRenderer.invoke('appointment:getNearest', patientId),
   getAppointmentById: (id) => ipcRenderer.invoke('appointment:getOne', id),

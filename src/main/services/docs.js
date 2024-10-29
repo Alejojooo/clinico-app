@@ -15,7 +15,10 @@ async function createDocx(fields) {
       newFields[field] = formatDate(newFields[field], { pretty: true })
   }
 
-  const baseDirectory = is.dev && process.env['ELECTRON_RENDERER_URL'] ? process.cwd() : __dirname
+  const baseDirectory =
+    is.dev && process.env['ELECTRON_RENDERER_URL']
+      ? process.cwd()
+      : join(__dirname, ...new Array(4).fill('..'))
 
   // Cargar el documento de plantilla
   const content = readFileSync(join(baseDirectory, 'template.docx'), 'binary')

@@ -1,12 +1,14 @@
 import dayjs from 'dayjs'
-import { useState, useEffect, useReducer } from 'react'
+import { useContext, useEffect, useReducer, useState } from 'react'
+import { AppointmentContext } from '../context/appointment'
 import { ACTIONS, appointmentReducer, initialState } from '../reducers/appointment'
 import { clean } from '../utils/form'
 import useSnackbar from './useSnackbar'
 
 export default function useAgenda() {
   const [selectedDate, setSelectedDate] = useState(dayjs())
-  const [appointments, setAppointments] = useState([])
+  const [highlightedDays, setHighlightedDays] = useState([])
+  const { appointments, setAppointments } = useContext(AppointmentContext)
   const [patients, setPatients] = useState([])
   const [state, dispatch] = useReducer(appointmentReducer, initialState)
   const [activeAppointment, setActiveAppointment] = useState(null)
@@ -20,10 +22,20 @@ export default function useAgenda() {
     getPatients()
   }, [])
 
+  useEffect(() => {
+    const currentMonth = dayjs()
+    getDaysWithAppointments(currentMonth)
+  }, [])
+
   const getAppointments = async () => {
     const newDate = selectedDate.format()
     const appointments = await window.appointment.getAppointmentsByDate(newDate)
     setAppointments(appointments)
+  }
+
+  const getDaysWithAppointments = async (date) => {
+    const newHighlightedDays = await window.appointment.getDaysWithAppointments(date.format())
+    setHighlightedDays(newHighlightedDays)
   }
 
   const getPatients = async () => {
@@ -45,10 +57,15 @@ export default function useAgenda() {
     handleField(event)
   }
 
-  const handleDateSelection = (value) => {
+  const handleMonthChange = async (value) => {
+    await getDaysWithAppointments(value)
+  }
+
+  const handleDateSelection = async (value) => {
     setSelectedDate(value)
     setActiveAppointment(null)
-    dispatch({ type: ACTIONS.SET_ERRORS, errors: {} })
+    await getDaysWithAppointments(value)
+    dispatch({ type: ACTIONS.DATE_CHANGE, date: value })
   }
 
   const getCleanForm = () => {
@@ -61,6 +78,7 @@ export default function useAgenda() {
     const { outcome, payload } = await window.appointment.newAppointment(getCleanForm())
     if (outcome === 'success') {
       await getAppointments()
+      await getDaysWithAppointments(state.formData.date)
       showSnackbar('Se agendó una nueva cita')
     } else {
       dispatch({ type: ACTIONS.SET_ERRORS, errors: payload })
@@ -79,9 +97,11 @@ export default function useAgenda() {
       '¿Está seguro de eliminar esta cita?'
     )
     if (option === window.dialog.OK_OPTION) {
-      setActiveAppointment(null)
       await window.appointment.deleteAppointment(activeAppointment._id)
       await getAppointments()
+      await getDaysWithAppointments(dayjs(activeAppointment.isoDate))
+      showSnackbar('Se eliminó la cita')
+      setActiveAppointment(null)
     }
   }
 
@@ -97,9 +117,11 @@ export default function useAgenda() {
     appointments,
     patients,
     selectedDate,
+    highlightedDays,
     handleField,
     handleSelect,
     handleDate,
+    handleMonthChange,
     handleDateSelection,
     handleNewAppointment,
     handleDeleteAppointment,

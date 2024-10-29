@@ -39,6 +39,7 @@ export async function login(event, username, password) {
 
     const formData = toFormData(user)
     delete formData.password
+
     return { outcome: 'success', payload: formData }
   } catch (error) {
     return { outcome: 'failure', payload: { [error.name]: error.message } }

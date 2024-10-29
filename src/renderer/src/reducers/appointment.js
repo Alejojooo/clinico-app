@@ -1,7 +1,9 @@
+import dayjs from 'dayjs'
+
 export const initialState = {
   formData: {
     patientId: null,
-    date: null,
+    date: dayjs(),
     reason: ''
   },
   errors: {}
@@ -11,7 +13,8 @@ export const ACTIONS = {
   SET_APPOINTMENT: 'SET_DRUG',
   SET_ERRORS: 'SET_ERRORS',
   CLEAR_FORM: 'CLEAR_FORM',
-  FIELD_CHANGE: 'FIELD_CHANGE'
+  FIELD_CHANGE: 'FIELD_CHANGE',
+  DATE_CHANGE: 'DATE_CHANGE'
 }
 
 export const appointmentReducer = (state, action) => {
@@ -39,6 +42,13 @@ export const appointmentReducer = (state, action) => {
         [name]: null
       }
       return { formData: newFormData, errors: newErrors }
+    }
+    case ACTIONS.DATE_CHANGE: {
+      const newFormData = {
+        ...state.formData,
+        date: action.date
+      }
+      return { formData: newFormData, errors: {} }
     }
   }
 }

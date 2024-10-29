@@ -1,3 +1,4 @@
+import dotenv from '@dotenvx/dotenvx'
 import { electronApp, is, optimizer } from '@electron-toolkit/utils'
 import { app, BrowserWindow, ipcMain, shell } from 'electron'
 import { join } from 'path'
@@ -6,6 +7,7 @@ import {
   deleteAppointment,
   getAppointmentById,
   getAppointmentsByDate,
+  getDaysWithAppointments,
   getNextPatientAppointment,
   newAppointment,
   updateAppointment
@@ -33,9 +35,6 @@ import {
   newPatient,
   updatePatient
 } from './services/patient.js'
-import { showConfirmDialog } from './utils/dialog.js'
-import { convertImage, openImage } from './utils/image.js'
-import { setMainWindow } from './utils/windowManager.js'
 import {
   createDefaultAdmin,
   deleteUser,
@@ -46,6 +45,12 @@ import {
   updatePassword,
   updateUser
 } from './services/user.js'
+import { showConfirmDialog } from './utils/dialog.js'
+import { convertImage, openImage } from './utils/image.js'
+import { setMainWindow } from './utils/windowManager.js'
+import appIcon from '../../resources/icon.ico?asset'
+
+dotenv.config()
 
 function createWindow() {
   // Create the browser window.
@@ -54,6 +59,7 @@ function createWindow() {
     height: 850,
     show: false,
     autoHideMenuBar: true,
+    icon: appIcon,
     ...(process.platform === 'linux' ? { icon } : {}),
     webPreferences: {
       preload: join(__dirname, '../preload/index.js'),
@@ -152,6 +158,7 @@ ipcMain.handle('drug:update', updateDrug)
 ipcMain.handle('drug:delete', deleteDrug)
 
 ipcMain.handle('appointment:new', newAppointment)
+ipcMain.handle('appointment:getDaysWithAppointments', getDaysWithAppointments)
 ipcMain.handle('appointment:getByDate', getAppointmentsByDate)
 ipcMain.handle('appointment:getNearest', getNextPatientAppointment)
 ipcMain.handle('appointment:getOne', getAppointmentById)

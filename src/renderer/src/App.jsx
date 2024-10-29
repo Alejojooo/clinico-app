@@ -7,6 +7,7 @@ import DrugModule from './components/Drug/DrugModule'
 import PatientModule from './components/Patient/PatientModule'
 import SessionModule from './components/Session/SessionModule'
 import TopAppBar from './components/TopAppBar'
+import { AppointmentProvider } from './context/appointment'
 import { PatientProvider } from './context/patient'
 import useView from './hooks/useView'
 import { MODULES } from './utils/view'
@@ -26,7 +27,9 @@ export default function App() {
           sx={{ height: 1, width: 1, backgroundColor: 'light.main', color: 'accent.main' }}
         >
           <TopAppBar />
-          <Content />
+          <AppointmentProvider>
+            <Content />
+          </AppointmentProvider>
         </Stack>
       </EntityProvider>
     )

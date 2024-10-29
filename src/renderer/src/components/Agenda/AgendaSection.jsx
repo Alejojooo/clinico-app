@@ -1,16 +1,16 @@
 import EventAvailableOutlinedIcon from '@mui/icons-material/EventAvailableOutlined'
 import EventBusyOutlinedIcon from '@mui/icons-material/EventBusyOutlined'
-import PersonOutlinedIcon from '@mui/icons-material/PersonOutlined'
 import { Autocomplete, Box, Button, ButtonGroup, Stack, TextField, Typography } from '@mui/material'
-import { DateCalendar, DateTimePicker } from '@mui/x-date-pickers'
+import { DateTimePicker } from '@mui/x-date-pickers'
 import dayjs from 'dayjs'
 import PropTypes from 'prop-types'
 import useAgenda from '../../hooks/useAgenda'
+import Calendar from '../Base/Calendar'
+import InfoBox from '../Base/InfoBox'
 import DataField from '../FormFields/DataField'
 import Header from '../Header'
 import { DocumentList } from '../SearchableDocumentList'
 import SideView from '../SideView'
-import InfoBox from '../Base/InfoBox'
 
 // TODO: Agregar alertas de cuántas citas son para hoy
 // TODO: Funcionalidad de ver paciente
@@ -24,9 +24,11 @@ export default function AgendaSection() {
     appointments,
     patients,
     selectedDate,
+    highlightedDays,
     handleField,
     handleSelect,
     handleDate,
+    handleMonthChange,
     handleDateSelection,
     handleNewAppointment,
     handleDeleteAppointment,
@@ -47,7 +49,12 @@ export default function AgendaSection() {
             }
           }}
         >
-          <DateCalendar value={selectedDate} onChange={handleDateSelection} />
+          <Calendar
+            value={selectedDate}
+            highlightedDays={highlightedDays}
+            onChange={handleDateSelection}
+            onMonthChange={handleMonthChange}
+          />
         </Box>
       </SideView>
       <Box component="main" sx={{ flexGrow: 1, height: 1 }}>
@@ -83,6 +90,7 @@ export default function AgendaSection() {
                 onSelect={handleSelect}
                 onDate={handleDate}
                 onNew={handleNewAppointment}
+                onDelete={handleDeleteAppointment}
               />
               {activeAppointment && <AppointmentInfo activeAppointment={activeAppointment} />}
             </Stack>
@@ -106,11 +114,11 @@ AppointmentList.propTypes = {
   onDelete: PropTypes.func
 }
 
-function AppointmentList({ appointments, activeAppointment, onSelection, onDelete }) {
+function AppointmentList({ appointments, activeAppointment, onSelection }) {
   return (
     <Stack direction="column" spacing="0.625rem" sx={{ ...columnStyles, paddingRight: '0.625rem' }}>
       <Typography variant="h4">Listado de citas para este día</Typography>
-      <ButtonGroup
+      {/* <ButtonGroup
         sx={{
           width: 1,
           '& .MuiButtonBase-root': {
@@ -123,7 +131,7 @@ function AppointmentList({ appointments, activeAppointment, onSelection, onDelet
           Eliminar
         </Button>
         <Button startIcon={<PersonOutlinedIcon />}>Ver Paciente</Button>
-      </ButtonGroup>
+      </ButtonGroup> */}
       <Stack
         direction="column"
         sx={{
@@ -151,10 +159,20 @@ AppointmentForm.propTypes = {
   onField: PropTypes.func,
   onSelect: PropTypes.func,
   onDate: PropTypes.func,
-  onNew: PropTypes.func
+  onNew: PropTypes.func,
+  onDelete: PropTypes.func
 }
 
-function AppointmentForm({ formData, errors, patients, onField, onSelect, onDate, onNew }) {
+function AppointmentForm({
+  formData,
+  errors,
+  patients,
+  onField,
+  onSelect,
+  onDate,
+  onNew,
+  onDelete
+}) {
   return (
     <Stack component="form" direction="column" spacing="0.625rem">
       <Typography variant="h4">Agendar cita</Typography>
@@ -198,14 +216,30 @@ function AppointmentForm({ formData, errors, patients, onField, onSelect, onDate
         helperText={errors.reason}
         fullWidth
       />
-      <Button
-        variant="contained"
-        startIcon={<EventAvailableOutlinedIcon />}
-        onClick={onNew}
-        sx={{ width: 'max-content', alignSelf: 'center' }}
+      <ButtonGroup
+        variant="outlined"
+        sx={{
+          width: 1,
+          '& .MuiButtonBase-root': {
+            width: 1
+          }
+        }}
       >
-        Agendar cita
-      </Button>
+        <Button
+          startIcon={<EventAvailableOutlinedIcon />}
+          onClick={onNew}
+          sx={{ width: 'max-content', alignSelf: 'center' }}
+        >
+          Agendar cita
+        </Button>
+        <Button
+          startIcon={<EventBusyOutlinedIcon />}
+          onClick={onDelete}
+          sx={{ width: 'max-content', alignSelf: 'center' }}
+        >
+          Eliminar cita
+        </Button>
+      </ButtonGroup>
     </Stack>
   )
 }

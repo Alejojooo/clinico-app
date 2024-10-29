@@ -1,3 +1,7 @@
+import '@fontsource/inter/300.css'
+import '@fontsource/inter/400.css'
+import '@fontsource/inter/500.css'
+import '@fontsource/inter/700.css'
 import { Box, createTheme, CssBaseline, StyledEngineProvider, ThemeProvider } from '@mui/material'
 import { LocalizationProvider } from '@mui/x-date-pickers'
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
@@ -5,9 +9,9 @@ import 'dayjs/locale/es'
 import React from 'react'
 import { createRoot } from 'react-dom/client'
 import App from './App'
-import { ViewProvider } from './context/view'
 import { SnackbarProvider } from './context/snackbar'
 import { UserProvider } from './context/user'
+import { ViewProvider } from './context/view'
 
 const rootElement = document.getElementById('root')
 const root = createRoot(rootElement)

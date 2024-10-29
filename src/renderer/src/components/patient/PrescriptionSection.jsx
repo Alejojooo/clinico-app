@@ -94,6 +94,7 @@ export default function PrescritionSection() {
   const handleDocxExport = async () => {
     const fields = getFields()
     const { outcome } = await window.doc.exportPrescriptionToDocx(fields)
+    console.log(outcome)
     if (outcome === 'success') showSnackbar('Se exportó el archivo .docx')
     else if (outcome === 'canceled') showSnackbar('Se canceló la operación')
     else showSnackbar('Ocurrió un error al exportar. Revise la plantilla')

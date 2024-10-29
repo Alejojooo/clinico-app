@@ -1,8 +1,14 @@
-import CloudSyncOutlinedIcon from '@mui/icons-material/CloudSyncOutlined'
+import styled from '@emotion/styled'
 import LogoutOutlinedIcon from '@mui/icons-material/LogoutOutlined'
 import { IconButton, Stack, Typography } from '@mui/material'
+import logo from '../assets/icon.png'
 import useLogout from '../hooks/useLogout.js'
 import SectionsLayout from './SectionsLayout.jsx'
+
+const AppLogo = styled('img')({
+  width: '2rem',
+  height: '2rem'
+})
 
 export default function TopAppBar() {
   const { handleLogout } = useLogout()
@@ -26,9 +32,10 @@ export default function TopAppBar() {
         sx={{
           width: '30%',
           alignItems: 'center',
-          paddingLeft: '1rem'
+          paddingLeft: '0.625rem'
         }}
       >
+        <AppLogo src={logo} />
         <Typography variant="h1">Clínico</Typography>
       </Stack>
       <Stack
@@ -41,9 +48,9 @@ export default function TopAppBar() {
       >
         <SectionsLayout />
         <Stack direction="row" spacing="0.625rem">
-          <IconButton>
+          {/* <IconButton>
             <CloudSyncOutlinedIcon />
-          </IconButton>
+          </IconButton> */}
           <IconButton onClick={handleLogout}>
             <LogoutOutlinedIcon />
           </IconButton>

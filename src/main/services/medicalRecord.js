@@ -63,7 +63,6 @@ export async function deleteMedicalRecord(event, id, responsibleMedicalStaff) {
   await Patient.updateOne({ medicalRecords: id }, { $pull: { medicalRecords: id } })
 
   const patient = await MedicalRecord.findById(id).select('_id').exec()
-  console.log(patient._id)
   await MedicalRecord.updateMany(
     { patientId: patient._id },
     { responsibleMedicalStaff: responsibleMedicalStaff }

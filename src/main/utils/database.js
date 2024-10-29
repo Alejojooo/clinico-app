@@ -1,6 +1,9 @@
 import mongoose from 'mongoose'
 
-mongoose.connect('mongodb://localhost/clinico-app')
+const uri =
+  'mongodb+srv://ClinicoApp:nUhejEkPu4VwOT63@cluster.tgawk.mongodb.net/?retryWrites=true&w=majority&appName=Cluster'
+// const uri = 'mongodb://localhost/clinico-app'
+mongoose.connect(uri)
 /**
  * @type {mongoose.mongo.GridFSBucket}
  */
